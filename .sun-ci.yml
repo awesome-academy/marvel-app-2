@@ -37,3 +37,4 @@ jobs:
         - master
       events:
         - pull_request
+        
