@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.nguyennhatminh614.marvelapp.HomePageFragment"
+        android:label=""
+        tools:layout="@layout/fragment_drawer_home_page" />
+
+    <fragment
+        android:id="@+id/nav_character"
+        android:name="com.nguyennhatminh614.marvelapp.CharacterFragment"
+        android:label=""
+        tools:layout="@layout/fragment_drawer_character" />
+
+    <fragment
+        android:id="@+id/nav_comic"
+        android:name="com.nguyennhatminh614.marvelapp.ComicFragment"
+        android:label=""
+        tools:layout="@layout/fragment_drawer_comic" />
+
+    <fragment
+        android:id="@+id/nav_creator"
+        android:name="com.nguyennhatminh614.marvelapp.CreatorFragment"
+        android:label=""
+        tools:layout="@layout/fragment_drawer_creator" />
+
+    <fragment
+        android:id="@+id/nav_event"
+        android:name="com.nguyennhatminh614.marvelapp.EventFragment"
+        android:label=""
+        tools:layout="@layout/fragment_drawer_event" />
+
+    <fragment
+        android:id="@+id/nav_series"
+        android:name="com.nguyennhatminh614.marvelapp.SeriesFragment"
+        android:label=""
+        tools:layout="@layout/fragment_drawer_series" />
+
+    <fragment
+        android:id="@+id/nav_stories"
+        android:name="com.nguyennhatminh614.marvelapp.StoriesFragment"
+        android:label=""
+        tools:layout="@layout/fragment_drawer_stories" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.nguyennhatminh614.marvelapp.SettingsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_drawer_settings" />
+</navigation>

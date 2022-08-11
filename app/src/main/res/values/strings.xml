@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">MarvelApp</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home Page</string>
+    <string name="menu_character">Character</string>
+    <string name="menu_comic">Comic</string>
+    <string name="menu_creator">Creator</string>
+    <string name="menu_event">Event</string>
+    <string name="menu_series">Series</string>
+    <string name="menu_stories">Stories</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_search">Search</string>
+</resources>
