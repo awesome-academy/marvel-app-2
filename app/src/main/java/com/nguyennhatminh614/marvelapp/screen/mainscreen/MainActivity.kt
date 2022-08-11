@@ -1,9 +1,7 @@
-package com.nguyennhatminh614.marvelapp
+package com.nguyennhatminh614.marvelapp.screen.mainscreen
 
-import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -11,14 +9,15 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.databinding.ActivityMainBinding
+import com.nguyennhatminh614.marvelapp.util.base.BaseActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun initView() {
         binding.apply {
             setContentView(root)
             setSupportActionBar(appBarBase.toolbar)
@@ -43,6 +42,10 @@ class MainActivity : AppCompatActivity() {
             setupActionBarWithNavController(navController, appBarConfiguration)
             navView.setupWithNavController(navController)
         }
+    }
+
+    override fun initData() {
+        /*Todo not implemented*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

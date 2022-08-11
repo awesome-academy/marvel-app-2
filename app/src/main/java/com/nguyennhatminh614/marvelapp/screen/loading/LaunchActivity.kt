@@ -1,17 +1,16 @@
-package com.nguyennhatminh614.marvelapp
+package com.nguyennhatminh614.marvelapp.screen.loading
 
 import android.content.Intent
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.nguyennhatminh614.marvelapp.databinding.ActivityLaunchBinding
+import com.nguyennhatminh614.marvelapp.screen.mainscreen.MainActivity
+import com.nguyennhatminh614.marvelapp.util.base.BaseActivity
 import java.util.Timer
 import kotlin.concurrent.schedule
 
-class LaunchActivity : AppCompatActivity() {
+class LaunchActivity : BaseActivity() {
     private val binding by lazy { ActivityLaunchBinding.inflate(layoutInflater) }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun initView() {
         setContentView(binding.root)
 
         supportActionBar?.hide()
@@ -21,5 +20,9 @@ class LaunchActivity : AppCompatActivity() {
                 startActivity(Intent(this@LaunchActivity, MainActivity::class.java))
             }
         }
+    }
+
+    override fun initData() {
+        /* Todo not implemented */
     }
 }

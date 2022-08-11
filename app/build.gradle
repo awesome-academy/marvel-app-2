@@ -17,6 +17,7 @@ plugins {
 }
 
 apply plugin: "org.jlleitschuh.gradle.ktlint"
+apply plugin: "kotlin-android-extensions"
 
 android {
     compileSdk 32
@@ -29,6 +30,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "HASH", "\"${HASH}\""
+        buildConfigField "String", "PUBLIC_KEY", "\"${PUBLIC_KEY}\""
+        buildConfigField "String", "TIME_STAMP", "\"${TIME_STAMP}\""
     }
 
     buildTypes {
@@ -46,6 +50,10 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+
+    androidExtensions {
+        experimental = true
     }
 }
 

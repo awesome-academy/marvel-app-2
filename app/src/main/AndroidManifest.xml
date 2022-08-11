@@ -14,12 +14,14 @@
         android:theme="@style/Theme.MarvelApp"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".screen.mainscreen.MainActivity"
             android:exported="false"
             android:label="@string/title_activity_base"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.MarvelApp.NoActionBar" />
         <activity
-            android:name=".LaunchActivity"
+            android:name=".screen.loading.LaunchActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
