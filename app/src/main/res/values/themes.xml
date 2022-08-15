@@ -18,6 +18,8 @@
     <style name="Theme.MarvelApp.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:actionMenuTextColor">@android:color/white</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
     <style name="Theme.MarvelApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
