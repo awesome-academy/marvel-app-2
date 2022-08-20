@@ -2,7 +2,8 @@ package com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson
 
 import android.os.Handler
 import android.os.Looper
-import com.nguyennhatminh614.marvelapp.util.constant.Constant
+import com.nguyennhatminh614.marvelapp.util.constant.APIConstant
+import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -13,13 +14,11 @@ import java.util.concurrent.Executors
 class GetJsonFromUrl<T>(
     private val urlString: String,
     private val keyEntity: String,
-    private val listener: OnResultListener<T>
+    private val listener: OnResultListener<T>,
 ) {
-
     private val mExecutor: Executor = Executors.newSingleThreadExecutor()
     private val mHandler = Handler(Looper.getMainLooper())
     private var exception: Exception? = null
-    private var data: T? = null
 
     init {
         callAPI()
@@ -27,19 +26,21 @@ class GetJsonFromUrl<T>(
 
     private fun callAPI() {
         mExecutor.execute {
-            val responseJson = getJsonFromUrl(Constant.BASE_URL + urlString)
-
+            val responseJson =
+                getRequestJsonFromUrl(APIConstant.BASE_URL + urlString + APIConstant.QUERY_TOKEN)
+            val responseResult = ParseDataWithJson()
+                .parseJsonToData(JSONObject(responseJson), keyEntity) as? T
             mHandler.post {
-                try {
-                    data?.let { listener.onSuccess(it) }
-                } catch (e: Exception) {
+                if (responseResult != null) {
+                    listener.onSuccess(responseResult)
+                } else {
                     listener.onError(exception)
                 }
             }
         }
     }
 
-    private fun getJsonFromUrl(urlString: String): String {
+    private fun getRequestJsonFromUrl(urlString: String): String {
         val url = URL(urlString)
         val httpURLConnection = url.openConnection() as? HttpURLConnection
         httpURLConnection?.run {

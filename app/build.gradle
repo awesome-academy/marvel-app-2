@@ -14,11 +14,12 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'org.jlleitschuh.gradle.ktlint' version '10.3.0'
+    id 'io.gitlab.arturbosch.detekt' version '1.20.0'
 }
 
 apply plugin: "org.jlleitschuh.gradle.ktlint"
 apply plugin: "kotlin-android-extensions"
-
+apply plugin: "io.gitlab.arturbosch.detekt"
 android {
     compileSdk 32
 
@@ -55,9 +56,39 @@ android {
     androidExtensions {
         experimental = true
     }
-}
 
+    packagingOptions {
+        exclude 'kotlin/internal/internal.kotlin_builtins'
+        exclude("META-INF/kotlin-stdlib-common.kotlin_module")
+        exclude("META-INF/kotlin-stdlib-jdk7.kotlin_module")
+        exclude("META-INF/kotlin-stdlib-jdk8.kotlin_module")
+        exclude("META-INF/kotlin-stdlib.kotlin_module")
+        exclude("kotlin/annotation/annotation.kotlin_builtins")
+        exclude("kotlin/collections/collections.kotlin_builtins")
+        exclude("kotlin/coroutines/coroutines.kotlin_builtins")
+        exclude("kotlin/internal/internal.kotlin_builtins")
+        exclude("kotlin/kotlin.kotlin_builtins")
+        exclude("kotlin/ranges/ranges.kotlin_builtins")
+        exclude("kotlin/reflect/reflect.kotlin_builtins")
+    }
+}
+subprojects {
+    apply(plugin = "io.gitlab.arturbosch.detekt")
+
+    detekt {
+        config = files("${rootDir}/.sun-ci.yml")
+
+        allRules = true
+        buildUponDefaultConfig = true
+    }
+}
 dependencies {
+    // https://mvnrepository.com/artifact/io.gitlab.arturbosch.detekt/detekt-api
+    runtimeOnly 'io.gitlab.arturbosch.detekt:detekt-api:1.20.0'
+
+    detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.20.0'
+    // https://mvnrepository.com/artifact/com.github.bumptech.glide/glide
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'

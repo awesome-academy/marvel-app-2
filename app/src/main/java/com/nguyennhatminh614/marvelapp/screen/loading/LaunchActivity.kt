@@ -15,7 +15,7 @@ class LaunchActivity : BaseActivity() {
 
         supportActionBar?.hide()
 
-        Timer().schedule(3000) {
+        Timer().schedule(DELAY_TIME) {
             this@LaunchActivity.runOnUiThread {
                 startActivity(Intent(this@LaunchActivity, MainActivity::class.java))
             }
@@ -24,5 +24,9 @@ class LaunchActivity : BaseActivity() {
 
     override fun initData() {
         /* Todo not implemented */
+    }
+
+    companion object{
+        private const val DELAY_TIME = 3000L
     }
 }

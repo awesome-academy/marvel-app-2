@@ -7,19 +7,24 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseFragment<VBinding : ViewBinding>(private val _binding: (LayoutInflater) -> VBinding) :
+abstract class BaseFragment<VBinding : ViewBinding>(private val bindingLayoutInflater: (LayoutInflater) -> VBinding) :
     Fragment() {
 
-    private var binding: ViewBinding? = null
-    protected val mViewBinding: ViewBinding
+    private var binding: VBinding? = null
+    protected val viewBinding: VBinding
         get() = binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        restoreInstanceState(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = _binding(layoutInflater)
+        binding = bindingLayoutInflater(inflater)
         return binding?.root
     }
 
@@ -33,5 +38,14 @@ abstract class BaseFragment<VBinding : ViewBinding>(private val _binding: (Layou
         binding = null
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        saveInstanceState(outState)
+    }
+
     abstract fun initData()
+
+    abstract fun restoreInstanceState(savedInstanceState: Bundle?)
+
+    abstract fun saveInstanceState(outState: Bundle)
 }
