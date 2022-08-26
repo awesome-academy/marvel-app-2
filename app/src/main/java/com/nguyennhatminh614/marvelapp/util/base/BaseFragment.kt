@@ -16,9 +16,9 @@ abstract class BaseFragment<VBinding : ViewBinding>(private val bindingLayoutInf
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        restoreInstanceState(savedInstanceState)
+        initialize()
+        callData()
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,14 +38,9 @@ abstract class BaseFragment<VBinding : ViewBinding>(private val bindingLayoutInf
         binding = null
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        saveInstanceState(outState)
-    }
-
     abstract fun initData()
 
-    abstract fun restoreInstanceState(savedInstanceState: Bundle?)
+    abstract fun initialize()
 
-    abstract fun saveInstanceState(outState: Bundle)
+    abstract fun callData()
 }

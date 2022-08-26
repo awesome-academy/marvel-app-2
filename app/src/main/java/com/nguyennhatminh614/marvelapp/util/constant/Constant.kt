@@ -11,4 +11,5 @@ object Constant {
     const val MENU_STORIES = "Stories"
     const val MENU_SETTINGS = "Settings"
     const val FIRST_POSITION = 0
+    const val EMPTY_DATA_EXCEPTION = "The data is empty"
 }

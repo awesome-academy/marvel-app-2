@@ -19,7 +19,8 @@ data class Character(
     var isFavorite: Boolean = false,
 ) : Parcelable
 
-object CharacterEntry{
+object CharacterEntry {
+    const val EXTENSION = "extension"
     const val ID = "id"
     const val NAME = "name"
     const val DESCRIPTION = "description"

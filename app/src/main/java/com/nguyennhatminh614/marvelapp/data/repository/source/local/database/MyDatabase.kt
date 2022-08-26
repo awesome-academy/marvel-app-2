@@ -26,6 +26,40 @@ class MyDatabase(
         onCreate(p0)
     }
 
+    fun checkExistsCharacter(character: Character): Boolean {
+        val database = readableDatabase
+        val stringQuery = "select * from $CHARACTER_TABLE where ID = ${character.id}"
+        val cursor = database.rawQuery(stringQuery, null)
+        return cursor.count > 0
+    }
+
+    fun getAllFavoriteCharacter(): ArrayList<Character> {
+        val database = readableDatabase
+        val stringQuery = "select * from $CHARACTER_TABLE"
+        val cursor = database.rawQuery(stringQuery, null)
+
+        val listCharacter = ArrayList<Character>()
+        cursor?.apply {
+            if(this.count > 0) {
+                moveToFirst()
+                while (!isAfterLast) {
+                    listCharacter.add(
+                        Character(
+                            id = getInt(getColumnIndexOrThrow(ID)),
+                            name = getString(getColumnIndexOrThrow(NAME)),
+                            description = getString(getColumnIndexOrThrow(DESCRIPTION)),
+                            thumbnailLink = getString(getColumnIndexOrThrow(THUMBNAIL_LINK)),
+                            isFavorite = (getInt(getColumnIndexOrThrow(FAVORITE)) == 1)
+                        )
+                    )
+                    moveToNext()
+                }
+            }
+        }
+
+        return listCharacter
+    }
+
     fun addFavoriteNewCharacter(character: Character) {
         val database = writableDatabase
         val values = ContentValues()
@@ -44,12 +78,12 @@ class MyDatabase(
         }
     }
 
-    fun removeFavoriteCharacter(listID: Array<String>) {
+    fun removeFavoriteCharacter(character: Character) {
         val database = writableDatabase
         val whereClause = "ID in (?)"
 
         database.apply {
-            delete(CHARACTER_TABLE, whereClause, listID)
+            delete(CHARACTER_TABLE, whereClause, arrayOf(character.id.toString()))
             close()
         }
     }

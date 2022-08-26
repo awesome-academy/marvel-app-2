@@ -23,10 +23,10 @@ class LaunchActivity : BaseActivity() {
     }
 
     override fun initData() {
-        /* Todo not implemented */
+        /* TODO implement later */
     }
 
     companion object{
-        private const val DELAY_TIME = 3000L
+        private const val DELAY_TIME = 1200L
     }
 }
