@@ -20,8 +20,18 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:menu="@menu/activity_main_drawer"
         android:background="@color/PrimaryColor"
         app:itemTextAppearance="@style/NavigationDrawerFontStyle"
-        app:itemTextColor="@color/white"/>
+        app:itemTextColor="@color/white">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/navigation_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/menu_item_layout"
+            android:overScrollMode="never"
+            android:layout_marginTop="@dimen/margin_20dp"/>
+
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>
