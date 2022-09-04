@@ -5,7 +5,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class CreatorDTO(
-    var resourceUri: String = "",
-    var name: String = "",
-    var role: String = "",
-) : Parcelable
+    override var resourceUrl: String = "",
+    override var textDescription: String = ""
+) : Parcelable, DtoItem(resourceUrl, textDescription)

@@ -54,4 +54,13 @@
     <string name="text_wiki_about_this_series"><u>Wiki about this series</u></string>
     <string name="text_temp_link">temp link</string>
     <string name="text_menu_item">Character</string>
+    <string name="text_recycler_view_comic_not_found">Doesn\'t have any comics</string>
+    <string name="text_recycler_view_series_not_found">Doesn\'t have any series</string>
+    <string name="text_recycler_view_stories_not_found">Doesn\'t have any stories</string>
+    <string name="text_recycler_view_event_not_found">Doesn\'t have any events</string>
+    <string name="text_recycler_view_creators_not_found">Doesn\'t have any creators</string>
+    <string name="text_recycler_view_characters_not_found">Doesn\'t have any characters</string>
+    <string name="text_detail_series"><u>Marvel Previews (2017 - Present)</u></string>
+    <string name="temp_text_number_of_pages">112 pages</string>
+
 </resources>
