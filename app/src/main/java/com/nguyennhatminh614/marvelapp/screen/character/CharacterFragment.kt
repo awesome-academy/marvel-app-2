@@ -4,7 +4,7 @@ import android.widget.Toast
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Character
 import com.nguyennhatminh614.marvelapp.data.repository.CharacterRepository
-import com.nguyennhatminh614.marvelapp.data.repository.source.local.CharacterLocalDataSource
+import com.nguyennhatminh614.marvelapp.data.repository.source.local.character.CharacterLocalDataSource
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.character.CharacterRemoteDataSource
 import com.nguyennhatminh614.marvelapp.databinding.FragmentDrawerCharacterBinding
 import com.nguyennhatminh614.marvelapp.util.OnClickFavoriteItemInterface

@@ -1,9 +1,9 @@
-package com.nguyennhatminh614.marvelapp.data.repository.source.local
+package com.nguyennhatminh614.marvelapp.data.repository.source.local.character
 
 import android.content.Context
 import com.nguyennhatminh614.marvelapp.data.model.Character
 import com.nguyennhatminh614.marvelapp.data.repository.ICharacterDataSource
-import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.MyDatabase
+import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.CharacterTableImpl
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.OnResultListener
 import com.nguyennhatminh614.marvelapp.util.constant.Constant
 
@@ -11,7 +11,7 @@ class CharacterLocalDataSource : ICharacterDataSource.Local {
 
     override fun getCharacterListLocal(context: Context?, listener: OnResultListener<MutableList<Character>>) {
         val list = ArrayList<Character>()
-        list.addAll(MyDatabase.getInstance(context)?.getAllFavoriteCharacter()!!)
+        list.addAll(CharacterTableImpl.getInstance(context)?.getAllFavoriteCharacter()!!)
 
         if (list.isNotEmpty()) {
             listener.onSuccess(list)
@@ -21,15 +21,15 @@ class CharacterLocalDataSource : ICharacterDataSource.Local {
     }
 
     override fun addCharacterFavoriteToListLocal(context: Context?, character: Character) {
-        MyDatabase.getInstance(context)?.addFavoriteNewCharacter(character)
+        CharacterTableImpl.getInstance(context)?.addFavoriteNewCharacter(character)
     }
 
     override fun removeCharacterFavoriteToListLocal(context: Context?, character: Character) {
-        MyDatabase.getInstance(context)?.removeFavoriteCharacter(character)
+        CharacterTableImpl.getInstance(context)?.removeFavoriteCharacter(character)
     }
 
     override fun checkFavoriteCharacterExists(context: Context?, character: Character): Boolean {
-        return MyDatabase.getInstance(context)?.checkExistsCharacter(character)!!
+        return CharacterTableImpl.getInstance(context)?.checkExistsCharacter(character)!!
     }
 
     companion object {

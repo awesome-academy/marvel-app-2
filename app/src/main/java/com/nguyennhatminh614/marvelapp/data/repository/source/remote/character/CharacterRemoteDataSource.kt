@@ -8,11 +8,11 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 
 class CharacterRemoteDataSource : ICharacterDataSource.Remote {
     override fun getCharacterListRemote(listener: OnResultListener<MutableList<Character>>) {
-        GetJsonFromUrl(getAllCharacter, CharacterEntry.CHARACTERS, listener)
+        GetJsonFromUrl(GET_ALL_CHARACTER, CharacterEntry.CHARACTER_ENTITY, listener)
     }
 
     companion object {
-        private const val getAllCharacter = "/v1/public/characters"
+        const val GET_ALL_CHARACTER = "/v1/public/characters"
         private var instance: CharacterRemoteDataSource? = null
         fun getInstance() =
             if (instance != null) instance else CharacterRemoteDataSource().also { instance = it }

@@ -9,7 +9,7 @@ import com.nguyennhatminh614.marvelapp.databinding.LayoutDtoItemBinding
 class DTOItemAdapter<T : DtoItem> :
     RecyclerView.Adapter<DTOItemAdapter<T>.ViewHolder>() {
 
-    private val listDTOItem = mutableListOf<T>()
+    private var listDTOItem = mutableListOf<T>()
     private var clickItemInterface: OnClickItemInterface<T>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,6 +31,25 @@ class DTOItemAdapter<T : DtoItem> :
         this.clickItemInterface = clickItemInterface
     }
 
+    fun updateDataItem(listDtoItem: MutableList<T>){
+        this.listDTOItem.clear()
+        this.listDTOItem.addAll(listDtoItem)
+        notifyDataSetChanged()
+    }
+
+    fun updateDTOAdapter(
+        listItem: MutableList<T>,
+        clickItemInterface: OnClickItemInterface<T>,
+        emptyListEvent: () -> Unit,
+    ) {
+        if (listItem.isNotEmpty()){
+            updateDataItem(listItem)
+            registerClickItemInterface(clickItemInterface)
+        } else {
+            emptyListEvent()
+        }
+    }
+
     inner class ViewHolder(val binding: LayoutDtoItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindItem(dtoItem: T) {
@@ -41,11 +60,5 @@ class DTOItemAdapter<T : DtoItem> :
                 }
             }
         }
-    }
-
-    fun updateDataItem(listDtoItem: MutableList<T>){
-        this.listDTOItem.clear()
-        this.listDTOItem.addAll(listDtoItem)
-        notifyDataSetChanged()
     }
 }
