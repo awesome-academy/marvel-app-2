@@ -24,15 +24,15 @@ class ParseJson {
     fun characterParseJson(jsonObject: JSONObject): Character {
         val character = Character()
         character.id = jsonObject.getInt(CharacterEntry.ID)
-        character.name = jsonObject.getString(CharacterEntry.NAME)
-        character.description = jsonObject.getString(CharacterEntry.DESCRIPTION)
+        character.name = jsonObject.optString(CharacterEntry.NAME)
+        character.description = jsonObject.optString(CharacterEntry.DESCRIPTION)
         if (character.description.isEmpty()) {
             character.description = NO_DESCRIPTION
         }
         jsonObject.getJSONObject(CharacterEntry.THUMBNAIL_DIR).apply {
             character.thumbnailLink = getThumbnailLink(
-                getString(CharacterEntry.GET_PATH),
-                getString(CharacterEntry.EXTENSION)
+                optString(CharacterEntry.GET_PATH),
+                optString(CharacterEntry.EXTENSION)
             )
         }
 
@@ -51,11 +51,10 @@ class ParseJson {
 
         jsonObject.getJSONArray(CharacterEntry.GET_MANY_URL).apply {
             for (i in 0 until length()) {
-                val jsonObject = getJSONObject(i)
-                val urlString = jsonObject.getString(CharacterEntry.GET_DETAIL_URL)
-                val type = jsonObject.getString(CharacterEntry.GET_TYPE)
+                val tempJsonObject = getJSONObject(i)
+                val urlString = tempJsonObject.optString(CharacterEntry.GET_DETAIL_URL)
 
-                when (type) {
+                when (tempJsonObject.optString(CharacterEntry.GET_TYPE)) {
                     CharacterEntry.TYPE_DETAIL_URL -> character.detailUrl = urlString
                     CharacterEntry.TYPE_WIKI_URL -> character.wikiUrl = urlString
                     CharacterEntry.TYPE_COMIC_LINK_URL -> character.comicLinkUrl = urlString
@@ -69,14 +68,14 @@ class ParseJson {
     fun comicParseJson(jsonObject: JSONObject): Comic {
         val comic = Comic()
         comic.id = jsonObject.getInt(ComicEntry.ID)
-        comic.title = jsonObject.getString(ComicEntry.TITLE)
-        comic.description = jsonObject.getString(ComicEntry.DESCRIPTION)
+        comic.title = jsonObject.optString(ComicEntry.TITLE)
+        comic.description = jsonObject.optString(ComicEntry.DESCRIPTION)
         if (comic.description.isEmpty()) {
             comic.description = NO_DESCRIPTION
         }
         jsonObject.getJSONArray(ComicEntry.PRICES).getJSONObject(Constant.FIRST_POSITION)
             .also { thisElem ->
-                if (thisElem.getString(ComicEntry.GET_TYPE)
+                if (thisElem.optString(ComicEntry.GET_TYPE)
                         .equals(ComicEntry.PRINT_PRICES)
                 ) {
                     comic.printPrice = thisElem.getDouble(ComicEntry.DETAIL_PRICE)
@@ -86,8 +85,8 @@ class ParseJson {
 
         jsonObject.getJSONObject(ComicEntry.THUMBNAIL_DIR).apply {
             comic.thumbnailLink = getThumbnailLink(
-                getString(ComicEntry.GET_PATH),
-                getString(ComicEntry.EXTENSION)
+                optString(ComicEntry.GET_PATH),
+                optString(ComicEntry.EXTENSION)
             )
         }
 
@@ -104,8 +103,8 @@ class ParseJson {
 
         comic.seriesDetail = SeriesDTO().apply {
             jsonObject.getJSONObject(ComicEntry.SERIES).let {
-                resourceUrl = it.getString(APIConstant.GET_RESOURCE_URI)
-                textDescription = it.getString(APIConstant.NAME)
+                resourceUrl = it.optString(APIConstant.GET_RESOURCE_URI)
+                textDescription = it.optString(APIConstant.NAME)
             }
         }
 
@@ -116,10 +115,10 @@ class ParseJson {
         jsonObject.getJSONArray(ComicEntry.GET_MANY_URL).getJSONObject(Constant.FIRST_POSITION)
             .also { thisElem ->
                 run {
-                    if (thisElem.getString(ComicEntry.GET_TYPE)
+                    if (thisElem.optString(ComicEntry.GET_TYPE)
                             .equals(ComicEntry.TYPE_DETAIL_URL)
                     ) {
-                        comic.comicDetailLink = thisElem.getString(ComicEntry.GET_DETAIL_URL)
+                        comic.comicDetailLink = thisElem.optString(ComicEntry.GET_DETAIL_URL)
                     }
                 }
             }
@@ -132,12 +131,12 @@ class ParseJson {
 
         creator.id =
             jsonObject.getInt(CreatorEntry.ID)
-        creator.name = jsonObject.getString(CreatorEntry.FULL_NAME)
+        creator.name = jsonObject.optString(CreatorEntry.FULL_NAME)
 
         jsonObject.getJSONObject(CreatorEntry.THUMBNAIL_DIR).apply {
             creator.thumbnailLink = getThumbnailLink(
-                getString(CreatorEntry.GET_PATH),
-                getString(CreatorEntry.EXTENSION)
+                optString(CreatorEntry.GET_PATH),
+                optString(CreatorEntry.EXTENSION)
             )
         }
 
@@ -160,7 +159,7 @@ class ParseJson {
 
         creator.detailLink = jsonObject.getJSONArray(CreatorEntry.GET_MANY_URL)
             .getJSONObject(Constant.FIRST_POSITION)
-            .getString(CreatorEntry.GET_DETAIL_URL)
+            .optString(CreatorEntry.GET_DETAIL_URL)
 
         return creator
     }
@@ -168,29 +167,30 @@ class ParseJson {
     fun eventParseJson(jsonObject: JSONObject): Event {
         val event = Event()
         event.id = jsonObject.getInt(EventEntry.ID)
-        event.title = jsonObject.getString(EventEntry.TITLE)
-        event.description = jsonObject.getString(EventEntry.DESCRIPTION)
-
+        event.title = jsonObject.optString(EventEntry.TITLE)
+        event.description = jsonObject.optString(EventEntry.DESCRIPTION)
+        if (event.description.isEmpty()){
+            event.description = NO_DESCRIPTION
+        }
         jsonObject.getJSONArray(EventEntry.GET_MANY_URL).apply {
             for (i in 0 until length()) {
-                val jsonObject = getJSONObject(i)
-                val urlString = jsonObject.getString(CharacterEntry.GET_DETAIL_URL)
-                val type = jsonObject.getString(CharacterEntry.GET_TYPE)
+                val tempJsonObject = getJSONObject(i)
+                val urlString = tempJsonObject.optString(CharacterEntry.GET_DETAIL_URL)
 
-                when (type) {
+                when (tempJsonObject.optString(CharacterEntry.GET_TYPE)) {
                     EventEntry.TYPE_DETAIL_URL -> event.detailLink = urlString
                     EventEntry.TYPE_WIKI_URL -> event.wikiLink = urlString
                 }
             }
         }
 
-        event.startDate = jsonObject.getString(EventEntry.START_DATE).parseDateTime()
-        event.endDate = jsonObject.getString(EventEntry.END_DATE).parseDateTime()
+        event.startDate = jsonObject.optString(EventEntry.START_DATE).parseDateTime()
+        event.endDate = jsonObject.optString(EventEntry.END_DATE).parseDateTime()
 
         jsonObject.getJSONObject(EventEntry.THUMBNAIL_DIR).apply {
             event.thumbnailLink = getThumbnailLink(
-                getString(EventEntry.GET_PATH),
-                getString(EventEntry.EXTENSION),
+                optString(EventEntry.GET_PATH),
+                optString(EventEntry.EXTENSION),
             )
         }
 
@@ -220,8 +220,8 @@ class ParseJson {
     fun seriesParseJson(jsonObject: JSONObject): Series {
         val series = Series()
         series.id = jsonObject.getInt(SeriesEntry.ID)
-        series.title = jsonObject.getString(SeriesEntry.TITLE)
-        series.description = jsonObject.getString(SeriesEntry.DESCRIPTION)
+        series.title = jsonObject.optString(SeriesEntry.TITLE)
+        series.description = jsonObject.optString(SeriesEntry.DESCRIPTION)
         if (series.description.isEmpty()) {
             series.description = NO_DESCRIPTION
         }
@@ -229,17 +229,18 @@ class ParseJson {
         series.endYear = jsonObject.getInt(SeriesEntry.END_YEAR)
         jsonObject.getJSONArray(SeriesEntry.GET_MANY_URL).getJSONObject(Constant.FIRST_POSITION)
             .apply {
-                val urlString = jsonObject.getString(SeriesEntry.GET_DETAIL_URL)
-                val type = jsonObject.getString(SeriesEntry.GET_TYPE)
-                when (type) {
-                    SeriesEntry.TYPE_DETAIL_URL -> series.detailLink = urlString
+                if (this != null){
+                    val urlString = jsonObject.optString(SeriesEntry.GET_DETAIL_URL) ?: ""
+                    when (jsonObject.optString(SeriesEntry.GET_TYPE)) {
+                        SeriesEntry.TYPE_DETAIL_URL -> series.detailLink = urlString
+                    }
                 }
             }
-        series.rating = jsonObject.getString(SeriesEntry.RATING)
+        series.rating = jsonObject.optString(SeriesEntry.RATING)
         jsonObject.getJSONObject(SeriesEntry.THUMBNAIL_DIR).apply {
             series.thumbnailLink = getThumbnailLink(
-                getString(SeriesEntry.GET_PATH),
-                getString(SeriesEntry.EXTENSION),
+                optString(SeriesEntry.GET_PATH),
+                optString(SeriesEntry.EXTENSION),
             )
         }
         series.creatorList = getCreatorList(
@@ -267,18 +268,16 @@ class ParseJson {
     fun storiesParseJson(jsonObject: JSONObject): Stories {
         val stories = Stories()
         stories.id = jsonObject.getInt(StoriesEntry.ID)
-        stories.title = jsonObject.getString(StoriesEntry.TITLE)
-        stories.description = jsonObject.getString(StoriesEntry.DESCRIPTION)
+        stories.title = jsonObject.optString(StoriesEntry.TITLE)
+        stories.description = jsonObject.optString(StoriesEntry.DESCRIPTION)
         if(stories.description.isEmpty()) {
             stories.description = NO_DESCRIPTION
         }
         jsonObject.getJSONObject(StoriesEntry.THUMBNAIL_DIR).apply {
-            if(this != null) {
-                stories.thumbnailLink = getThumbnailLink(
-                    getString(StoriesEntry.GET_PATH),
-                    getString(StoriesEntry.EXTENSION),
-                )
-            }
+            stories.thumbnailLink = getThumbnailLink(
+                optString(StoriesEntry.GET_PATH),
+                optString(StoriesEntry.EXTENSION),
+            )
         }
         stories.creatorList = getCreatorList(
             jsonObject.getJSONObject(StoriesEntry.COMIC).getJSONArray(StoriesEntry.ITEM_KEYS)
@@ -302,7 +301,7 @@ class ParseJson {
         return stories
     }
 
-    fun getThumbnailLink(path: String, extension: String): String {
+    private fun getThumbnailLink(path: String, extension: String): String {
         return "$path.$extension"
     }
 }

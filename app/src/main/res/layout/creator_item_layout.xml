@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/creator_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_10dp"
+    android:background="@drawable/bg_corner_all_5dp">
+
+    <ImageView
+        android:id="@+id/image_creator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/image_character_height"
+        android:src="@drawable/image_creator_default"
+        app:layout_constraintBottom_toTopOf="@id/text_creator_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/margin_20dp"/>
+
+    <TextView
+        android:id="@+id/text_creator_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_30dp"
+        android:fontFamily="@font/comfortaa_bold"
+        android:text="@string/temp_creator_name"
+        android:textSize="@dimen/text_size_20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_creator"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

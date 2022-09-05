@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-open class MyDatabase(
+class LocalDatabase(
     context: Context?,
     name: String? = DATABASE_NAME,
     factory: SQLiteDatabase.CursorFactory? = null,
@@ -66,9 +66,11 @@ open class MyDatabase(
                 "$FAVORITE integer)"
         private const val UPGRADE_TABLE = "drop table if exists "
 
-        private var instance: MyDatabase? = null
+        private var instance: LocalDatabase? = null
 
         fun getInstance(context: Context?) =
-            if (instance != null) instance else MyDatabase(context).also { instance = it }
+            synchronized(this) {
+                instance ?: LocalDatabase(context).also { instance = it }
+            }
     }
 }

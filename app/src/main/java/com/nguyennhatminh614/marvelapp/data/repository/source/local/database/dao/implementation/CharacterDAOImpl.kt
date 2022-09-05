@@ -1,18 +1,23 @@
-package com.nguyennhatminh614.marvelapp.data.repository.source.local.database
+package com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.implementation
 
 import android.content.ContentValues
-import android.content.Context
 import com.nguyennhatminh614.marvelapp.data.model.Character
+import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.LocalDatabase
+import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.CharacterDAO
 
-class CharacterTableImpl(context: Context?) : MyDatabase(context){
-    fun checkExistsCharacter(character: Character): Boolean {
+class CharacterDAOImpl(localDatabase: LocalDatabase) : CharacterDAO {
+
+    private val readableDatabase = localDatabase.readableDatabase
+    private val writableDatabase = localDatabase.writableDatabase
+
+    override fun checkExistsCharacter(character: Character): Boolean {
         val database = readableDatabase
         val stringQuery = "select * from $CHARACTER_TABLE where ID = ${character.id}"
         val cursor = database.rawQuery(stringQuery, null)
         return cursor.count > 0
     }
 
-    fun getAllFavoriteCharacter(): ArrayList<Character> {
+    override fun getAllFavoriteCharacter(): ArrayList<Character> {
         val database = readableDatabase
         val stringQuery = "select * from $CHARACTER_TABLE"
         val cursor = database.rawQuery(stringQuery, null)
@@ -39,7 +44,7 @@ class CharacterTableImpl(context: Context?) : MyDatabase(context){
         return listCharacter
     }
 
-    fun addFavoriteNewCharacter(character: Character) {
+    override fun addFavoriteNewCharacter(character: Character) {
         val database = writableDatabase
         val values = ContentValues()
 
@@ -57,7 +62,7 @@ class CharacterTableImpl(context: Context?) : MyDatabase(context){
         }
     }
 
-    fun removeFavoriteCharacter(character: Character) {
+    override fun removeFavoriteCharacter(character: Character) {
         val database = writableDatabase
         val whereClause = "ID in (?)"
 
@@ -75,9 +80,11 @@ class CharacterTableImpl(context: Context?) : MyDatabase(context){
         private const val THUMBNAIL_LINK = "thumbnailLink"
         private const val FAVORITE = "favorite"
 
-        private var instance: CharacterTableImpl? = null
+        private var instance: CharacterDAOImpl? = null
 
-        fun getInstance(context: Context?) =
-            if (instance != null) instance else CharacterTableImpl(context).also { instance = it }
+        fun getInstance(localDatabase: LocalDatabase) =
+            synchronized(this) {
+                instance ?: CharacterDAOImpl(localDatabase).also { instance = it }
+            }
     }
 }

@@ -1,6 +1,5 @@
 package com.nguyennhatminh614.marvelapp.screen.character
 
-import android.content.Context
 import com.nguyennhatminh614.marvelapp.data.model.Character
 
 interface CharacterContract {
@@ -11,10 +10,10 @@ interface CharacterContract {
     }
 
     interface Presenter {
-        fun getCharacterListFromLocal(context: Context?)
-        fun checkFavoriteItemExist(context: Context?, character: Character) : Boolean
-        fun addCharacterFavoriteToListLocal(context: Context?, character: Character)
-        fun removeCharacterFavoriteToListLocal(context: Context?, character: Character)
+        fun getCharacterListFromLocal()
+        fun checkFavoriteItemExist(character: Character) : Boolean?
+        fun addCharacterFavoriteToListLocal(character: Character)
+        fun removeCharacterFavoriteToListLocal(character: Character)
         fun getCharacterListRemote()
     }
 }

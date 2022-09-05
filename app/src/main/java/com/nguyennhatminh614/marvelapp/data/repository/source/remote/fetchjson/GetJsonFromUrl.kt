@@ -15,6 +15,7 @@ class GetJsonFromUrl<T>(
     private val urlString: String,
     private val keyEntity: String,
     private val listener: OnResultListener<T>,
+    private var nameQueryToken: String = ""
 ) {
     private val mExecutor: Executor = Executors.newSingleThreadExecutor()
     private val mHandler = Handler(Looper.getMainLooper())
@@ -25,9 +26,13 @@ class GetJsonFromUrl<T>(
     }
 
     private fun callAPI() {
+        var apiCallString = APIConstant.BASE_URL + urlString + APIConstant.QUERY_TOKEN
+        if(!nameQueryToken.isNullOrEmpty()){
+            apiCallString += "nameStartsWith=$nameQueryToken"
+        }
         mExecutor.execute {
             val responseJson =
-                getRequestJsonFromUrl(APIConstant.BASE_URL + urlString + APIConstant.QUERY_TOKEN)
+                getRequestJsonFromUrl(apiCallString)
             val responseResult = ParseDataWithJson()
                 .parseJsonToData(JSONObject(responseJson), keyEntity) as? T
             mHandler.post {

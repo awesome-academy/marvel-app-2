@@ -5,6 +5,8 @@ import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Character
 import com.nguyennhatminh614.marvelapp.data.repository.CharacterRepository
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.character.CharacterLocalDataSource
+import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.LocalDatabase
+import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.implementation.CharacterDAOImpl
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.character.CharacterRemoteDataSource
 import com.nguyennhatminh614.marvelapp.databinding.FragmentDrawerCharacterBinding
 import com.nguyennhatminh614.marvelapp.util.OnClickFavoriteItemInterface
@@ -21,7 +23,11 @@ class CharacterFragment :
     private val characterPresenter by lazy {
         CharacterPresenter.getInstance(
             CharacterRepository.getInstance(
-                CharacterLocalDataSource.getInstance(),
+                CharacterLocalDataSource.getInstance(
+                    CharacterDAOImpl.getInstance(
+                        LocalDatabase.getInstance(context)
+                    )
+                ),
                 CharacterRemoteDataSource.getInstance()
             )
         )
@@ -57,13 +63,14 @@ class CharacterFragment :
             registerClickFavoriteItemInterface(
                 object : OnClickFavoriteItemInterface<Character> {
                     override fun onFavoriteItem(item: Character) {
-                        if (!characterPresenter.checkFavoriteItemExist(context,item)) {
-                            characterPresenter.addCharacterFavoriteToListLocal(context, item)
+                        val checkExist = characterPresenter.checkFavoriteItemExist(item)
+                        if (checkExist != null && checkExist == false) {
+                            characterPresenter.addCharacterFavoriteToListLocal(item)
                         }
                     }
 
                     override fun onUnfavoriteItem(item: Character) {
-                        characterPresenter.removeCharacterFavoriteToListLocal(context, item)
+                        characterPresenter.removeCharacterFavoriteToListLocal(item)
                     }
                 }
             )
@@ -82,7 +89,7 @@ class CharacterFragment :
 
     override fun callData() {
         characterPresenter.getCharacterListRemote()
-        characterPresenter.getCharacterListFromLocal(requireContext())
+        characterPresenter.getCharacterListFromLocal()
     }
 
     companion object {

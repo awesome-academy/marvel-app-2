@@ -50,7 +50,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_temp_comic_list"
-            tools:listitem="@null" />
+            tools:listitem="@null"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <TextView
             android:id="@+id/text_recycler_view_comic_not_found"
@@ -82,7 +83,8 @@
             android:layout_margin="@dimen/margin_16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_series_list" />
+            app:layout_constraintTop_toBottomOf="@id/text_temp_series_list"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <TextView
             android:id="@+id/text_recycler_view_series_not_found"
@@ -113,7 +115,8 @@
             android:layout_margin="@dimen/margin_16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_stories_list" />
+            app:layout_constraintTop_toBottomOf="@id/text_temp_stories_list"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <TextView
             android:id="@+id/text_recycler_view_stories_not_found"
@@ -145,7 +148,8 @@
             android:layout_margin="@dimen/margin_16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_event_list" />
+            app:layout_constraintTop_toBottomOf="@id/text_temp_event_list"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <TextView
             android:id="@+id/text_recycler_view_event_not_found"

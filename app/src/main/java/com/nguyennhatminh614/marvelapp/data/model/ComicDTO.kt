@@ -5,7 +5,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class ComicDTO(
-    var resourceUri: String = "",
-    var name: String = "",
-    var firstCreatorName: String = "",
-) : Parcelable
+    override var resourceUrl: String = "",
+    override var textDescription: String = ""
+) : DtoItem(resourceUrl, textDescription), Parcelable
