@@ -1,7 +1,5 @@
 package com.nguyennhatminh614.marvelapp.screen.character
 
-import android.content.Intent
-import android.net.Uri
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Character
 import com.nguyennhatminh614.marvelapp.data.model.ComicDTO
@@ -15,9 +13,9 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.character.CharacterRemoteDataSource
 import com.nguyennhatminh614.marvelapp.databinding.DetailCharacterFragmentBinding
 import com.nguyennhatminh614.marvelapp.util.DTOItemAdapter
-import com.nguyennhatminh614.marvelapp.util.OnClickItemInterface
 import com.nguyennhatminh614.marvelapp.util.base.BaseFragment
 import com.nguyennhatminh614.marvelapp.util.extensions.loadGlideImageFromUrl
+import com.nguyennhatminh614.marvelapp.util.extensions.navigateToDirectLink
 
 class DetailCharacterFragment :
     BaseFragment<DetailCharacterFragmentBinding>(DetailCharacterFragmentBinding::inflate) {
@@ -40,30 +38,18 @@ class DetailCharacterFragment :
     private fun setRecyclerViewDetailStories(it: Character) {
         viewBinding.recyclerViewDetailStories.adapter =
             DTOItemAdapter<StoriesDTO>().apply {
-                updateDataItem(it.storiesList?.toMutableList() ?: ArrayList())
-
-                registerClickItemInterface(
-                    object : OnClickItemInterface<StoriesDTO> {
-                        override fun onClickItem(item: StoriesDTO) {
-                            /* TODO implement later */
-                        }
-
-                    }
-                )
+                updateDTOAdapter(it.storiesList) {
+                    /* TODO implement later */
+                }
             }
     }
 
     private fun setRecyclerViewDetailSeries(it: Character) {
         viewBinding.recyclerViewDetailSeries.adapter =
             DTOItemAdapter<SeriesDTO>().apply {
-                updateDataItem(it.seriesList?.toMutableList() ?: ArrayList())
-                registerClickItemInterface(
-                    object : OnClickItemInterface<SeriesDTO> {
-                        override fun onClickItem(item: SeriesDTO) {
-                            /* TODO implement later */
-                        }
-                    }
-                )
+                updateDTOAdapter(it.seriesList) {
+                    /* TODO implement later */
+                }
             }
 
     }
@@ -71,29 +57,18 @@ class DetailCharacterFragment :
     private fun setRecyclerViewDetailEvent(it: Character) {
         viewBinding.recyclerViewDetailEvent.adapter =
             DTOItemAdapter<EventDTO>().apply {
-                updateDataItem(it.eventList?.toMutableList() ?: ArrayList())
-                registerClickItemInterface(
-                    object : OnClickItemInterface<EventDTO> {
-                        override fun onClickItem(item: EventDTO) {
-                            /* TODO implement later */
-                        }
-
-                    }
-                )
+                updateDTOAdapter(it.eventList) {
+                    /* TODO implement later */
+                }
             }
     }
 
     private fun setRecyclerViewDetailComic(it: Character) {
         viewBinding.recyclerViewDetailComic.adapter =
             DTOItemAdapter<ComicDTO>().apply {
-                updateDataItem(it.comicList?.toMutableList() ?: ArrayList())
-                registerClickItemInterface(
-                    object : OnClickItemInterface<ComicDTO> {
-                        override fun onClickItem(item: ComicDTO) {
-                            /* TODO implement later */
-                        }
-                    }
-                )
+                updateDTOAdapter(it.comicList) {
+                    /* TODO implement later */
+                }
             }
     }
 
@@ -119,44 +94,37 @@ class DetailCharacterFragment :
             } else {
                 viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
             }
+        }
+    }
 
+    override fun initEvent() {
+        character?.let {
             viewBinding.buttonFavorite.setOnClickListener { view ->
-                it.isFavorite = !it.isFavorite
-
-                if (it.isFavorite) {
-                    viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
-                    val checkExist = characterPresenter.checkFavoriteItemExist(it)
-                    if (checkExist != null && checkExist == false) {
+                val checkExist = characterPresenter.checkFavoriteItemExist(it)
+                checkExist?.apply {
+                    if (it.isFavorite && this.not()) {
+                        viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
                         characterPresenter.addCharacterFavoriteToListLocal(it)
+                        it.isFavorite = it.isFavorite.not()
                     }
-                } else {
-                    viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
-                    characterPresenter.removeCharacterFavoriteToListLocal(it)
-                }
-            }
-
-            viewBinding.textDetailAboutThisCharacter.apply {
-                setOnClickListener { view ->
-                    if (!text.isNullOrEmpty()) {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.detailUrl)))
+                    if (it.isFavorite.not() && this) {
+                        viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
+                        characterPresenter.removeCharacterFavoriteToListLocal(it)
+                        it.isFavorite = it.isFavorite.not()
                     }
                 }
             }
 
-            viewBinding.textWikiAboutThisCharacter.apply {
-                setOnClickListener { view ->
-                    if (!text.isNullOrEmpty()) {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.wikiUrl)))
-                    }
-                }
+            viewBinding.textDetailAboutThisCharacter.setOnClickListener { view ->
+                navigateToDirectLink(it.detailUrl)
             }
 
-            viewBinding.textComicLinkAboutThisCharacter.apply {
-                setOnClickListener { view ->
-                    if (!text.isNullOrEmpty()) {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it.comicLinkUrl)))
-                    }
-                }
+            viewBinding.textWikiAboutThisCharacter.setOnClickListener { view ->
+                navigateToDirectLink(it.wikiUrl)
+            }
+
+            viewBinding.textComicLinkAboutThisCharacter.setOnClickListener { view ->
+                navigateToDirectLink(it.comicLinkUrl)
             }
         }
     }
@@ -168,6 +136,7 @@ class DetailCharacterFragment :
     override fun callData() {
         //Not support
     }
+
 
     companion object {
         fun newInstance(character: Character) = DetailCharacterFragment().apply {

@@ -11,6 +11,7 @@ import org.json.JSONObject
 import java.net.HttpURLConnection
 
 class ParseDataWithJson {
+
     fun parseJsonToData(jsonObject: JSONObject?, keyEntity: String): Any? {
         val data = mutableListOf<Any>()
 

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/image_comic"
+            android:id="@+id/image_event"
             android:layout_width="match_parent"
             android:layout_height="@dimen/image_height_size"
             android:src="@drawable/image_character_detail"
@@ -18,15 +19,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/text_name_comic"
+            android:id="@+id/text_name_event"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/comfortaa_bold"
             android:text="@string/temp_detail_character_name"
-            android:maxLines="2"
             android:textSize="@dimen/text_size_30sp"
             app:layout_constraintStart_toStartOf="@id/text_temp_description"
-            app:layout_constraintTop_toBottomOf="@id/image_comic"
+            app:layout_constraintTop_toBottomOf="@id/image_event"
             android:layout_marginTop="@dimen/margin_35dp"/>
 
         <TextView
@@ -36,94 +36,19 @@
             android:text="@string/temp_description"
             android:textSize="@dimen/text_size_20sp"
             android:fontFamily="@font/comfortaa_bold"
-            app:layout_constraintTop_toBottomOf="@+id/text_name_comic"
+            app:layout_constraintTop_toBottomOf="@+id/text_name_event"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="@dimen/margin_16dp"
             android:layout_marginTop="@dimen/margin_20dp" />
 
         <TextView
-            android:id="@+id/text_comic_description"
+            android:id="@+id/text_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/temp_text_character_description"
             app:layout_constraintTop_toBottomOf="@id/text_temp_description"
             app:layout_constraintStart_toStartOf="@id/text_temp_description"
             android:textSize="@dimen/text_size_18sp"
-            android:fontFamily="@font/comfortaa_light"/>
-
-        <ImageButton
-            android:id="@+id/button_favorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_favorite"
-            android:background="@null"
-            app:layout_constraintTop_toTopOf="@id/text_temp_description"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="@dimen/margin_25dp"/>
-
-        <TextView
-            android:id="@+id/text_temp_print_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/temp_print_price"
-            app:layout_constraintTop_toBottomOf="@id/text_comic_description"
-            app:layout_constraintStart_toStartOf="@id/text_comic_description"
-            android:layout_marginTop="@dimen/margin_20dp"
-            android:fontFamily="@font/comfortaa_bold"
-            android:textSize="@dimen/text_size_20sp"/>
-
-        <TextView
-            android:id="@+id/text_print_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_20sp"
-            android:fontFamily="@font/comfortaa_light"
-            app:layout_constraintTop_toTopOf="@id/text_temp_print_price"
-            app:layout_constraintStart_toEndOf="@id/text_temp_print_price"
-            android:layout_marginStart="@dimen/margin_10dp"
-            android:text="@string/text_print_price_default"/>
-
-        <TextView
-            android:id="@+id/text_temp_number_of_pages"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/comfortaa_bold"
-            android:text="@string/temp_number_of_pages"
-            android:textSize="@dimen/text_size_20sp"
-            app:layout_constraintStart_toStartOf="@id/text_temp_print_price"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_print_price" />
-
-        <TextView
-            android:id="@+id/text_number_of_pages"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/temp_text_number_of_pages"
-            android:fontFamily="@font/comfortaa_light"
-            android:textSize="@dimen/text_size_20sp"
-            app:layout_constraintTop_toTopOf="@id/text_temp_number_of_pages"
-            app:layout_constraintStart_toEndOf="@id/text_temp_number_of_pages"
-            android:layout_marginStart="@dimen/margin_10dp"/>
-
-        <TextView
-            android:id="@+id/text_temp_series_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/temp_series_list"
-            android:textSize="@dimen/text_size_20sp"
-            android:fontFamily="@font/comfortaa_bold"
-            app:layout_constraintStart_toStartOf="@id/text_temp_description"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_number_of_pages"
-            android:layout_marginTop="@dimen/margin_20dp"/>
-
-        <TextView
-            android:id="@+id/text_detail_series"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_series_detail"
-            app:layout_constraintStart_toStartOf="@id/text_temp_series_detail"
-            android:text="@string/text_detail_series"
-            android:textSize="@dimen/text_size_20sp"
             android:fontFamily="@font/comfortaa_light"/>
 
         <TextView
@@ -134,18 +59,18 @@
             android:textSize="@dimen/text_size_20sp"
             android:fontFamily="@font/comfortaa_bold"
             app:layout_constraintStart_toStartOf="@id/text_temp_description"
-            app:layout_constraintTop_toBottomOf="@id/text_detail_series"
+            app:layout_constraintTop_toBottomOf="@id/text_description"
             android:layout_marginTop="@dimen/margin_20dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_detail_creators"
+            android:id="@+id/recycler_view_detail_creator"
             android:layout_width="match_parent"
             android:layout_height="@dimen/temp_detail_list_height_size"
             app:layout_constraintTop_toBottomOf="@id/text_temp_creator_list"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_margin="@dimen/margin_16dp"/>
+            android:layout_margin="@dimen/margin_16dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <TextView
             android:id="@+id/text_recycler_view_creators_not_found"
@@ -157,7 +82,7 @@
             android:layout_marginTop="@dimen/margin_40dp"
             android:textSize="@dimen/text_size_20sp"
             android:fontFamily="@font/comfortaa_light"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/text_temp_character_list"
@@ -167,7 +92,7 @@
             android:textSize="@dimen/text_size_20sp"
             android:fontFamily="@font/comfortaa_bold"
             app:layout_constraintStart_toStartOf="@id/text_temp_description"
-            app:layout_constraintTop_toBottomOf="@id/recycler_view_detail_creators"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_detail_creator"
             android:layout_marginTop="@dimen/margin_20dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -186,11 +111,11 @@
             android:layout_height="wrap_content"
             android:text="@string/text_recycler_view_characters_not_found"
             app:layout_constraintStart_toStartOf="@id/text_temp_character_list"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_character_list"
-            android:layout_marginTop="@dimen/margin_16dp"
+            app:layout_constraintTop_toTopOf="@id/text_temp_character_list"
+            android:layout_marginTop="@dimen/margin_40dp"
             android:textSize="@dimen/text_size_20sp"
             android:fontFamily="@font/comfortaa_light"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/text_temp_stories_list"
@@ -220,16 +145,16 @@
             android:text="@string/text_recycler_view_characters_not_found"
             app:layout_constraintStart_toStartOf="@id/text_temp_stories_list"
             app:layout_constraintTop_toBottomOf="@id/text_temp_stories_list"
-            android:textSize="@dimen/text_size_20sp"
             android:layout_marginTop="@dimen/margin_16dp"
+            android:textSize="@dimen/text_size_20sp"
             android:fontFamily="@font/comfortaa_light"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
-            android:id="@+id/text_temp_event_list"
+            android:id="@+id/text_temp_comic_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/temp_detail_event_list"
+            android:text="@string/temp_comic_list"
             android:textSize="@dimen/text_size_20sp"
             android:fontFamily="@font/comfortaa_bold"
             app:layout_constraintStart_toStartOf="@id/text_temp_description"
@@ -237,22 +162,22 @@
             android:layout_marginTop="@dimen/margin_20dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_detail_event"
+            android:id="@+id/recycler_view_detail_comic"
             android:layout_width="match_parent"
             android:layout_height="@dimen/temp_detail_list_height_size"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_event_list"
+            app:layout_constraintTop_toBottomOf="@id/text_temp_comic_list"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="@dimen/margin_16dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <TextView
-            android:id="@+id/text_recycler_view_event_not_found"
+            android:id="@+id/text_recycler_view_comic_not_found"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_recycler_view_event_not_found"
-            app:layout_constraintStart_toStartOf="@id/text_temp_event_list"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_event_list"
+            android:text="@string/text_recycler_view_characters_not_found"
+            app:layout_constraintStart_toStartOf="@id/text_temp_comic_list"
+            app:layout_constraintTop_toBottomOf="@id/text_temp_comic_list"
             android:layout_marginTop="@dimen/margin_16dp"
             android:textSize="@dimen/text_size_20sp"
             android:fontFamily="@font/comfortaa_light"
@@ -267,21 +192,31 @@
             android:fontFamily="@font/comfortaa_bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recycler_view_detail_event"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_detail_comic"
             android:layout_marginTop="@dimen/margin_30dp"/>
 
         <TextView
-            android:id="@+id/text_detail_about_this_comic"
+            android:id="@+id/text_detail_about_this_event"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_20dp"
-            android:layout_marginBottom="@dimen/margin_40dp"
+            android:text="@string/text_detail_about_this_event"
             android:fontFamily="@font/comfortaa_bold"
-            android:text="@string/text_detail_about_this_comic"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_temp_more_information"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_more_information" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/margin_10dp"/>
 
+        <TextView
+            android:id="@+id/text_wiki_about_this_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_wiki_about_this_event"
+            android:fontFamily="@font/comfortaa_bold"
+            app:layout_constraintTop_toBottomOf="@id/text_detail_about_this_event"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:layout_marginBottom="@dimen/margin_40dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -5,6 +5,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class EventDTO(
-    var resourceUri: String = "",
-    var name: String = "",
-) : Parcelable
+    override var resourceUrl: String = "",
+    override var textDescription: String = ""
+) : Parcelable, DtoItem(resourceUrl, textDescription)

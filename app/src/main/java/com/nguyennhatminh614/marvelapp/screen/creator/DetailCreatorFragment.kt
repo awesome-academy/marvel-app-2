@@ -9,7 +9,6 @@ import com.nguyennhatminh614.marvelapp.data.model.SeriesDTO
 import com.nguyennhatminh614.marvelapp.data.model.StoriesDTO
 import com.nguyennhatminh614.marvelapp.databinding.DetailCreatorFragmentBinding
 import com.nguyennhatminh614.marvelapp.util.DTOItemAdapter
-import com.nguyennhatminh614.marvelapp.util.OnClickItemInterface
 import com.nguyennhatminh614.marvelapp.util.base.BaseFragment
 import com.nguyennhatminh614.marvelapp.util.extensions.loadGlideImageFromUrl
 
@@ -26,72 +25,39 @@ class DetailCreatorFragment :
                     R.drawable.image_creator_default
                 )
             }
-
+            viewBinding.textNameCreatorDetail.text = it.name
             viewBinding.recyclerViewDetailComic.adapter =
                 DTOItemAdapter<ComicDTO>().apply {
-                    checkList(it.comicList?.toMutableList() ?: ArrayList(), {
-                        updateDataItem(it)
-                        registerClickItemInterface(object : OnClickItemInterface<ComicDTO> {
-                            override fun onClickItem(item: ComicDTO) {
-                                /* TODO implement later */
-                            }
-                        })
-                    }, {
+                    updateDTOAdapter(it.comicList) {
                         viewBinding.recyclerViewDetailComic.isVisible = false
                         viewBinding.textRecyclerViewComicNotFound.isVisible = true
-                    })
+                    }
                 }
 
             viewBinding.recyclerViewDetailSeries.adapter =
                 DTOItemAdapter<SeriesDTO>().apply {
-                    checkList(it.seriesList?.toMutableList() ?: ArrayList(), {
-                        updateDataItem(it)
-                        registerClickItemInterface(object : OnClickItemInterface<SeriesDTO> {
-                            override fun onClickItem(item: SeriesDTO) {
-                                /* TODO implement later */
-                            }
-                        })
-                    }, {
+                    updateDTOAdapter(it.seriesList) {
                         viewBinding.recyclerViewDetailSeries.isVisible = false
                         viewBinding.textRecyclerViewSeriesNotFound.isVisible = true
-                    })
+                    }
                 }
 
             viewBinding.recyclerViewDetailStories.adapter =
                 DTOItemAdapter<StoriesDTO>().apply {
-                    checkList(it.storiesList?.toMutableList() ?: ArrayList(), {
-                        updateDataItem(it)
-                        registerClickItemInterface(object : OnClickItemInterface<StoriesDTO> {
-                                override fun onClickItem(item: StoriesDTO) {
-                                    /* TODO implement later */
-                                }
-                            })
-                    }, {
+                    updateDTOAdapter(it.storiesList) {
                         viewBinding.recyclerViewDetailStories.isVisible = false
                         viewBinding.textRecyclerViewStoriesNotFound.isVisible = true
-                    })
+                    }
                 }
 
 
             viewBinding.recyclerViewEventList.adapter =
                 DTOItemAdapter<EventDTO>().apply {
-                    checkList(it.eventList?.toMutableList() ?: ArrayList(), {
-                        updateDataItem(it)
-                        registerClickItemInterface(object : OnClickItemInterface<EventDTO> {
-                                override fun onClickItem(item: EventDTO) {
-                                    /* TODO implement later */
-                                }
-                            })
-                    }, {
+                    updateDTOAdapter(it.eventList) {
                         viewBinding.recyclerViewEventList.isVisible = false
                         viewBinding.textRecyclerViewStoriesNotFound.isVisible = true
-                    })
+                    }
                 }
-
-            viewBinding.textNameCreatorDetail.text = it.name
-            viewBinding.textDetailAboutThisCharacter.setOnClickListener {
-                /* TODO implement later */
-            }
         }
     }
 
@@ -109,15 +75,9 @@ class DetailCreatorFragment :
         }
     }
 
-    private fun <T> checkList(
-        list: MutableList<T>,
-        notEmptyListEvent: (MutableList<T>) -> Unit,
-        emptyListEvent: () -> Unit
-    ) {
-        if (list.isNotEmpty()) {
-            notEmptyListEvent(list)
-        } else {
-            emptyListEvent()
+    override fun initEvent() {
+        viewBinding.textDetailAboutThisCharacter.setOnClickListener {
+            /* TODO implement later */
         }
     }
 }

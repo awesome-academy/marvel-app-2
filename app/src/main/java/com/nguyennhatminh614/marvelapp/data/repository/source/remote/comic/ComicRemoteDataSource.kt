@@ -7,6 +7,7 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.G
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.OnResultListener
 
 class ComicRemoteDataSource : IComicDataSource.Remote {
+
     override fun getRemoteListComic(listener: OnResultListener<MutableList<Comic>>) {
        GetJsonFromUrl(GET_ALL_COMIC, ComicEntry.COMIC_ENTITY, listener)
     }

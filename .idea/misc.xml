@@ -69,9 +69,10 @@
         <entry key="..\:/NewMarvelApp/app/src/main/res/layout/detail_character_fragment.xml" value="0.18164967562557924" />
         <entry key="..\:/NewMarvelApp/app/src/main/res/layout/detail_comic_fragment.xml" value="0.1323529411764706" />
         <entry key="..\:/NewMarvelApp/app/src/main/res/layout/detail_creator_fragment.xml" value="0.10843373493975904" />
-        <entry key="..\:/NewMarvelApp/app/src/main/res/layout/detail_event_fragment.xml" value="0.1323529411764706" />
+        <entry key="..\:/NewMarvelApp/app/src/main/res/layout/detail_event_fragment.xml" value="0.2" />
         <entry key="..\:/NewMarvelApp/app/src/main/res/layout/detail_series_fragment.xml" value="0.1323529411764706" />
         <entry key="..\:/NewMarvelApp/app/src/main/res/layout/detail_stories_fragment.xml" value="0.1323529411764706" />
+        <entry key="..\:/NewMarvelApp/app/src/main/res/layout/event_item_layout.xml" value="0.20521590423257802" />
         <entry key="..\:/NewMarvelApp/app/src/main/res/layout/fragment_drawer_character.xml" value="0.25" />
         <entry key="..\:/NewMarvelApp/app/src/main/res/layout/fragment_drawer_comic.xml" value="0.25" />
         <entry key="..\:/NewMarvelApp/app/src/main/res/layout/fragment_drawer_creator.xml" value="0.25" />

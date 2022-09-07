@@ -33,7 +33,8 @@
         android:ellipsize="end"
         app:layout_constraintStart_toEndOf="@+id/image_comic"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/margin_10dp"/>
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginStart="@dimen/margin_5dp"/>
 
     <TextView
         android:id="@+id/text_comic_description"

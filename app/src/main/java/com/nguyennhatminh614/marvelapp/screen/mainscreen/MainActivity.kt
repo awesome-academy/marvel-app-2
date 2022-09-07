@@ -59,33 +59,33 @@ class MainActivity : BaseActivity() {
             updateAdapter(Constant.FIRST_POSITION)
             replaceFragment(fragmentList[Constant.FIRST_POSITION])
 
-            appBarBase.toolbar.setNavigationOnClickListener {
-                drawerLayout.openDrawer(GravityCompat.START)
-            }
-
-            navigationBar.apply {
-                layoutManager = LinearLayoutManager(this@MainActivity)
-
-                addOnItemTouchListener(
-                    RecyclerTouchListener().apply {
-                        setContext(this@MainActivity)
-                        registerClickNavigationDrawerItem(
-                            object : ClickListener {
-                                override fun onClick(view: View, position: Int) {
-                                    updateAdapter(position)
-                                    replaceFragment(fragmentList[position])
-                                    drawerLayout.closeDrawer(GravityCompat.START)
-                                }
-                            }
-                        )
-                    }
-                )
-            }
+            navigationBar.layoutManager = LinearLayoutManager(this@MainActivity)
         }
     }
 
     override fun initData() {
-        /* TODO implement later */
+        // Not support
+    }
+
+    override fun initEvent() {
+        binding.appBarBase.toolbar.setNavigationOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        binding.navigationBar.addOnItemTouchListener(
+            RecyclerTouchListener().apply {
+                setContext(this@MainActivity)
+                registerClickNavigationDrawerItem(
+                    object : ClickListener {
+                        override fun onClick(view: View, position: Int) {
+                            updateAdapter(position)
+                            replaceFragment(fragmentList[position])
+                            binding.drawerLayout.closeDrawer(GravityCompat.START)
+                        }
+                    }
+                )
+            }
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
