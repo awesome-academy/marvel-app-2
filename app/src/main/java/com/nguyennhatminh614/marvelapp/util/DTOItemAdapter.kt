@@ -10,7 +10,6 @@ class DTOItemAdapter<T : DtoItem> :
     RecyclerView.Adapter<DTOItemAdapter<T>.ViewHolder>() {
 
     private var listDTOItem = mutableListOf<T>()
-    private var clickItemInterface: OnClickItemInterface<T>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -27,10 +26,6 @@ class DTOItemAdapter<T : DtoItem> :
 
     override fun getItemCount(): Int = listDTOItem.size
 
-    fun registerClickItemInterface(clickItemInterface: OnClickItemInterface<T>) {
-        this.clickItemInterface = clickItemInterface
-    }
-
     fun updateDataItem(listDtoItem: MutableList<T>){
         this.listDTOItem.clear()
         this.listDTOItem.addAll(listDtoItem)
@@ -39,12 +34,10 @@ class DTOItemAdapter<T : DtoItem> :
 
     fun updateDTOAdapter(
         listItem: MutableList<T>,
-        clickItemInterface: OnClickItemInterface<T>,
         emptyListEvent: () -> Unit,
     ) {
         if (listItem.isNotEmpty()){
             updateDataItem(listItem)
-            registerClickItemInterface(clickItemInterface)
         } else {
             emptyListEvent()
         }
@@ -55,9 +48,6 @@ class DTOItemAdapter<T : DtoItem> :
         fun bindItem(dtoItem: T) {
             binding.apply {
                 textLinkNavigate.text = dtoItem.textDescription
-                textLinkNavigate.setOnClickListener {
-                    clickItemInterface?.onClickItem(dtoItem)
-                }
             }
         }
     }

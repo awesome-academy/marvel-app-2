@@ -8,10 +8,10 @@ data class Creator(
     var id: Int = 0,
     var name: String = "",
     var thumbnailLink: String = "",
-    var comicList: List<ComicDTO>? = null,
-    var seriesList: List<SeriesDTO>? = null,
-    var storiesList: List<StoriesDTO>? = null,
-    var eventList: List<EventDTO>? = null,
+    val comicList: MutableList<ComicDTO> = mutableListOf(),
+    val seriesList: MutableList<SeriesDTO> = mutableListOf(),
+    val storiesList: MutableList<StoriesDTO> = mutableListOf(),
+    val eventList: MutableList<EventDTO> = mutableListOf(),
     var detailLink: String = "",
 ) : Parcelable
 

@@ -12,7 +12,7 @@
         <ImageView
             android:id="@+id/image_creator_detail"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/image_detail_height"
+            android:layout_height="@dimen/image_height_size"
             android:src="@drawable/image_character_detail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

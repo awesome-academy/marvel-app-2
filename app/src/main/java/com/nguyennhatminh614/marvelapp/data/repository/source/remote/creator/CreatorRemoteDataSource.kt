@@ -7,6 +7,7 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.G
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.OnResultListener
 
 class CreatorRemoteDataSource : ICreatorDataSource.Remote {
+
     override fun getCreatorListRemote(listener: OnResultListener<MutableList<Creator>>) {
         GetJsonFromUrl(GET_ALL_CREATOR, CreatorEntry.CREATOR_ENTITY, listener)
     }

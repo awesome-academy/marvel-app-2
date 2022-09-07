@@ -33,7 +33,7 @@ class ComicFragment :
         )
     }
 
-    private lateinit var adapter: ComicAdapter
+    private var adapter = ComicAdapter()
 
     override fun initData() {
         viewBinding.recyclerViewComic.adapter = adapter
@@ -41,8 +41,15 @@ class ComicFragment :
 
     override fun initialize() {
         comicPresenter.setView(this)
+    }
 
-        adapter = ComicAdapter().apply {
+    override fun callData() {
+        comicPresenter.getRemoteListComic()
+        comicPresenter.getAllFavoriteListLocal()
+    }
+
+    override fun initEvent() {
+        adapter.apply {
             registerClickFavoriteItemListener(
                 object : OnClickFavoriteItemInterface<Comic> {
                     override fun onFavoriteItem(item: Comic) {
@@ -72,12 +79,6 @@ class ComicFragment :
             )
         }
     }
-
-    override fun callData() {
-        comicPresenter.getRemoteListComic()
-        comicPresenter.getAllFavoriteListLocal()
-    }
-
     override fun onSuccessGetFavoriteItem(listComic: MutableList<Comic>?) {
         listComic?.let { listComicLocal.addAll(it) }
 

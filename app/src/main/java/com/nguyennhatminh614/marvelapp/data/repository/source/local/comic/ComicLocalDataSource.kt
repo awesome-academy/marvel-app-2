@@ -8,7 +8,8 @@ import com.nguyennhatminh614.marvelapp.util.constant.Constant
 
 class ComicLocalDataSource(
     private val comicDAO: ComicDAO
-) : IComicDataSource.Local{
+) : IComicDataSource.Local {
+
     override fun getAllFavoriteListLocal(
         listener: OnResultListener<MutableList<Comic>>
     ) {
@@ -35,7 +36,7 @@ class ComicLocalDataSource(
     }
 
     companion object {
-        private var instance : ComicLocalDataSource? = null
+        private var instance: ComicLocalDataSource? = null
 
         fun getInstance(comicDAO: ComicDAO) =
             synchronized(this) {

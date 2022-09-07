@@ -31,6 +31,7 @@ abstract class BaseFragment<VBinding : ViewBinding>(private val bindingLayoutInf
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initData()
+        initEvent()
     }
 
     override fun onDestroyView() {
@@ -43,4 +44,6 @@ abstract class BaseFragment<VBinding : ViewBinding>(private val bindingLayoutInf
     abstract fun initialize()
 
     abstract fun callData()
+
+    abstract fun initEvent()
 }

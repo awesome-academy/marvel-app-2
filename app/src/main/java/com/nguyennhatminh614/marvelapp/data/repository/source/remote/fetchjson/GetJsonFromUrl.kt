@@ -17,6 +17,7 @@ class GetJsonFromUrl<T>(
     private val listener: OnResultListener<T>,
     private var nameQueryToken: String = ""
 ) {
+
     private val mExecutor: Executor = Executors.newSingleThreadExecutor()
     private val mHandler = Handler(Looper.getMainLooper())
     private var exception: Exception? = null

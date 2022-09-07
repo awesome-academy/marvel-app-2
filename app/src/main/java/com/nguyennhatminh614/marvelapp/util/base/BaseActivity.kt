@@ -8,8 +8,10 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         initView()
         initData()
+        initEvent()
     }
 
     abstract fun initView()
     abstract fun initData()
+    abstract fun initEvent()
 }

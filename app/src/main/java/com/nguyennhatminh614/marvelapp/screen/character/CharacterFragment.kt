@@ -33,10 +33,10 @@ class CharacterFragment :
         )
     }
 
-    private lateinit var adapter: CharacterAdapter
+    private var adapter: CharacterAdapter = CharacterAdapter()
 
     override fun initData() {
-        //not op
+        //not support
     }
 
     override fun onSuccessGetFavoriteItem(listCharacter: MutableList<Character>?) {
@@ -59,7 +59,15 @@ class CharacterFragment :
 
     override fun initialize() {
         characterPresenter.setView(this)
-        adapter = CharacterAdapter().apply {
+    }
+
+    override fun callData() {
+        characterPresenter.getCharacterListRemote()
+        characterPresenter.getCharacterListFromLocal()
+    }
+
+    override fun initEvent() {
+        adapter.apply {
             registerClickFavoriteItemInterface(
                 object : OnClickFavoriteItemInterface<Character> {
                     override fun onFavoriteItem(item: Character) {
@@ -85,11 +93,6 @@ class CharacterFragment :
                 }
             )
         }
-    }
-
-    override fun callData() {
-        characterPresenter.getCharacterListRemote()
-        characterPresenter.getCharacterListFromLocal()
     }
 
     companion object {

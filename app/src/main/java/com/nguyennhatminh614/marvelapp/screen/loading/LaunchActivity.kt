@@ -23,7 +23,11 @@ class LaunchActivity : BaseActivity() {
     }
 
     override fun initData() {
-        /* TODO implement later */
+        // Not support
+    }
+
+    override fun initEvent() {
+        // Not support
     }
 
     companion object{

@@ -23,7 +23,7 @@ class CreatorFragment :
         )
     }
 
-    private lateinit var adapter: CreatorAdapter
+    private var adapter = CreatorAdapter()
 
     override fun initData() {
         // Not support
@@ -31,27 +31,26 @@ class CreatorFragment :
 
     override fun initialize() {
         creatorPresenter.setView(this)
-
-        adapter = CreatorAdapter().apply {
-            registerClickItemListener(
-                object : OnClickItemInterface<Creator> {
-                    override fun onClickItem(item: Creator) {
-                        parentFragmentManager
-                            .beginTransaction()
-                            .replace(
-                                R.id.nav_host_fragment_content_base,
-                                DetailCreatorFragment.newInstance(item)
-                            ).commit()
-                    }
-                }
-            )
-        }
     }
 
     override fun callData() {
         creatorPresenter.getCreatorListRemote()
     }
 
+    override fun initEvent() {
+        adapter.registerClickItemListener(
+            object : OnClickItemInterface<Creator> {
+                override fun onClickItem(item: Creator) {
+                    parentFragmentManager
+                        .beginTransaction()
+                        .replace(
+                            R.id.nav_host_fragment_content_base,
+                            DetailCreatorFragment.newInstance(item)
+                        ).commit()
+                }
+            }
+        )
+    }
     override fun onSuccess(listCreator: MutableList<Creator>?) {
         listCreator?.let { listCreatorRemote.addAll(it) }
 

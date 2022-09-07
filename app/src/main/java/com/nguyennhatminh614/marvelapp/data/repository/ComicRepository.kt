@@ -7,6 +7,7 @@ class ComicRepository(
     private val local: IComicDataSource.Local?,
     private val remote: IComicDataSource.Remote?
 ): IComicDataSource.Local, IComicDataSource.Remote {
+
     override fun getAllFavoriteListLocal(
         listener: OnResultListener<MutableList<Comic>>
     ) {

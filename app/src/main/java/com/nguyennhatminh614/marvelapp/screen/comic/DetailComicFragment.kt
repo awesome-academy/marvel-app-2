@@ -6,19 +6,36 @@ import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.CharacterDTO
 import com.nguyennhatminh614.marvelapp.data.model.Comic
 import com.nguyennhatminh614.marvelapp.data.model.CreatorDTO
-import com.nguyennhatminh614.marvelapp.data.model.DtoItem
 import com.nguyennhatminh614.marvelapp.data.model.EventDTO
 import com.nguyennhatminh614.marvelapp.data.model.StoriesDTO
+import com.nguyennhatminh614.marvelapp.data.repository.ComicRepository
+import com.nguyennhatminh614.marvelapp.data.repository.source.local.comic.ComicLocalDataSource
+import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.LocalDatabase
+import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.implementation.ComicDAOImpl
+import com.nguyennhatminh614.marvelapp.data.repository.source.remote.comic.ComicRemoteDataSource
 import com.nguyennhatminh614.marvelapp.databinding.DetailComicFragmentBinding
 import com.nguyennhatminh614.marvelapp.util.DTOItemAdapter
-import com.nguyennhatminh614.marvelapp.util.OnClickItemInterface
 import com.nguyennhatminh614.marvelapp.util.base.BaseFragment
 import com.nguyennhatminh614.marvelapp.util.extensions.loadGlideImageFromUrl
+import com.nguyennhatminh614.marvelapp.util.extensions.navigateToDirectLink
 
 class DetailComicFragment :
     BaseFragment<DetailComicFragmentBinding>(DetailComicFragmentBinding::inflate) {
 
     private var comic: Comic? = null
+
+    private val comicPresenter by lazy {
+        ComicPresenter.getInstance(
+            ComicRepository.getInstance(
+                ComicLocalDataSource.getInstance(
+                    ComicDAOImpl.getInstance(
+                        LocalDatabase.getInstance(context)
+                    )
+                ),
+                ComicRemoteDataSource.getInstance()
+            )
+        )
+    }
 
     override fun initData() {
         comic?.let {
@@ -36,16 +53,12 @@ class DetailComicFragment :
             setRCDetailEvent(it)
             setRCDetailStories(it)
 
-            viewBinding.textDetailSeries.text = it.seriesDetail?.textDescription
+            viewBinding.textDetailSeries.text = it.seriesDetail.textDescription
 
-            viewBinding.textDetailSeries.setOnClickListener {
-                /* TODO implement later */
-            }
-            viewBinding.textDetailAboutThisComic.setOnClickListener {
-                /* TODO implement later */
-            }
-            viewBinding.buttonFavorite.setOnClickListener {
-                /* TODO implement later */
+            if (it.isFavorite) {
+                viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
+            } else {
+                viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
             }
         }
     }
@@ -53,14 +66,7 @@ class DetailComicFragment :
     private fun setRCDetailStories(it: Comic) {
         viewBinding.recyclerViewDetailStories.adapter =
             DTOItemAdapter<StoriesDTO>().apply {
-                updateDTOAdapter(
-                    it.storiesList?.toMutableList() ?: ArrayList(),
-                    object : OnClickItemInterface<StoriesDTO> {
-                        override fun onClickItem(item: StoriesDTO) {
-                            /* TODO implement later */
-                        }
-                    }
-                ) {
+                updateDTOAdapter(it.storiesList) {
                     viewBinding.recyclerViewDetailStories.isVisible = false
                     viewBinding.textRecyclerViewStoriesNotFound.apply {
                         isVisible = true
@@ -75,14 +81,7 @@ class DetailComicFragment :
     private fun setRCDetailEvent(it: Comic) {
         viewBinding.recyclerViewDetailEvent.adapter =
             DTOItemAdapter<EventDTO>().apply {
-                updateDTOAdapter(
-                    it.eventList?.toMutableList() ?: ArrayList(),
-                    object : OnClickItemInterface<EventDTO> {
-                        override fun onClickItem(item: EventDTO) {
-                            /* TODO implement later */
-                        }
-                    }
-                ) {
+                updateDTOAdapter(it.eventList) {
                     viewBinding.recyclerViewDetailEvent.isVisible = false
                     viewBinding.textRecyclerViewEventNotFound.apply {
                         isVisible = true
@@ -97,14 +96,7 @@ class DetailComicFragment :
     private fun setRCDetailCreator(comic: Comic) {
         viewBinding.recyclerViewDetailCreators.adapter = DTOItemAdapter<CreatorDTO>()
             .apply {
-                updateDTOAdapter(
-                    comic.creatorList?.toMutableList() ?: ArrayList(),
-                    object : OnClickItemInterface<CreatorDTO> {
-                        override fun onClickItem(item: CreatorDTO) {
-                            /* TODO implement later */
-                        }
-                    }
-                ) {
+                updateDTOAdapter(comic.creatorList) {
                     viewBinding.recyclerViewDetailCreators.isVisible = false
                     viewBinding.textRecyclerViewCreatorsNotFound.apply {
                         isVisible = true
@@ -117,16 +109,9 @@ class DetailComicFragment :
     }
 
     private fun setRCDetailCharacter(comic: Comic) {
-        viewBinding.recyclerViewDetailCharacters.adapter = DTOItemAdapter<CharacterDTO>()
-            .apply {
-                updateDTOAdapter(
-                    comic.characterList?.toMutableList() ?: ArrayList(),
-                    object : OnClickItemInterface<CharacterDTO> {
-                        override fun onClickItem(item: CharacterDTO) {
-                            /* TODO implement later */
-                        }
-                    }
-                ) {
+        viewBinding.recyclerViewDetailCharacters.adapter =
+            DTOItemAdapter<CharacterDTO>().apply {
+                updateDTOAdapter(comic.characterList) {
                     viewBinding.recyclerViewDetailCharacters.isVisible = false
                     viewBinding.textRecyclerViewCharactersNotFound.apply {
                         isVisible = true
@@ -147,32 +132,36 @@ class DetailComicFragment :
         //Not support
     }
 
-    private fun <T> checkList(
-        list: MutableList<T>,
-        notEmptyListEvent: (MutableList<T>) -> Unit,
-        emptyListEvent: () -> Unit
-    ) {
-        if (list.isNotEmpty()) {
-            notEmptyListEvent(list)
-        } else {
-            emptyListEvent()
-        }
-    }
+    override fun initEvent() {
+        comic?.let {
+            viewBinding.buttonFavorite.setOnClickListener { view ->
+                val checkExist = comicPresenter.checkExistComic(it)
+                checkExist?.apply {
+                    if (it.isFavorite && checkExist == false) {
+                        viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
+                        comicPresenter.addComicToFavoriteList(it)
+                        it.isFavorite = it.isFavorite.not()
+                    }
 
-    fun <T : DtoItem> DTOItemAdapter<T>.updateDTOAdapter(
-        listItem: MutableList<T>,
-        clickItemInterface: OnClickItemInterface<T>,
-        emptyListEvent: () -> Unit,
-    ) {
-        checkList(listItem,
-            {
-                updateDataItem(it)
-                registerClickItemInterface(clickItemInterface)
-            },
-            {
-                emptyListEvent()
+                    if (it.isFavorite.not() && checkExist == true) {
+                        viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
+                        comicPresenter.removeComicFromFavoriteList(it)
+                        it.isFavorite = it.isFavorite.not()
+                    }
+                }
             }
-        )
+
+            viewBinding.textDetailSeries.apply {
+                setOnClickListener { view ->
+                    navigateToDirectLink(it.seriesDetail.resourceUrl)
+                }
+            }
+            viewBinding.textDetailAboutThisComic.apply {
+                setOnClickListener { view ->
+                    navigateToDirectLink(it.comicDetailLink)
+                }
+            }
+        }
     }
 
     companion object {
