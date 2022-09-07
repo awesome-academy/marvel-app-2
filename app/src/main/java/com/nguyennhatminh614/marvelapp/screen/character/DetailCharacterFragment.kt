@@ -10,6 +10,8 @@ import com.nguyennhatminh614.marvelapp.data.model.SeriesDTO
 import com.nguyennhatminh614.marvelapp.data.model.StoriesDTO
 import com.nguyennhatminh614.marvelapp.data.repository.CharacterRepository
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.character.CharacterLocalDataSource
+import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.LocalDatabase
+import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.implementation.CharacterDAOImpl
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.character.CharacterRemoteDataSource
 import com.nguyennhatminh614.marvelapp.databinding.DetailCharacterFragmentBinding
 import com.nguyennhatminh614.marvelapp.util.DTOItemAdapter
@@ -25,7 +27,11 @@ class DetailCharacterFragment :
     private val characterPresenter by lazy {
         CharacterPresenter.getInstance(
             CharacterRepository.getInstance(
-                CharacterLocalDataSource.getInstance(),
+                CharacterLocalDataSource.getInstance(
+                    CharacterDAOImpl.getInstance(
+                        LocalDatabase.getInstance(context)
+                    )
+                ),
                 CharacterRemoteDataSource.getInstance()
             )
         )
@@ -119,12 +125,13 @@ class DetailCharacterFragment :
 
                 if (it.isFavorite) {
                     viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
-                    if (!characterPresenter.checkFavoriteItemExist(context, it)) {
-                        characterPresenter.addCharacterFavoriteToListLocal(context, it)
+                    val checkExist = characterPresenter.checkFavoriteItemExist(it)
+                    if (checkExist != null && checkExist == false) {
+                        characterPresenter.addCharacterFavoriteToListLocal(it)
                     }
                 } else {
                     viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
-                    characterPresenter.removeCharacterFavoriteToListLocal(context, it)
+                    characterPresenter.removeCharacterFavoriteToListLocal(it)
                 }
             }
 

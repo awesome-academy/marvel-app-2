@@ -1,6 +1,5 @@
 package com.nguyennhatminh614.marvelapp.screen.character
 
-import android.content.Context
 import com.nguyennhatminh614.marvelapp.data.model.Character
 import com.nguyennhatminh614.marvelapp.data.repository.CharacterRepository
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.OnResultListener
@@ -12,8 +11,8 @@ class CharacterPresenter(
 
     private var view: CharacterContract.View? = null
 
-    override fun getCharacterListFromLocal(context: Context?) {
-        characterRepository.getCharacterListLocal(context, object :
+    override fun getCharacterListFromLocal() {
+        characterRepository.getCharacterListLocal(object :
             OnResultListener<MutableList<Character>> {
             override fun onSuccess(data: MutableList<Character>?) {
                 val dataDistinct = data?.distinctBy { it.id }?.toMutableList()
@@ -26,16 +25,16 @@ class CharacterPresenter(
         })
     }
 
-    override fun checkFavoriteItemExist(context: Context?, character: Character) : Boolean {
-        return characterRepository.checkFavoriteCharacterExists(context, character)
+    override fun checkFavoriteItemExist(character: Character) : Boolean? {
+        return characterRepository.checkFavoriteCharacterExists(character) ?: false
     }
 
-    override fun addCharacterFavoriteToListLocal(context: Context?, character: Character) {
-        characterRepository.addCharacterFavoriteToListLocal(context, character)
+    override fun addCharacterFavoriteToListLocal(character: Character) {
+        characterRepository.addCharacterFavoriteToListLocal(character)
     }
 
-    override fun removeCharacterFavoriteToListLocal(context: Context?, character: Character) {
-        characterRepository.removeCharacterFavoriteToListLocal(context, character)
+    override fun removeCharacterFavoriteToListLocal(character: Character) {
+        characterRepository.removeCharacterFavoriteToListLocal(character)
     }
 
     override fun getCharacterListRemote() {

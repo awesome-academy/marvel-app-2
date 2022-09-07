@@ -1,5 +1,6 @@
 package com.nguyennhatminh614.marvelapp.screen.mainscreen
 
+import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,6 +15,7 @@ import com.nguyennhatminh614.marvelapp.screen.comic.ComicFragment
 import com.nguyennhatminh614.marvelapp.screen.creator.CreatorFragment
 import com.nguyennhatminh614.marvelapp.screen.event.EventFragment
 import com.nguyennhatminh614.marvelapp.screen.homepage.HomePageFragment
+import com.nguyennhatminh614.marvelapp.screen.search.SearchActivity
 import com.nguyennhatminh614.marvelapp.screen.series.SeriesFragment
 import com.nguyennhatminh614.marvelapp.screen.settings.SettingsFragment
 import com.nguyennhatminh614.marvelapp.screen.stories.StoriesFragment
@@ -94,7 +96,8 @@ class MainActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.search_btn -> {
-                true
+                startActivity(Intent(this, SearchActivity::class.java))
+                return true
             }
             else -> super.onOptionsItemSelected(item)
         }
