@@ -1,32 +1,32 @@
 package com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.implementation
 
 import android.content.ContentValues
-import com.nguyennhatminh614.marvelapp.data.model.Comic
+import com.nguyennhatminh614.marvelapp.data.model.Series
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.LocalDatabase
-import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.ComicDAO
+import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.SeriesDAO
 
-class ComicDAOImpl(localDatabase: LocalDatabase) : ComicDAO {
+class SeriesDAOImpl(localDatabase: LocalDatabase) : SeriesDAO {
 
     private val readableDatabase = localDatabase.readableDatabase
     private val writableDatabase = localDatabase.writableDatabase
 
-    override fun checkExistComic(comic: Comic): Boolean {
-        val stringQuery = "select * from $COMIC_TABLE where ID = ${comic.id}"
+    override fun checkExistSeries(series: Series): Boolean? {
+        val stringQuery = "select * from $SERIES_TABLE where ID = ${series.id}"
         val cursor = readableDatabase.rawQuery(stringQuery, null)
         return cursor.count > 0
     }
 
-    override fun getAllFavoriteComic(): MutableList<Comic> {
-        val stringQuery = "select * from $COMIC_TABLE"
+    override fun getAllFavoriteSeries(): MutableList<Series> {
+        val stringQuery = "select * from $SERIES_TABLE"
         val cursor = readableDatabase.rawQuery(stringQuery, null)
 
-        val listComic = mutableListOf<Comic>()
+        val listSeries = mutableListOf<Series>()
         cursor?.apply {
             if (this.count > 0) {
                 moveToFirst()
                 while (!isAfterLast) {
-                    listComic.add(
-                        Comic(
+                    listSeries.add(
+                        Series(
                             id = getInt(getColumnIndexOrThrow(ID)),
                             title = getString(getColumnIndexOrThrow(TITLE)),
                             description = getString(getColumnIndexOrThrow(DESCRIPTION)),
@@ -39,46 +39,46 @@ class ComicDAOImpl(localDatabase: LocalDatabase) : ComicDAO {
             }
         }
 
-        return listComic
+        return listSeries
     }
 
-    override fun addComicToFavoriteList(comic: Comic) {
+    override fun addSeriesToFavoriteList(series: Series) {
         val values = ContentValues()
 
         writableDatabase.apply {
             values.apply {
-                put(ID, comic.id)
-                put(TITLE, comic.title)
-                put(DESCRIPTION, comic.description)
-                put(THUMBNAIL_LINK, comic.thumbnailLink)
-                put(FAVORITE, if (comic.isFavorite) 1 else 0)
+                put(ID, series.id)
+                put(TITLE, series.title)
+                put(DESCRIPTION, series.description)
+                put(THUMBNAIL_LINK, series.thumbnailLink)
+                put(FAVORITE, if (series.isFavorite) 1 else 0)
             }
 
-            insert(COMIC_TABLE, null, values)
+            insert(SERIES_TABLE, null, values)
         }
     }
 
-    override fun removeComicFromFavoriteList(comic: Comic) {
+    override fun removeSeriesToFavoriteList(series: Series) {
         val whereClause = "ID in (?)"
 
         writableDatabase.apply {
-            delete(COMIC_TABLE, whereClause, arrayOf(comic.id.toString()))
+            delete(SERIES_TABLE, whereClause, arrayOf(series.id.toString()))
         }
     }
 
     companion object {
-        private const val COMIC_TABLE = "COMIC"
+        private const val SERIES_TABLE = "SERIES"
         private const val ID = "id"
         private const val TITLE = "title"
         private const val DESCRIPTION = "description"
         private const val THUMBNAIL_LINK = "thumbnailLink"
         private const val FAVORITE = "favorite"
 
-        private var instance: ComicDAOImpl? = null
+        private var instance: SeriesDAOImpl? = null
 
         fun getInstance(localDatabase: LocalDatabase) =
             synchronized(this) {
-                instance ?: ComicDAOImpl(localDatabase).also { instance = it }
+                instance ?: SeriesDAOImpl(localDatabase).also { instance = it }
             }
     }
 }

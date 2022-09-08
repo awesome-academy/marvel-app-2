@@ -19,20 +19,23 @@ import com.nguyennhatminh614.marvelapp.util.extensions.parseDateTime
 import org.json.JSONObject
 
 const val NO_DESCRIPTION = "No description!"
+const val DEFAULT_INT_VALUE = 0
+const val DEFAULT_EMPTY_STRING = ""
+const val DEFAULT_DOUBLE_VALUE = 0.0
 
 class ParseJson {
 
     fun characterParseJson(jsonObject: JSONObject): Character {
         val character = Character()
-        character.id = jsonObject.optInt(CharacterEntry.ID)
-        character.name = jsonObject.optString(CharacterEntry.NAME)
-        jsonObject.optString(CharacterEntry.DESCRIPTION).apply {
-            character.description = ifEmpty { NO_DESCRIPTION }
-        }
+        character.id = jsonObject.optInt(CharacterEntry.ID, DEFAULT_INT_VALUE)
+        character.name = jsonObject.optString(CharacterEntry.NAME, DEFAULT_EMPTY_STRING)
+        character.description =
+            if (jsonObject.isNull(CharacterEntry.DESCRIPTION)) NO_DESCRIPTION
+            else jsonObject.optString(CharacterEntry.DESCRIPTION)
         checkNullOrNotExistsJsonObject(jsonObject, CharacterEntry.THUMBNAIL_DIR) {
             character.thumbnailLink = getThumbnailLink(
-                it.optString(CharacterEntry.GET_PATH),
-                it.optString(CharacterEntry.EXTENSION)
+                it.optString(CharacterEntry.GET_PATH, DEFAULT_EMPTY_STRING),
+                it.optString(CharacterEntry.EXTENSION, DEFAULT_EMPTY_STRING)
             )
         }
         checkNullOrNotExistsJsonObject(jsonObject, CharacterEntry.COMIC) {
@@ -54,8 +57,9 @@ class ParseJson {
         jsonObject.getJSONArray(CharacterEntry.GET_MANY_URL).apply {
             for (i in 0 until length()) {
                 checkNullOrNotExistsJsonObject(getJSONObject(i)) {
-                    val urlString = it.optString(CharacterEntry.GET_DETAIL_URL)
-                    when (it.optString(CharacterEntry.GET_TYPE)) {
+                    val urlString =
+                        it.optString(CharacterEntry.GET_DETAIL_URL, DEFAULT_EMPTY_STRING)
+                    when (it.optString(CharacterEntry.GET_TYPE, DEFAULT_EMPTY_STRING)) {
                         CharacterEntry.TYPE_DETAIL_URL -> character.detailUrl = urlString
                         CharacterEntry.TYPE_WIKI_URL -> character.wikiUrl = urlString
                         CharacterEntry.TYPE_COMIC_LINK_URL -> character.comicLinkUrl = urlString
@@ -68,24 +72,25 @@ class ParseJson {
 
     fun comicParseJson(jsonObject: JSONObject): Comic {
         val comic = Comic()
-        comic.id = jsonObject.optInt(ComicEntry.ID)
-        comic.title = jsonObject.optString(ComicEntry.TITLE)
-        comic.description = jsonObject.optString(ComicEntry.DESCRIPTION)
-        if (comic.description.isEmpty()) {
-            comic.description = NO_DESCRIPTION
-        }
+        comic.id = jsonObject.optInt(ComicEntry.ID, DEFAULT_INT_VALUE)
+        comic.title = jsonObject.optString(ComicEntry.TITLE, DEFAULT_EMPTY_STRING)
+        comic.description =
+            if (jsonObject.isNull(ComicEntry.DESCRIPTION)) NO_DESCRIPTION
+            else jsonObject.optString(ComicEntry.DESCRIPTION, DEFAULT_EMPTY_STRING)
         jsonObject.getJSONArray(ComicEntry.PRICES).apply {
             checkNullOrNotExistsJsonObject(getJSONObject(Constant.FIRST_POSITION)) {
-                if (it.optString(ComicEntry.GET_TYPE).equals(ComicEntry.PRINT_PRICES)) {
-                    comic.printPrice = it.optDouble(ComicEntry.DETAIL_PRICE)
+                if (it.optString(ComicEntry.GET_TYPE, DEFAULT_EMPTY_STRING)
+                        .equals(ComicEntry.PRINT_PRICES)
+                ) {
+                    comic.printPrice = it.optDouble(ComicEntry.DETAIL_PRICE, DEFAULT_DOUBLE_VALUE)
                 }
             }
         }
-        comic.numberOfPages = jsonObject.optInt(ComicEntry.NUMBER_OF_PAGE)
+        comic.numberOfPages = jsonObject.optInt(ComicEntry.NUMBER_OF_PAGE, DEFAULT_INT_VALUE)
         checkNullOrNotExistsJsonObject(jsonObject, ComicEntry.THUMBNAIL_DIR) {
             comic.thumbnailLink = getThumbnailLink(
-                it.optString(ComicEntry.GET_PATH),
-                it.optString(ComicEntry.EXTENSION)
+                it.optString(ComicEntry.GET_PATH, DEFAULT_EMPTY_STRING),
+                it.optString(ComicEntry.EXTENSION, DEFAULT_EMPTY_STRING)
             )
         }
         checkNullOrNotExistsJsonObject(jsonObject, ComicEntry.CREATORS) {
@@ -104,16 +109,16 @@ class ParseJson {
             comic.storiesList.clear()
             comic.storiesList.addAll(getStoriesList(it.getJSONArray(ComicEntry.ITEM_KEYS)))
         }
-        checkNullOrNotExistsJsonObject(jsonObject,ComicEntry.SERIES) {
+        checkNullOrNotExistsJsonObject(jsonObject, ComicEntry.SERIES) {
             comic.seriesDetail = SeriesDTO().apply {
-                resourceUrl = it.optString(APIConstant.GET_RESOURCE_URI)
-                textDescription = it.optString(APIConstant.NAME)
+                resourceUrl = it.optString(APIConstant.GET_RESOURCE_URI, DEFAULT_EMPTY_STRING)
+                textDescription = it.optString(APIConstant.NAME, DEFAULT_EMPTY_STRING)
             }
         }
         jsonObject.getJSONArray(ComicEntry.GET_MANY_URL).apply {
             checkNullOrNotExistsJsonObject(getJSONObject(Constant.FIRST_POSITION)) {
-                if (it.optString(ComicEntry.GET_TYPE).equals(ComicEntry.TYPE_DETAIL_URL)) {
-                    comic.comicDetailLink = it.optString(ComicEntry.GET_DETAIL_URL)
+                if (it.optString(ComicEntry.GET_TYPE, DEFAULT_EMPTY_STRING).equals(ComicEntry.TYPE_DETAIL_URL)) {
+                    comic.comicDetailLink = it.optString(ComicEntry.GET_DETAIL_URL, DEFAULT_EMPTY_STRING)
                 }
             }
         }
@@ -122,12 +127,12 @@ class ParseJson {
 
     fun creatorParseJson(jsonObject: JSONObject): Creator {
         val creator = Creator()
-        creator.id = jsonObject.optInt(CreatorEntry.ID)
-        creator.name = jsonObject.optString(CreatorEntry.FULL_NAME)
+        creator.id = jsonObject.optInt(CreatorEntry.ID, 0)
+        creator.name = jsonObject.optString(CreatorEntry.FULL_NAME, DEFAULT_EMPTY_STRING)
         checkNullOrNotExistsJsonObject(jsonObject, CreatorEntry.THUMBNAIL_DIR) {
             creator.thumbnailLink = getThumbnailLink(
-                it.optString(CreatorEntry.GET_PATH),
-                it.optString(CreatorEntry.EXTENSION)
+                it.optString(CreatorEntry.GET_PATH, DEFAULT_EMPTY_STRING),
+                it.optString(CreatorEntry.EXTENSION, DEFAULT_EMPTY_STRING)
             )
         }
         checkNullOrNotExistsJsonObject(jsonObject, CreatorEntry.COMIC) {
@@ -148,7 +153,7 @@ class ParseJson {
         }
         jsonObject.getJSONArray(CreatorEntry.GET_MANY_URL).apply {
             checkNullOrNotExistsJsonObject(getJSONObject(Constant.FIRST_POSITION)) {
-                creator.detailLink = it.optString(CreatorEntry.GET_DETAIL_URL)
+                creator.detailLink = it.optString(CreatorEntry.GET_DETAIL_URL, DEFAULT_EMPTY_STRING)
             }
         }
         return creator
@@ -156,28 +161,28 @@ class ParseJson {
 
     fun eventParseJson(jsonObject: JSONObject): Event {
         val event = Event()
-        event.id = jsonObject.optInt(EventEntry.ID)
-        event.title = jsonObject.optString(EventEntry.TITLE)
-        jsonObject.optString(EventEntry.DESCRIPTION).apply {
-            event.description = ifEmpty { NO_DESCRIPTION }
-        }
+        event.id = jsonObject.optInt(EventEntry.ID, DEFAULT_INT_VALUE)
+        event.title = jsonObject.optString(EventEntry.TITLE, DEFAULT_EMPTY_STRING)
+        event.description =
+            if (jsonObject.isNull(EventEntry.DESCRIPTION)) NO_DESCRIPTION
+            else jsonObject.optString(EventEntry.DESCRIPTION, DEFAULT_EMPTY_STRING)
         jsonObject.getJSONArray(EventEntry.GET_MANY_URL).apply {
             for (i in 0 until length()) {
                 checkNullOrNotExistsJsonObject(getJSONObject(i)) {
-                    val urlString = it.optString(CharacterEntry.GET_DETAIL_URL)
-                    when (it.optString(CharacterEntry.GET_TYPE)) {
+                    val urlString = it.optString(CharacterEntry.GET_DETAIL_URL, DEFAULT_EMPTY_STRING)
+                    when (it.optString(CharacterEntry.GET_TYPE, DEFAULT_EMPTY_STRING)) {
                         EventEntry.TYPE_DETAIL_URL -> event.detailLink = urlString
                         EventEntry.TYPE_WIKI_URL -> event.wikiLink = urlString
                     }
                 }
             }
         }
-        event.startDate = jsonObject.optString(EventEntry.START_DATE).parseDateTime()
-        event.endDate = jsonObject.optString(EventEntry.END_DATE).parseDateTime()
+        event.startDate = jsonObject.optString(EventEntry.START_DATE, DEFAULT_EMPTY_STRING).parseDateTime()
+        event.endDate = jsonObject.optString(EventEntry.END_DATE, DEFAULT_EMPTY_STRING).parseDateTime()
         checkNullOrNotExistsJsonObject(jsonObject, EventEntry.THUMBNAIL_DIR) {
             event.thumbnailLink = getThumbnailLink(
-                it.optString(EventEntry.GET_PATH),
-                it.optString(EventEntry.EXTENSION),
+                it.optString(EventEntry.GET_PATH, DEFAULT_EMPTY_STRING),
+                it.optString(EventEntry.EXTENSION, DEFAULT_EMPTY_STRING),
             )
         }
         checkNullOrNotExistsJsonObject(jsonObject, EventEntry.COMIC) {
@@ -205,26 +210,25 @@ class ParseJson {
 
     fun seriesParseJson(jsonObject: JSONObject): Series {
         val series = Series()
-        series.id = jsonObject.optInt(SeriesEntry.ID)
-        series.title = jsonObject.optString(SeriesEntry.TITLE)
-        jsonObject.optString(SeriesEntry.DESCRIPTION).apply {
-            series.description = ifEmpty { NO_DESCRIPTION }
-        }
-        series.startYear = jsonObject.optInt(SeriesEntry.START_YEAR)
-        series.endYear = jsonObject.optInt(SeriesEntry.END_YEAR)
+        series.id = jsonObject.optInt(SeriesEntry.ID, DEFAULT_INT_VALUE)
+        series.title = jsonObject.optString(SeriesEntry.TITLE, DEFAULT_EMPTY_STRING)
+        series.description =
+            if (jsonObject.isNull(SeriesEntry.DESCRIPTION)) NO_DESCRIPTION
+            else jsonObject.optString(SeriesEntry.DESCRIPTION, DEFAULT_EMPTY_STRING)
+        series.startYear = jsonObject.optInt(SeriesEntry.START_YEAR, DEFAULT_INT_VALUE)
+        series.endYear = jsonObject.optInt(SeriesEntry.END_YEAR, 0)
         jsonObject.getJSONArray(SeriesEntry.GET_MANY_URL).apply {
             checkNullOrNotExistsJsonObject(getJSONObject(Constant.FIRST_POSITION)) {
-                val urlString = it.optString(SeriesEntry.GET_DETAIL_URL)
-                when (it.optString(SeriesEntry.GET_TYPE)) {
+                val urlString = it.optString(SeriesEntry.GET_DETAIL_URL, DEFAULT_EMPTY_STRING)
+                when (it.optString(SeriesEntry.GET_TYPE, DEFAULT_EMPTY_STRING)) {
                     SeriesEntry.TYPE_DETAIL_URL -> series.detailLink = urlString
                 }
             }
         }
-        series.rating = jsonObject.optString(SeriesEntry.RATING)
         checkNullOrNotExistsJsonObject(jsonObject, SeriesEntry.THUMBNAIL_DIR) {
             series.thumbnailLink = getThumbnailLink(
-                it.optString(SeriesEntry.GET_PATH),
-                it.optString(SeriesEntry.EXTENSION),
+                it.optString(SeriesEntry.GET_PATH, DEFAULT_EMPTY_STRING),
+                it.optString(SeriesEntry.EXTENSION, DEFAULT_EMPTY_STRING),
             )
         }
         checkNullOrNotExistsJsonObject(jsonObject, SeriesEntry.COMIC) {
@@ -252,15 +256,15 @@ class ParseJson {
 
     fun storiesParseJson(jsonObject: JSONObject): Stories {
         val stories = Stories()
-        stories.id = jsonObject.optInt(StoriesEntry.ID)
-        stories.title = jsonObject.optString(StoriesEntry.TITLE)
-        jsonObject.optString(StoriesEntry.DESCRIPTION).apply {
-            stories.description = ifEmpty { NO_DESCRIPTION }
-        }
+        stories.id = jsonObject.optInt(StoriesEntry.ID, DEFAULT_INT_VALUE)
+        stories.title = jsonObject.optString(StoriesEntry.TITLE, DEFAULT_EMPTY_STRING)
+        stories.description =
+            if (jsonObject.isNull(StoriesEntry.DESCRIPTION)) NO_DESCRIPTION
+            else jsonObject.optString(StoriesEntry.DESCRIPTION)
         checkNullOrNotExistsJsonObject(jsonObject, StoriesEntry.THUMBNAIL_DIR) {
             stories.thumbnailLink = getThumbnailLink(
-                it.optString(StoriesEntry.GET_PATH),
-                it.optString(StoriesEntry.EXTENSION),
+                it.optString(StoriesEntry.GET_PATH, DEFAULT_EMPTY_STRING),
+                it.optString(StoriesEntry.EXTENSION, DEFAULT_EMPTY_STRING),
             )
         }
         checkNullOrNotExistsJsonObject(jsonObject, StoriesEntry.COMIC) {
@@ -275,9 +279,9 @@ class ParseJson {
             stories.eventList.clear()
             stories.eventList.addAll(getEventList(it.getJSONArray(StoriesEntry.ITEM_KEYS)))
         }
-        checkNullOrNotExistsJsonObject(jsonObject, StoriesEntry.CHARACTER) {
-            stories.characterList.clear()
-            stories.characterList.addAll(getCharacterList(it.getJSONArray(StoriesEntry.ITEM_KEYS)))
+        checkNullOrNotExistsJsonObject(jsonObject, StoriesEntry.SERIES) {
+            stories.seriesList.clear()
+            stories.seriesList.addAll(getSeriesList(it.getJSONArray(StoriesEntry.ITEM_KEYS)))
         }
         checkNullOrNotExistsJsonObject(jsonObject, StoriesEntry.CREATORS) {
             stories.creatorList.clear()
@@ -295,7 +299,7 @@ class ParseJson {
         keyEntity: String = "",
         callback: (JSONObject) -> Unit,
     ) {
-        if (keyEntity.isEmpty() && jsonObject != null){
+        if (keyEntity.isEmpty()) {
             callback(jsonObject)
             return
         }

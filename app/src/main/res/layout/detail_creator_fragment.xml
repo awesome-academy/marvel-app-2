@@ -45,7 +45,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_detail_comic"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/temp_detail_list_height_size"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +79,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_detail_series"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/temp_detail_list_height_size"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -111,7 +111,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_detail_stories"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/temp_detail_list_height_size"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -144,7 +144,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_event_list"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/temp_detail_list_height_size"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

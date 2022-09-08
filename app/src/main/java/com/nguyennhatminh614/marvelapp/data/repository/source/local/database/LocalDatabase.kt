@@ -36,7 +36,7 @@ class LocalDatabase(
         private const val SERIES_TABLE = "SERIES"
         private const val STORIES_TABLE = "STORIES"
         private const val DATABASE_NAME = "MarvelAppDB"
-        private const val VERSION = 3
+        private const val VERSION = 4
         private const val ID = "id"
         private const val NAME = "name"
         private const val TITLE = "title"
@@ -49,21 +49,24 @@ class LocalDatabase(
                     "$DESCRIPTION text, " +
                     "$THUMBNAIL_LINK text, " +
                     "$FAVORITE integer)"
-        private const val CREATE_COMIC_TABLE = "create table ${COMIC_TABLE} ($ID integer primary key, " +
-                "${TITLE} text, " +
-                "${DESCRIPTION} text, " +
-                "${THUMBNAIL_LINK} text, " +
-                "${FAVORITE} integer)"
-        private const val CREATE_SERIES_TABLE = "create table $SERIES_TABLE ($ID integer primary key, " +
-                "$TITLE text, " +
-                "$DESCRIPTION text, " +
-                "$THUMBNAIL_LINK text, " +
-                "$FAVORITE integer)"
-        private const val CREATE_STORIES_TABLE = "create table $STORIES_TABLE ($ID integer primary key, " +
-                "$TITLE text, " +
-                "$DESCRIPTION text, " +
-                "$THUMBNAIL_LINK text, " +
-                "$FAVORITE integer)"
+        private const val CREATE_COMIC_TABLE =
+            "create table ${COMIC_TABLE} ($ID integer primary key, " +
+                    "${TITLE} text, " +
+                    "${DESCRIPTION} text, " +
+                    "${THUMBNAIL_LINK} text, " +
+                    "${FAVORITE} integer)"
+        private const val CREATE_SERIES_TABLE =
+            "create table $SERIES_TABLE ($ID integer primary key, " +
+                    "$TITLE text, " +
+                    "$DESCRIPTION text, " +
+                    "$THUMBNAIL_LINK text, " +
+                    "$FAVORITE integer)"
+        private const val CREATE_STORIES_TABLE =
+            "create table $STORIES_TABLE ($ID integer primary key, " +
+                    "$TITLE text, " +
+                    "$DESCRIPTION text, " +
+                    "$THUMBNAIL_LINK text, " +
+                    "$FAVORITE integer)"
         private const val UPGRADE_TABLE = "drop table if exists "
 
         private var instance: LocalDatabase? = null
