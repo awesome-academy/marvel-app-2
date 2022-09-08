@@ -32,6 +32,9 @@ class ParseJson {
         character.description =
             if (jsonObject.isNull(CharacterEntry.DESCRIPTION)) NO_DESCRIPTION
             else jsonObject.optString(CharacterEntry.DESCRIPTION)
+        if (character.description.isNullOrBlank()){
+            character.description = NO_DESCRIPTION
+        }
         checkNullOrNotExistsJsonObject(jsonObject, CharacterEntry.THUMBNAIL_DIR) {
             character.thumbnailLink = getThumbnailLink(
                 it.optString(CharacterEntry.GET_PATH, DEFAULT_EMPTY_STRING),
@@ -77,6 +80,9 @@ class ParseJson {
         comic.description =
             if (jsonObject.isNull(ComicEntry.DESCRIPTION)) NO_DESCRIPTION
             else jsonObject.optString(ComicEntry.DESCRIPTION, DEFAULT_EMPTY_STRING)
+        if (comic.description.isNullOrBlank()){
+            comic.description = NO_DESCRIPTION
+        }
         jsonObject.getJSONArray(ComicEntry.PRICES).apply {
             checkNullOrNotExistsJsonObject(getJSONObject(Constant.FIRST_POSITION)) {
                 if (it.optString(ComicEntry.GET_TYPE, DEFAULT_EMPTY_STRING)
@@ -166,6 +172,9 @@ class ParseJson {
         event.description =
             if (jsonObject.isNull(EventEntry.DESCRIPTION)) NO_DESCRIPTION
             else jsonObject.optString(EventEntry.DESCRIPTION, DEFAULT_EMPTY_STRING)
+        if (event.description.isNullOrBlank()){
+            event.description = NO_DESCRIPTION
+        }
         jsonObject.getJSONArray(EventEntry.GET_MANY_URL).apply {
             for (i in 0 until length()) {
                 checkNullOrNotExistsJsonObject(getJSONObject(i)) {
@@ -215,6 +224,9 @@ class ParseJson {
         series.description =
             if (jsonObject.isNull(SeriesEntry.DESCRIPTION)) NO_DESCRIPTION
             else jsonObject.optString(SeriesEntry.DESCRIPTION, DEFAULT_EMPTY_STRING)
+        if (series.description.isNullOrBlank()){
+            series.description = NO_DESCRIPTION
+        }
         series.startYear = jsonObject.optInt(SeriesEntry.START_YEAR, DEFAULT_INT_VALUE)
         series.endYear = jsonObject.optInt(SeriesEntry.END_YEAR, 0)
         jsonObject.getJSONArray(SeriesEntry.GET_MANY_URL).apply {
@@ -260,7 +272,10 @@ class ParseJson {
         stories.title = jsonObject.optString(StoriesEntry.TITLE, DEFAULT_EMPTY_STRING)
         stories.description =
             if (jsonObject.isNull(StoriesEntry.DESCRIPTION)) NO_DESCRIPTION
-            else jsonObject.optString(StoriesEntry.DESCRIPTION)
+            else jsonObject.optString(StoriesEntry.DESCRIPTION, DEFAULT_EMPTY_STRING)
+        if (stories.description.isNullOrBlank()){
+            stories.description = NO_DESCRIPTION
+        }
         checkNullOrNotExistsJsonObject(jsonObject, StoriesEntry.THUMBNAIL_DIR) {
             stories.thumbnailLink = getThumbnailLink(
                 it.optString(StoriesEntry.GET_PATH, DEFAULT_EMPTY_STRING),
