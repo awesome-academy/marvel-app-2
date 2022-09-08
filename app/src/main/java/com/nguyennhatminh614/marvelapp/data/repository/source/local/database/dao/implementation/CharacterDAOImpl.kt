@@ -11,20 +11,18 @@ class CharacterDAOImpl(localDatabase: LocalDatabase) : CharacterDAO {
     private val writableDatabase = localDatabase.writableDatabase
 
     override fun checkExistsCharacter(character: Character): Boolean {
-        val database = readableDatabase
         val stringQuery = "select * from $CHARACTER_TABLE where ID = ${character.id}"
-        val cursor = database.rawQuery(stringQuery, null)
+        val cursor = readableDatabase.rawQuery(stringQuery, null)
         return cursor.count > 0
     }
 
     override fun getAllFavoriteCharacter(): ArrayList<Character> {
-        val database = readableDatabase
         val stringQuery = "select * from $CHARACTER_TABLE"
-        val cursor = database.rawQuery(stringQuery, null)
+        val cursor = readableDatabase.rawQuery(stringQuery, null)
 
         val listCharacter = ArrayList<Character>()
         cursor?.apply {
-            if(this.count > 0) {
+            if (this.count > 0) {
                 moveToFirst()
                 while (!isAfterLast) {
                     listCharacter.add(
@@ -45,10 +43,9 @@ class CharacterDAOImpl(localDatabase: LocalDatabase) : CharacterDAO {
     }
 
     override fun addFavoriteNewCharacter(character: Character) {
-        val database = writableDatabase
         val values = ContentValues()
 
-        database.apply {
+        writableDatabase.apply {
             values.apply {
                 put(ID, character.id)
                 put(NAME, character.name)
@@ -58,17 +55,14 @@ class CharacterDAOImpl(localDatabase: LocalDatabase) : CharacterDAO {
             }
 
             insert(CHARACTER_TABLE, null, values)
-            close()
         }
     }
 
     override fun removeFavoriteCharacter(character: Character) {
-        val database = writableDatabase
         val whereClause = "ID in (?)"
 
-        database.apply {
+        writableDatabase.apply {
             delete(CHARACTER_TABLE, whereClause, arrayOf(character.id.toString()))
-            close()
         }
     }
 

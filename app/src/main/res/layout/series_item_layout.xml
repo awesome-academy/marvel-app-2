@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_series_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_corner_all_5dp"
+    android:layout_margin="@dimen/margin_10dp">
+
+    <ImageView
+        android:id="@+id/image_series"
+        android:layout_width="@dimen/image_character_width"
+        android:layout_height="@dimen/image_character_height"
+        android:src="@drawable/image_comic_default"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="@dimen/margin_10dp"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginStart="@dimen/margin_10dp"/>
+
+    <TextView
+        android:id="@+id/text_series_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/comfortaa_bold"
+        android:maxWidth="@dimen/max_width_text"
+        android:text="@string/temp_comic_name"
+        android:maxLines="1"
+        android:textAllCaps="true"
+        android:textSize="@dimen/textSize_16sp"
+        app:layout_constraintStart_toEndOf="@+id/image_series"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/margin_10dp"/>
+
+    <TextView
+        android:id="@+id/text_series_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/text_series_name"
+        app:layout_constraintTop_toBottomOf="@id/text_series_name"
+        android:maxWidth="@dimen/max_width_text"
+        android:maxLines="3"
+        android:fontFamily="@font/comfortaa_light"
+        android:textSize="@dimen/textSize_14sp"
+        android:layout_marginTop="@dimen/margin_5dp"
+        android:text="@string/temp_character_description"/>
+
+    <TextView
+        android:id="@+id/temp_start_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/temp_start_year"
+        android:fontFamily="@font/comfortaa_bold"
+        android:textSize="@dimen/text_size_15sp"
+        android:textAllCaps="true"
+        app:layout_constraintTop_toBottomOf="@id/text_series_description"
+        app:layout_constraintStart_toStartOf="@id/text_series_description"
+        android:layout_marginTop="@dimen/margin_5dp"/>
+
+    <TextView
+        android:id="@+id/text_start_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/detail_temp_start_year"
+        android:fontFamily="@font/comfortaa_light"
+        android:textSize="@dimen/text_size_15sp"
+        app:layout_constraintTop_toTopOf="@id/temp_start_year"
+        app:layout_constraintStart_toEndOf="@id/temp_start_year"
+        android:layout_marginStart="@dimen/margin_5dp"/>
+
+    <TextView
+        android:id="@+id/temp_end_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/temp_end_year"
+        android:fontFamily="@font/comfortaa_bold"
+        android:textSize="@dimen/text_size_15sp"
+        android:textAllCaps="true"
+        app:layout_constraintTop_toBottomOf="@id/text_start_year"
+        app:layout_constraintStart_toStartOf="@id/text_series_name"
+        android:layout_marginTop="@dimen/margin_5dp"/>
+
+    <TextView
+        android:id="@+id/text_end_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/detail_temp_end_year"
+        android:fontFamily="@font/comfortaa_light"
+        android:textSize="@dimen/text_size_15sp"
+        app:layout_constraintTop_toTopOf="@id/temp_end_year"
+        app:layout_constraintStart_toEndOf="@id/temp_end_year"
+        android:layout_marginStart="@dimen/margin_5dp"/>
+
+    <ImageButton
+        android:id="@+id/button_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/ic_favorite"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginEnd="@dimen/margin_10dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

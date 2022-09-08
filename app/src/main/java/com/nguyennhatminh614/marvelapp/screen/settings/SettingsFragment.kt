@@ -7,6 +7,22 @@ class SettingsFragment :
     BaseFragment<FragmentDrawerSettingsBinding>(FragmentDrawerSettingsBinding::inflate) {
 
     override fun initData() {
-        TODO("Not yet implemented")
+        /*TODO implement later*/
+    }
+
+    override fun initialize() {
+        /* TODO implement later */
+    }
+
+    override fun callData() {
+        /* TODO implement later */
+    }
+
+    override fun initEvent() {
+        /* TODO implement later */
+    }
+
+    companion object {
+        fun newInstance() = SettingsFragment()
     }
 }
