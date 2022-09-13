@@ -11,11 +11,14 @@ import java.net.URL
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
+const val DEFAULT_NO_LIMIT = 0
+
 class GetJsonFromUrl<T>(
     private val urlString: String,
     private val keyEntity: String,
     private val listener: OnResultListener<T>,
-    private var nameQueryToken: String = ""
+    private var nameQueryToken: String = "",
+    private var limit: Int = 0,
 ) {
 
     private val mExecutor: Executor = Executors.newSingleThreadExecutor()
@@ -28,8 +31,11 @@ class GetJsonFromUrl<T>(
 
     private fun callAPI() {
         var apiCallString = APIConstant.BASE_URL + urlString + APIConstant.QUERY_TOKEN
-        if(!nameQueryToken.isNullOrEmpty()){
-            apiCallString += "nameStartsWith=$nameQueryToken"
+        if(nameQueryToken.isNullOrEmpty().not()){
+            apiCallString += "&nameStartsWith=$nameQueryToken"
+        }
+        if (limit != DEFAULT_NO_LIMIT) {
+            apiCallString += "&limit=$limit"
         }
         mExecutor.execute {
             val responseJson =
