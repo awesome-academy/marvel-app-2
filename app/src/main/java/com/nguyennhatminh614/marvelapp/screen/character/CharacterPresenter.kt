@@ -15,8 +15,7 @@ class CharacterPresenter(
         characterRepository.getCharacterListLocal(object :
             OnResultListener<MutableList<Character>> {
             override fun onSuccess(data: MutableList<Character>?) {
-                val dataDistinct = data?.distinctBy { it.id }?.toMutableList()
-                view?.onSuccessGetFavoriteItem(dataDistinct)
+                view?.onSuccessGetFavoriteItem(data)
             }
 
             override fun onError(exception: Exception?) {
@@ -25,8 +24,8 @@ class CharacterPresenter(
         })
     }
 
-    override fun checkFavoriteItemExist(character: Character) : Boolean? {
-        return characterRepository.checkFavoriteCharacterExists(character) ?: false
+    override fun checkFavoriteItemExist(character: Character) : Boolean {
+        return characterRepository.checkFavoriteCharacterExists(character)
     }
 
     override fun addCharacterFavoriteToListLocal(character: Character) {
@@ -52,7 +51,8 @@ class CharacterPresenter(
     }
 
     override fun onStart() {
-        // Not support
+        getCharacterListFromLocal()
+        getCharacterListRemote()
     }
 
     override fun onStop() {

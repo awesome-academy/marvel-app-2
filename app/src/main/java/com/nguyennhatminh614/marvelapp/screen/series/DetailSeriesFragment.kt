@@ -13,14 +13,15 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.Loc
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.implementation.SeriesDAOImpl
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.series.SeriesLocalDataSource
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.series.SeriesRemoteDataSource
-import com.nguyennhatminh614.marvelapp.databinding.DetailSeriesFragmentBinding
+import com.nguyennhatminh614.marvelapp.databinding.FragmentDetailSeriesBinding
 import com.nguyennhatminh614.marvelapp.util.DTOItemAdapter
 import com.nguyennhatminh614.marvelapp.util.base.BaseFragment
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
 import com.nguyennhatminh614.marvelapp.util.extensions.loadGlideImageFromUrl
 import com.nguyennhatminh614.marvelapp.util.extensions.navigateToDirectLink
 
 class DetailSeriesFragment :
-    BaseFragment<DetailSeriesFragmentBinding>(DetailSeriesFragmentBinding::inflate) {
+    BaseFragment<FragmentDetailSeriesBinding>(FragmentDetailSeriesBinding::inflate) {
 
     private var series: Series? = null
 
@@ -99,11 +100,12 @@ class DetailSeriesFragment :
 
     override fun initData() {
         series?.let {
-            context?.let { notNullContext ->
-                viewBinding.imageSeries.loadGlideImageFromUrl(
-                    notNullContext, it.thumbnailLink,
-                    R.drawable.image_comic_default
-                )
+            context?.let { notNullContext -> {
+                    viewBinding.imageSeries.loadGlideImageFromUrl(
+                        notNullContext, it.thumbnailLink,
+                        R.drawable.image_comic_default
+                    )
+                }
             }
 
             viewBinding.textNameSeries.text = it.title
@@ -124,14 +126,6 @@ class DetailSeriesFragment :
         }
     }
 
-    override fun initialize() {
-        // Not support
-    }
-
-    override fun callData() {
-        //Not support
-    }
-
     override fun initEvent() {
         series?.let {
             viewBinding.textDetailAboutThisSeries.setOnClickListener { view ->
@@ -139,25 +133,23 @@ class DetailSeriesFragment :
             }
 
             viewBinding.buttonFavorite.setOnClickListener { view ->
-                val checkExist = seriesPresenter.checkFavoriteItemExist(it)
-                checkExist?.apply {
-                    if (this.not()) {
-                        viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
-                        seriesPresenter.addSeriesFavoriteToListLocal(it)
-                    }
-                    else{
-                        viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
-                        seriesPresenter.removeSeriesFavoriteToListLocal(it)
-                    }
-                    it.isFavorite = it.isFavorite.not()
+                if (it.isFavorite) {
+                    viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
+                    seriesPresenter.removeSeriesFavoriteToListLocal(it)
+                } else {
+                    viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
+                    seriesPresenter.addSeriesFavoriteToListLocal(it)
                 }
+                it.isFavorite = it.isFavorite.not()
             }
         }
     }
 
-    companion object {
-        fun newInstance(series: Series) = DetailSeriesFragment().apply {
-            this.series = series
-        }
+    override fun initialize() {
+        series = arguments?.getParcelable(Constant.DETAIL_ITEM)
+    }
+
+    override fun callData() {
+        // Not support
     }
 }

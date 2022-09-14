@@ -52,7 +52,8 @@ class ComicPresenter(
     }
 
     override fun onStart() {
-        //Not support
+        getAllFavoriteListLocal()
+        getRemoteListComic()
     }
 
     override fun onStop() {

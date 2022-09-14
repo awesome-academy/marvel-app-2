@@ -7,7 +7,7 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 import com.nguyennhatminh614.marvelapp.util.constant.Constant
 
 class CharacterLocalDataSource(
-    private val characterDAO: CharacterDAO
+    private val characterDAO: CharacterDAO,
 ) : ICharacterDataSource.Local {
 
     override fun getCharacterListLocal(listener: OnResultListener<MutableList<Character>>) {
@@ -35,7 +35,9 @@ class CharacterLocalDataSource(
 
     companion object {
         private var instance: CharacterLocalDataSource? = null
-        fun getInstance(characterDAO: CharacterDAO) =
-            if (instance != null) instance else CharacterLocalDataSource(characterDAO).also { instance = it }
+
+        fun getInstance(characterDAO: CharacterDAO) = synchronized(this) {
+            instance ?: CharacterLocalDataSource(characterDAO).also { instance = it }
+        }
     }
 }

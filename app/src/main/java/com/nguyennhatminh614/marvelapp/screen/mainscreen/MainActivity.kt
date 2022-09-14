@@ -3,63 +3,58 @@ package com.nguyennhatminh614.marvelapp.screen.mainscreen
 import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import androidx.core.view.GravityCompat
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.navigation.NavigationView
 import com.nguyennhatminh614.marvelapp.R
-import com.nguyennhatminh614.marvelapp.data.model.MenuDrawerItem
 import com.nguyennhatminh614.marvelapp.databinding.ActivityMainBinding
-import com.nguyennhatminh614.marvelapp.screen.character.CharacterFragment
-import com.nguyennhatminh614.marvelapp.screen.comic.ComicFragment
-import com.nguyennhatminh614.marvelapp.screen.creator.CreatorFragment
-import com.nguyennhatminh614.marvelapp.screen.event.EventFragment
-import com.nguyennhatminh614.marvelapp.screen.homepage.HomePageFragment
 import com.nguyennhatminh614.marvelapp.screen.search.SearchActivity
-import com.nguyennhatminh614.marvelapp.screen.series.SeriesFragment
-import com.nguyennhatminh614.marvelapp.screen.settings.SettingsFragment
-import com.nguyennhatminh614.marvelapp.screen.stories.StoriesFragment
-import com.nguyennhatminh614.marvelapp.util.ClickListener
-import com.nguyennhatminh614.marvelapp.util.RecyclerTouchListener
+import com.nguyennhatminh614.marvelapp.util.OnSwitchDarkMode
 import com.nguyennhatminh614.marvelapp.util.base.BaseActivity
 import com.nguyennhatminh614.marvelapp.util.constant.Constant
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), OnSwitchDarkMode {
+
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val menuList = listOf(
-        MenuDrawerItem(R.drawable.ic_home, Constant.MENU_HOME_PAGE),
-        MenuDrawerItem(R.drawable.ic_character, Constant.MENU_CHARACTER),
-        MenuDrawerItem(R.drawable.ic_comic, Constant.MENU_COMIC),
-        MenuDrawerItem(R.drawable.ic_creator, Constant.MENU_CREATOR),
-        MenuDrawerItem(R.drawable.ic_event, Constant.MENU_EVENT),
-        MenuDrawerItem(R.drawable.ic_series, Constant.MENU_SERIES),
-        MenuDrawerItem(R.drawable.ic_stories, Constant.MENU_STORIES),
-        MenuDrawerItem(R.drawable.ic_settings, Constant.MENU_SETTINGS),
-    )
 
-    private val fragmentList = listOf(
-        HomePageFragment.newInstance(),
-        CharacterFragment.newInstance(),
-        ComicFragment.newInstance(),
-        CreatorFragment.newInstance(),
-        EventFragment.newInstance(),
-        SeriesFragment.newInstance(),
-        StoriesFragment.newInstance(),
-        SettingsFragment.newInstance(),
-    )
-
-    private lateinit var adapter: MenuItemAdapter
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun initView() {
+        val isNightModeOn = getSharedPreferences(Constant.SHARED_PREFERENCE_FILE, MODE_PRIVATE)
+            .getBoolean(NIGHT_MODE, false) ?: false
         binding.apply {
             setContentView(root)
+            if (isNightModeOn) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+
             setSupportActionBar(appBarBase.toolbar)
             supportActionBar?.setDisplayShowTitleEnabled(false)
 
-            updateAdapter(Constant.FIRST_POSITION)
-            replaceFragment(fragmentList[Constant.FIRST_POSITION])
+            val drawerLayout: DrawerLayout = drawerLayout
+            val navView: NavigationView = navView
+            val navController = findNavController(R.id.nav_host_fragment_content_base)
 
-            navigationBar.layoutManager = LinearLayoutManager(this@MainActivity)
+            appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.nav_home,
+                    R.id.nav_character,
+                    R.id.nav_comic,
+                    R.id.nav_creator,
+                    R.id.nav_event,
+                    R.id.nav_series,
+                    R.id.nav_stories,
+                    R.id.nav_settings,
+                ), drawerLayout)
+            setupActionBarWithNavController(navController, appBarConfiguration)
+            navView.setupWithNavController(navController)
         }
     }
 
@@ -68,24 +63,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initEvent() {
-        binding.appBarBase.toolbar.setNavigationOnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        }
-
-        binding.navigationBar.addOnItemTouchListener(
-            RecyclerTouchListener().apply {
-                setContext(this@MainActivity)
-                registerClickNavigationDrawerItem(
-                    object : ClickListener {
-                        override fun onClick(view: View, position: Int) {
-                            updateAdapter(position)
-                            replaceFragment(fragmentList[position])
-                            binding.drawerLayout.closeDrawer(GravityCompat.START)
-                        }
-                    }
-                )
-            }
-        )
+        // Not support
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -103,15 +81,28 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun updateAdapter(highlightItemPos: Int) {
-        adapter = MenuItemAdapter(menuList, highlightItemPos)
-        binding.navigationBar.adapter = adapter
-        adapter.notifyDataSetChanged()
+    override fun onTurnOnDarkMode() {
+        getSharedPreferences(Constant.SHARED_PREFERENCE_FILE, MODE_PRIVATE)
+            .edit()
+            .putBoolean(NIGHT_MODE, true)
+            .apply()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.nav_host_fragment_content_base, fragment)
-            .commit()
+    override fun onTurnOffDarkMode() {
+        getSharedPreferences(Constant.SHARED_PREFERENCE_FILE, MODE_PRIVATE)
+            .edit()
+            .putBoolean(NIGHT_MODE, false)
+            .apply()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_content_base)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    companion object {
+        const val NIGHT_MODE = "NightMode"
     }
 }

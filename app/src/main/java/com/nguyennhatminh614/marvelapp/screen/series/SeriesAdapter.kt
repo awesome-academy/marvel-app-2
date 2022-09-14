@@ -11,7 +11,9 @@ import com.nguyennhatminh614.marvelapp.util.OnClickItemInterface
 import com.nguyennhatminh614.marvelapp.util.extensions.loadGlideImageFromUrl
 
 class SeriesAdapter : RecyclerView.Adapter<SeriesAdapter.ViewHolder>() {
+
     private var listSeries = mutableListOf<Series>()
+    private var listFavoriteSeries = mutableListOf<Series>()
     private var clickItemInterface: OnClickItemInterface<Series>? = null
     private var clickFavoriteItemInterface: OnClickFavoriteItemInterface<Series>? = null
 
@@ -35,15 +37,8 @@ class SeriesAdapter : RecyclerView.Adapter<SeriesAdapter.ViewHolder>() {
         this.clickFavoriteItemInterface = clickFavoriteItemInterface
     }
 
-    fun updateItemData(listSeries: MutableList<Series>?) {
-        listSeries?.let {
-            this.listSeries.clear()
-            this.listSeries.addAll(it)
-            notifyDataSetChanged()
-        }
-    }
-
-    fun updateFavoriteItem(listFavoriteSeries: MutableList<Series>) {
+    fun updateItemData(listSeries: MutableList<Series>) {
+        this.listSeries.clear()
         for (series in listFavoriteSeries) {
             listSeries.filter { return@filter it.id == series.id }.also {
                 if (it.isNotEmpty()) {
@@ -51,6 +46,14 @@ class SeriesAdapter : RecyclerView.Adapter<SeriesAdapter.ViewHolder>() {
                 }
             }
         }
+        this.listSeries.addAll(listSeries)
+        notifyDataSetChanged()
+
+    }
+
+    fun updateFavoriteItem(listFavoriteSeries: MutableList<Series>) {
+        this.listFavoriteSeries.clear()
+        this.listFavoriteSeries.addAll(listFavoriteSeries)
     }
 
     inner class ViewHolder(val binding: SeriesItemLayoutBinding) :
@@ -75,11 +78,11 @@ class SeriesAdapter : RecyclerView.Adapter<SeriesAdapter.ViewHolder>() {
 
                 buttonFavorite.setOnClickListener {
                     if (series.isFavorite) {
-                        buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
-                        clickFavoriteItemInterface?.onFavoriteItem(series)
-                    } else {
                         buttonFavorite.setImageResource(R.drawable.ic_favorite)
                         clickFavoriteItemInterface?.onUnfavoriteItem(series)
+                    } else {
+                        buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
+                        clickFavoriteItemInterface?.onFavoriteItem(series)
                     }
                     series.isFavorite = series.isFavorite.not()
                 }

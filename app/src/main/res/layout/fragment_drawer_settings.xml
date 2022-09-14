@@ -48,9 +48,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:checked="true"
-            android:foregroundTint="@color/black"
+            android:checked="false"
+            android:backgroundTint="@color/PrimaryColor"
             android:layout_marginEnd="30dp"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="15dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

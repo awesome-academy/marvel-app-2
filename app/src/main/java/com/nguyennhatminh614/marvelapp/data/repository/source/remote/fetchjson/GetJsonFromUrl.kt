@@ -18,6 +18,7 @@ class GetJsonFromUrl<T>(
     private val keyEntity: String,
     private val listener: OnResultListener<T>,
     private var nameQueryToken: String = "",
+    private var titleQueryToken: String = "",
     private var limit: Int = 0,
 ) {
 
@@ -31,8 +32,11 @@ class GetJsonFromUrl<T>(
 
     private fun callAPI() {
         var apiCallString = APIConstant.BASE_URL + urlString + APIConstant.QUERY_TOKEN
-        if(nameQueryToken.isNullOrEmpty().not()){
+        if (nameQueryToken.isNullOrEmpty().not()) {
             apiCallString += "&nameStartsWith=$nameQueryToken"
+        }
+        if (titleQueryToken.isNullOrEmpty().not()) {
+            apiCallString += "&titleStartsWith=$titleQueryToken"
         }
         if (limit != DEFAULT_NO_LIMIT) {
             apiCallString += "&limit=$limit"

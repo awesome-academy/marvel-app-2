@@ -19,6 +19,7 @@ abstract class BaseFragment<VBinding : ViewBinding>(private val bindingLayoutInf
         initialize()
         callData()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
