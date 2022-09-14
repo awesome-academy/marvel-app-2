@@ -134,4 +134,10 @@ class DetailCharacterFragment :
     override fun callData() {
         // Not support
     }
+
+    companion object {
+        fun newInstance(character: Character) = DetailCharacterFragment().apply {
+            this.character = character
+        }
+    }
 }

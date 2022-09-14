@@ -162,4 +162,10 @@ class DetailComicFragment :
     override fun callData() {
         // Not support
     }
+
+    companion object {
+        fun newInstance(comic: Comic) = DetailComicFragment().apply {
+            this.comic = comic
+        }
+    }
 }
