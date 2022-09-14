@@ -14,19 +14,19 @@ import com.google.android.material.navigation.NavigationView
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.databinding.ActivityMainBinding
 import com.nguyennhatminh614.marvelapp.screen.search.SearchActivity
-import com.nguyennhatminh614.marvelapp.util.OnSwitchDarkMode
 import com.nguyennhatminh614.marvelapp.util.base.BaseActivity
 import com.nguyennhatminh614.marvelapp.util.constant.Constant
 
-class MainActivity : BaseActivity(), OnSwitchDarkMode {
+class MainActivity : BaseActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun initView() {
-        val isNightModeOn = getSharedPreferences(Constant.SHARED_PREFERENCE_FILE, MODE_PRIVATE)
-            .getBoolean(NIGHT_MODE, false) ?: false
+        val isNightModeOn =
+            getSharedPreferences(Constant.SHARED_PREFERENCE_FILE, MODE_PRIVATE).getBoolean(NIGHT_MODE,
+                false)
         binding.apply {
             setContentView(root)
             if (isNightModeOn) {
@@ -51,6 +51,7 @@ class MainActivity : BaseActivity(), OnSwitchDarkMode {
                     R.id.nav_event,
                     R.id.nav_series,
                     R.id.nav_stories,
+                    R.id.nav_favorite,
                     R.id.nav_settings,
                 ), drawerLayout)
             setupActionBarWithNavController(navController, appBarConfiguration)
@@ -79,22 +80,6 @@ class MainActivity : BaseActivity(), OnSwitchDarkMode {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onTurnOnDarkMode() {
-        getSharedPreferences(Constant.SHARED_PREFERENCE_FILE, MODE_PRIVATE)
-            .edit()
-            .putBoolean(NIGHT_MODE, true)
-            .apply()
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-    }
-
-    override fun onTurnOffDarkMode() {
-        getSharedPreferences(Constant.SHARED_PREFERENCE_FILE, MODE_PRIVATE)
-            .edit()
-            .putBoolean(NIGHT_MODE, false)
-            .apply()
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -29,7 +29,7 @@ object EventEntry {
     const val TYPE_DETAIL_URL = "detail"
     const val DESCRIPTION = "description"
     const val TITLE = "title"
-    const val EVENT_ENTITY = "event"
+    const val EVENT_ENTITY = "Events"
     const val ID = "id"
     const val THUMBNAIL_DIR = "thumbnail"
     const val GET_PATH = "path"

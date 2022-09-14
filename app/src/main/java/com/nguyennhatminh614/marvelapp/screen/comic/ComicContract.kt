@@ -13,7 +13,7 @@ interface ComicContract {
         fun getAllFavoriteListLocal()
         fun checkExistComic(comic: Comic): Boolean?
         fun addComicToFavoriteList(comic: Comic)
-        fun removeComicFromFavoriteList(comic: Comic)
+        fun removeComicFromFavoriteList(id: Int)
         fun getRemoteListComic()
     }
 }

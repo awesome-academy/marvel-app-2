@@ -7,12 +7,13 @@ import com.nguyennhatminh614.marvelapp.data.model.EventEntry
 import com.nguyennhatminh614.marvelapp.data.model.SeriesEntry
 import com.nguyennhatminh614.marvelapp.data.model.StoriesEntry
 import com.nguyennhatminh614.marvelapp.util.constant.APIConstant
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
 import org.json.JSONObject
 import java.net.HttpURLConnection
 
 class ParseDataWithJson {
 
-    fun parseJsonToData(jsonObject: JSONObject?, keyEntity: String): Any? {
+    fun parseJsonToData(jsonObject: JSONObject?, keyEntity: String, isSingleObject: Boolean = false): Any? {
         val data = mutableListOf<Any>()
 
         if (jsonObject?.getInt(APIConstant.REQUEST_CODE) != HttpURLConnection.HTTP_OK) {
@@ -22,6 +23,9 @@ class ParseDataWithJson {
         val resultList = jsonObject.getJSONObject(CharacterEntry.GET_DATA)
             .getJSONArray(CharacterEntry.GET_RESPONSE_RESULT)
 
+        if(isSingleObject) {
+            return parseJsonToObject(resultList.getJSONObject(Constant.FIRST_POSITION), keyEntity)
+        }
 
         for (i in 0 until resultList.length()) {
             parseJsonToObject(resultList.getJSONObject(i), keyEntity)?.let { data.add(it) }

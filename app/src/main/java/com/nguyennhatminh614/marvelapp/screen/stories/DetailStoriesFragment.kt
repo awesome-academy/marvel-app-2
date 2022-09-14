@@ -124,7 +124,7 @@ class DetailStoriesFragment :
             viewBinding.buttonFavorite.setOnClickListener { view ->
                 if (it.isFavorite) {
                     viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
-                    storiesPresenter.removeStoriesFavoriteToListLocal(it)
+                    storiesPresenter.removeStoriesFavoriteToListLocal(it.id)
                 } else {
                     viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
                     storiesPresenter.addStoriesFavoriteToListLocal(it)

@@ -16,8 +16,8 @@ class CharacterRepository(
         local.addCharacterFavoriteToListLocal(character)
     }
 
-    override fun removeCharacterFavoriteToListLocal(character: Character) {
-        local.removeCharacterFavoriteToListLocal(character)
+    override fun removeCharacterFavoriteToListLocal(id: Int) {
+        local.removeCharacterFavoriteToListLocal(id)
     }
 
     override fun checkFavoriteCharacterExists(character: Character): Boolean {

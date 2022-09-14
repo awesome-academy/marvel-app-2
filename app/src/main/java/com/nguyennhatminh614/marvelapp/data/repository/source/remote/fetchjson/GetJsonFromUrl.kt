@@ -20,6 +20,7 @@ class GetJsonFromUrl<T>(
     private var nameQueryToken: String = "",
     private var titleQueryToken: String = "",
     private var limit: Int = 0,
+    private var isSingleObject: Boolean = false,
 ) {
 
     private val mExecutor: Executor = Executors.newSingleThreadExecutor()
@@ -45,7 +46,7 @@ class GetJsonFromUrl<T>(
             val responseJson =
                 getRequestJsonFromUrl(apiCallString)
             val responseResult = ParseDataWithJson()
-                .parseJsonToData(JSONObject(responseJson), keyEntity) as? T
+                .parseJsonToData(JSONObject(responseJson), keyEntity, isSingleObject) as? T
             mHandler.post {
                 if (responseResult != null) {
                     listener.onSuccess(responseResult)

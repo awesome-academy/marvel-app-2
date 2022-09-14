@@ -25,7 +25,7 @@ class StoriesPresenter(
         )
     }
 
-    override fun checkFavoriteItemExist(stories: Stories): Boolean? {
+    override fun checkFavoriteItemExist(stories: Stories): Boolean {
         return storiesRepository.checkExistStories(stories) ?: false
     }
 
@@ -33,8 +33,8 @@ class StoriesPresenter(
         storiesRepository.addStoriesToFavoriteList(stories)
     }
 
-    override fun removeStoriesFavoriteToListLocal(stories: Stories) {
-        storiesRepository.removeStoriesFromFavoriteList(stories)
+    override fun removeStoriesFavoriteToListLocal(id: Int) {
+        storiesRepository.removeStoriesFromFavoriteList(id)
     }
 
     override fun getStoriesListRemote() {

@@ -13,7 +13,7 @@ interface SeriesContract {
         fun getSeriesListFromLocal()
         fun checkFavoriteItemExist(series: Series) : Boolean?
         fun addSeriesFavoriteToListLocal(series: Series)
-        fun removeSeriesFavoriteToListLocal(series: Series)
+        fun removeSeriesFavoriteToListLocal(id: Int)
         fun getSeriesListRemote()
     }
 }

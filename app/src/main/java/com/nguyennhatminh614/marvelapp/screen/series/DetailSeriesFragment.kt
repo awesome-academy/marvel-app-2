@@ -135,7 +135,7 @@ class DetailSeriesFragment :
             viewBinding.buttonFavorite.setOnClickListener { view ->
                 if (it.isFavorite) {
                     viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
-                    seriesPresenter.removeSeriesFavoriteToListLocal(it)
+                    seriesPresenter.removeSeriesFavoriteToListLocal(it.id)
                 } else {
                     viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
                     seriesPresenter.addSeriesFavoriteToListLocal(it)

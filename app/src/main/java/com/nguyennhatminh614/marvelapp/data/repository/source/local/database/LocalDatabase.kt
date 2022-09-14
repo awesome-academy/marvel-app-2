@@ -36,7 +36,7 @@ class LocalDatabase(
         private const val SERIES_TABLE = "SERIES"
         private const val STORIES_TABLE = "STORIES"
         private const val DATABASE_NAME = "MarvelAppDB"
-        private const val VERSION = 4
+        private const val VERSION = 5
         private const val ID = "id"
         private const val NAME = "name"
         private const val TITLE = "title"

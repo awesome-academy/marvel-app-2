@@ -13,7 +13,7 @@ interface StoriesContract {
         fun getStoriesListFromLocal()
         fun checkFavoriteItemExist(stories: Stories) : Boolean?
         fun addStoriesFavoriteToListLocal(stories: Stories)
-        fun removeStoriesFavoriteToListLocal(stories: Stories)
+        fun removeStoriesFavoriteToListLocal(id: Int)
         fun getStoriesListRemote()
     }
 }

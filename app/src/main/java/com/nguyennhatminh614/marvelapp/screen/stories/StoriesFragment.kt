@@ -68,7 +68,7 @@ class StoriesFragment :
                     }
 
                     override fun onUnfavoriteItem(item: Stories) {
-                        storiesPresenter.removeStoriesFavoriteToListLocal(item)
+                        storiesPresenter.removeStoriesFavoriteToListLocal(item.id)
                     }
                 }
             )

@@ -16,7 +16,7 @@ data class Creator(
 ) : Parcelable
 
 object CreatorEntry {
-    const val CREATOR_ENTITY = "creator"
+    const val CREATOR_ENTITY = "Creators"
     const val ID = "id"
     const val FULL_NAME = "fullName"
     const val THUMBNAIL_DIR = "thumbnail"

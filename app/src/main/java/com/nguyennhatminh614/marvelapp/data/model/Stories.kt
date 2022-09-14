@@ -29,6 +29,6 @@ object StoriesEntry {
     const val COMIC = "comics"
     const val ITEM_KEYS = "items"
     const val SERIES = "series"
-    const val STORIES_ENTITY = "stories"
+    const val STORIES_ENTITY = "Stories"
     const val CREATORS = "creators"
 }

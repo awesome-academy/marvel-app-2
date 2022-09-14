@@ -73,7 +73,7 @@ class DetailComicFragment :
             viewBinding.buttonFavorite.setOnClickListener { view ->
                 if (it.isFavorite) {
                     viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
-                    comicPresenter.removeComicFromFavoriteList(it)
+                    comicPresenter.removeComicFromFavoriteList(it.id)
                 } else {
                     viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
                     comicPresenter.addComicToFavoriteList(it)

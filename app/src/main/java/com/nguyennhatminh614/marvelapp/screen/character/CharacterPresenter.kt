@@ -19,7 +19,7 @@ class CharacterPresenter(
             }
 
             override fun onError(exception: Exception?) {
-                view?.onError(exception)
+
             }
         })
     }
@@ -32,15 +32,14 @@ class CharacterPresenter(
         characterRepository.addCharacterFavoriteToListLocal(character)
     }
 
-    override fun removeCharacterFavoriteToListLocal(character: Character) {
-        characterRepository.removeCharacterFavoriteToListLocal(character)
+    override fun removeCharacterFavoriteToListLocal(id: Int) {
+        characterRepository.removeCharacterFavoriteToListLocal(id)
     }
 
     override fun getCharacterListRemote() {
         characterRepository.getCharacterListRemote(object :
             OnResultListener<MutableList<Character>> {
             override fun onSuccess(data: MutableList<Character>?) {
-
                 view?.onSuccessGetDataFromRemote(data)
             }
 

@@ -19,8 +19,8 @@ class StoriesRepository(
         local?.addStoriesToFavoriteList(stories)
     }
 
-    override fun removeStoriesFromFavoriteList(stories: Stories) {
-        local?.removeStoriesFromFavoriteList(stories)
+    override fun removeStoriesFromFavoriteList(id: Int) {
+        local?.removeStoriesFromFavoriteList(id)
     }
 
     override fun getRemoteListStories(listener: OnResultListener<MutableList<Stories>>) {

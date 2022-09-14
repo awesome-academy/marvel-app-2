@@ -8,7 +8,7 @@ interface IStoriesDataSource {
         fun getAllFavoriteListLocal(listener: OnResultListener<MutableList<Stories>>)
         fun checkExistStories(stories: Stories): Boolean?
         fun addStoriesToFavoriteList(stories: Stories)
-        fun removeStoriesFromFavoriteList(stories: Stories)
+        fun removeStoriesFromFavoriteList(id: Int)
     }
 
     interface Remote {

@@ -22,8 +22,8 @@ class ComicRepository(
         local?.addComicToFavoriteList(comic)
     }
 
-    override fun removeComicFromFavoriteList(comic: Comic) {
-        local?.removeComicFromFavoriteList(comic)
+    override fun removeComicFromFavoriteList(id: Int) {
+        local?.removeComicFromFavoriteList(id)
     }
 
     override fun getRemoteListComic(listener: OnResultListener<MutableList<Comic>>) {

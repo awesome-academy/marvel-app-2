@@ -6,5 +6,5 @@ interface StoriesDAO {
     fun checkExistStories(stories: Stories): Boolean
     fun getAllFavoriteStories(): MutableList<Stories>
     fun addStoriesToFavoriteList(stories: Stories)
-    fun removeStoriesToFavoriteList(stories: Stories)
+    fun removeStoriesToFavoriteList(id: Int)
 }

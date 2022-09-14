@@ -36,7 +36,7 @@ object SeriesEntry {
     const val EXTENSION = "extension"
     const val COMIC = "comics"
     const val ITEM_KEYS = "items"
-    const val SERIES_ENTITY = "series"
+    const val SERIES_ENTITY = "Series"
     const val STORIES = "stories"
     const val GET_MANY_URL = "urls"
     const val CREATORS = "creators"

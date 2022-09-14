@@ -67,7 +67,7 @@ class DetailCharacterFragment :
             viewBinding.buttonFavorite.setOnClickListener { view ->
                 if (it.isFavorite) {
                     viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
-                    characterPresenter.removeCharacterFavoriteToListLocal(it)
+                    characterPresenter.removeCharacterFavoriteToListLocal(it.id)
                 } else {
                     viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
                     characterPresenter.addCharacterFavoriteToListLocal(it)

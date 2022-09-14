@@ -56,6 +56,14 @@ class CharacterFragment :
         }
     }
 
+    override fun showLoadingDialog() {
+
+    }
+
+    override fun hideLoadingDialog() {
+        TODO("Not yet implemented")
+    }
+
     override fun onError(exception: Exception?) {
         Toast.makeText(context, exception?.message, Toast.LENGTH_SHORT).show()
     }
@@ -77,7 +85,7 @@ class CharacterFragment :
                     }
 
                     override fun onUnfavoriteItem(item: Character) {
-                        characterPresenter.removeCharacterFavoriteToListLocal(item)
+                        characterPresenter.removeCharacterFavoriteToListLocal(item.id)
                     }
                 }
             )

@@ -45,8 +45,8 @@ class SeriesPresenter(
         seriesRepository.addSeriesToFavoriteList(series)
     }
 
-    override fun removeSeriesFavoriteToListLocal(series: Series) {
-        seriesRepository.removeSeriesFromFavoriteList(series)
+    override fun removeSeriesFavoriteToListLocal(id: Int) {
+        seriesRepository.removeSeriesFromFavoriteList(id)
     }
 
     override fun getSeriesListRemote() {

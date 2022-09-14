@@ -6,6 +6,8 @@ interface CharacterContract {
     interface View {
         fun onSuccessGetFavoriteItem(listCharacter: MutableList<Character>?)
         fun onSuccessGetDataFromRemote(listCharacter: MutableList<Character>?)
+        fun showLoadingDialog()
+        fun hideLoadingDialog()
         fun onError(exception: Exception?)
     }
 
@@ -13,7 +15,7 @@ interface CharacterContract {
         fun getCharacterListFromLocal()
         fun checkFavoriteItemExist(character: Character) : Boolean?
         fun addCharacterFavoriteToListLocal(character: Character)
-        fun removeCharacterFavoriteToListLocal(character: Character)
+        fun removeCharacterFavoriteToListLocal(id: Int)
         fun getCharacterListRemote()
     }
 }

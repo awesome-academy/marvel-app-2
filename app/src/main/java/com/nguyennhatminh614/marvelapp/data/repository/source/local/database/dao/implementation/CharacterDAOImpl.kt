@@ -58,11 +58,11 @@ class CharacterDAOImpl(localDatabase: LocalDatabase) : CharacterDAO {
         }
     }
 
-    override fun removeFavoriteCharacter(character: Character) {
-        val whereClause = "ID in (?)"
+    override fun removeFavoriteCharacter(id: Int) {
+        val whereClause = "ID = ?"
 
         writableDatabase.apply {
-            delete(CHARACTER_TABLE, whereClause, arrayOf(character.id.toString()))
+            delete(CHARACTER_TABLE, whereClause, arrayOf(id.toString()))
         }
     }
 

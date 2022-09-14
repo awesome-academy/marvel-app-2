@@ -61,12 +61,12 @@ class StoriesDAOImpl(localDatabase: LocalDatabase) : StoriesDAO {
         }
     }
 
-    override fun removeStoriesToFavoriteList(stories: Stories) {
+    override fun removeStoriesToFavoriteList(id: Int) {
         val database = writableDatabase
-        val whereClause = "ID in (?)"
+        val whereClause = "ID = ?"
 
         database.apply {
-            delete(STORIES_TABLE, whereClause, arrayOf(stories.id.toString()))
+            delete(STORIES_TABLE, whereClause, arrayOf(id.toString()))
         }
     }
 

@@ -6,5 +6,5 @@ interface ComicDAO {
     fun checkExistComic(comic: Comic) : Boolean
     fun getAllFavoriteComic() : MutableList<Comic>
     fun addComicToFavoriteList(comic: Comic)
-    fun removeComicFromFavoriteList(comic: Comic)
+    fun removeComicFromFavoriteList(id: Int)
 }

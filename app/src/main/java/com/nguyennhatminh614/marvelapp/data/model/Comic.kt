@@ -21,7 +21,7 @@ data class Comic(
 ) : Parcelable
 
 object ComicEntry {
-    const val COMIC_ENTITY = "comic"
+    const val COMIC_ENTITY = "Comics"
     const val EXTENSION = "extension"
     const val ID = "id"
     const val DESCRIPTION = "description"
