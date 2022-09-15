@@ -1,6 +1,8 @@
 package com.nguyennhatminh614.marvelapp.screen.series
 
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Series
 import com.nguyennhatminh614.marvelapp.data.repository.SeriesRepository
@@ -12,11 +14,12 @@ import com.nguyennhatminh614.marvelapp.databinding.FragmentDrawerSeriesBinding
 import com.nguyennhatminh614.marvelapp.util.OnClickFavoriteItemInterface
 import com.nguyennhatminh614.marvelapp.util.OnClickItemInterface
 import com.nguyennhatminh614.marvelapp.util.base.BaseFragment
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
 
 class SeriesFragment :
     BaseFragment<FragmentDrawerSeriesBinding>(FragmentDrawerSeriesBinding::inflate),
     SeriesContract.View {
-    
+
     private val listFavoriteSeriesLocal = mutableListOf<Series>()
     private val listRemoteSeries = mutableListOf<Series>()
 
@@ -44,8 +47,7 @@ class SeriesFragment :
     }
 
     override fun callData() {
-        seriesPresenter.getSeriesListRemote()
-        seriesPresenter.getSeriesListFromLocal()
+        seriesPresenter.onStart()
     }
 
     override fun initEvent() {
@@ -53,11 +55,8 @@ class SeriesFragment :
             registerClickItemListener(
                 object : OnClickItemInterface<Series> {
                     override fun onClickItem(item: Series) {
-                        parentFragmentManager.beginTransaction()
-                            .replace(
-                                R.id.nav_host_fragment_content_base,
-                                DetailSeriesFragment.newInstance(item)
-                            ).commit()
+                        findNavController().navigate(R.id.action_nav_series_to_nav_detail_series,
+                            bundleOf(Constant.DETAIL_ITEM to item))
                     }
                 }
             )
@@ -65,22 +64,17 @@ class SeriesFragment :
             registerClickFavoriteItemListener(
                 object : OnClickFavoriteItemInterface<Series> {
                     override fun onFavoriteItem(item: Series) {
-                        val checkExist = seriesPresenter.checkFavoriteItemExist(item)
-                        if (checkExist != null && checkExist == false) {
-                            seriesPresenter.addSeriesFavoriteToListLocal(item)
-                        }
+                        seriesPresenter.addSeriesFavoriteToListLocal(item)
                     }
 
                     override fun onUnfavoriteItem(item: Series) {
-                        val checkExist = seriesPresenter.checkFavoriteItemExist(item)
-                        if (checkExist != null && checkExist == true) {
-                            seriesPresenter.removeSeriesFavoriteToListLocal(item)
-                        }
+                        seriesPresenter.removeSeriesFavoriteToListLocal(item)
                     }
                 }
             )
         }
     }
+
     override fun onSuccessGetFavoriteItem(listSeries: MutableList<Series>?) {
         listSeries?.let { listFavoriteSeriesLocal.addAll(it) }
 
@@ -91,6 +85,7 @@ class SeriesFragment :
 
     override fun onSuccessGetDataFromRemote(listSeries: MutableList<Series>?) {
         listSeries?.let { listRemoteSeries.addAll(it) }
+
         activity?.runOnUiThread {
             adapter.updateItemData(listRemoteSeries)
         }
@@ -98,9 +93,5 @@ class SeriesFragment :
 
     override fun onError(exception: Exception?) {
         Toast.makeText(context, exception?.message, Toast.LENGTH_SHORT).show()
-    }
-
-    companion object {
-        fun newInstance() = SeriesFragment()
     }
 }

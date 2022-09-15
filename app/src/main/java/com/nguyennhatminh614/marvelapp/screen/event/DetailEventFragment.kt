@@ -8,25 +8,27 @@ import com.nguyennhatminh614.marvelapp.data.model.ComicDTO
 import com.nguyennhatminh614.marvelapp.data.model.CreatorDTO
 import com.nguyennhatminh614.marvelapp.data.model.Event
 import com.nguyennhatminh614.marvelapp.data.model.StoriesDTO
-import com.nguyennhatminh614.marvelapp.databinding.DetailEventFragmentBinding
+import com.nguyennhatminh614.marvelapp.databinding.FragmentDetailEventBinding
 import com.nguyennhatminh614.marvelapp.util.DTOItemAdapter
 import com.nguyennhatminh614.marvelapp.util.base.BaseFragment
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
 import com.nguyennhatminh614.marvelapp.util.extensions.loadGlideImageFromUrl
 import com.nguyennhatminh614.marvelapp.util.extensions.navigateToDirectLink
 
-class DetailEventFragment :
-    BaseFragment<DetailEventFragmentBinding>(DetailEventFragmentBinding::inflate) {
+class DetailEventFragment : BaseFragment<FragmentDetailEventBinding>(FragmentDetailEventBinding::inflate) {
 
     private var event: Event? = null
 
     override fun initData() {
         event?.let {
-            context?.let { notNullContext ->
+            context?.let { notNullContext -> {
                 viewBinding.imageEvent.loadGlideImageFromUrl(
                     notNullContext, it.thumbnailLink,
                     R.drawable.image_comic_default
                 )
             }
+            }
+
 
             viewBinding.textNameEvent.text = it.title
             viewBinding.textDescription.text = it.description
@@ -98,14 +100,6 @@ class DetailEventFragment :
             }
     }
 
-    override fun initialize() {
-        //Not support
-    }
-
-    override fun callData() {
-        //Not support
-    }
-
     override fun initEvent() {
         event?.let {
             viewBinding.textDetailAboutThisEvent.setOnClickListener { view ->
@@ -114,9 +108,11 @@ class DetailEventFragment :
         }
     }
 
-    companion object {
-        fun newInstance(event: Event) = DetailEventFragment().apply {
-            this.event = event
-        }
+    override fun initialize() {
+        event = arguments?.getParcelable(Constant.DETAIL_ITEM)
+    }
+
+    override fun callData() {
+        // Not support
     }
 }

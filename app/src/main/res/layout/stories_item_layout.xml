@@ -16,7 +16,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="@dimen/margin_10dp"/>
+        android:layout_margin="@dimen/margin_10dp"
+        android:scaleType="fitXY"/>
 
     <TextView
         android:id="@+id/text_stories_name"

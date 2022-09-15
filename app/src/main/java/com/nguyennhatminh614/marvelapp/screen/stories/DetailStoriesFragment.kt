@@ -13,13 +13,14 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.Loc
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.implementation.StoriesDAOImpl
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.stories.StoriesLocalDataSource
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.stories.StoriesRemoteDataSource
-import com.nguyennhatminh614.marvelapp.databinding.DetailStoriesFragmentBinding
+import com.nguyennhatminh614.marvelapp.databinding.FragmentDetailStoriesBinding
 import com.nguyennhatminh614.marvelapp.util.DTOItemAdapter
 import com.nguyennhatminh614.marvelapp.util.base.BaseFragment
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
 import com.nguyennhatminh614.marvelapp.util.extensions.loadGlideImageFromUrl
 
 class DetailStoriesFragment :
-    BaseFragment<DetailStoriesFragmentBinding>(DetailStoriesFragmentBinding::inflate) {
+    BaseFragment<FragmentDetailStoriesBinding>(FragmentDetailStoriesBinding::inflate) {
 
     private var stories: Stories? = null
 
@@ -37,16 +38,17 @@ class DetailStoriesFragment :
     }
 
     override fun initData() {
+
         stories?.let {
-            context?.let { notNullContext ->
-                viewBinding.imageStories.loadGlideImageFromUrl(
-                    notNullContext, it.thumbnailLink,
-                    R.drawable.image_comic_default
-                )
+            context?.let { notNullContext -> {
+                    viewBinding.imageStories.loadGlideImageFromUrl(
+                        notNullContext, it.thumbnailLink,
+                        R.drawable.image_comic_default
+                    )
+                }
             }
 
             viewBinding.textNameStories.text = it.title
-
             viewBinding.textStoriesDescription.text = it.description
 
             if (it.isFavorite) {
@@ -117,38 +119,26 @@ class DetailStoriesFragment :
             }
     }
 
-    override fun initialize() {
-        //Not support
-    }
-
-    override fun callData() {
-        //Not support
-    }
-
     override fun initEvent() {
         stories?.let {
             viewBinding.buttonFavorite.setOnClickListener { view ->
-                val checkExist = storiesPresenter.checkFavoriteItemExist(it)
-                checkExist?.apply {
-                    if (it.isFavorite && this.not()) {
-                        viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
-                        storiesPresenter.addStoriesFavoriteToListLocal(it)
-                        it.isFavorite = it.isFavorite.not()
-                    }
-
-                    if (it.isFavorite.not() && this) {
-                        viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
-                        storiesPresenter.removeStoriesFavoriteToListLocal(it)
-                        it.isFavorite = it.isFavorite.not()
-                    }
+                if (it.isFavorite) {
+                    viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
+                    storiesPresenter.removeStoriesFavoriteToListLocal(it)
+                } else {
+                    viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
+                    storiesPresenter.addStoriesFavoriteToListLocal(it)
                 }
+                it.isFavorite = it.isFavorite.not()
             }
         }
     }
 
-    companion object {
-        fun newInstance(stories: Stories) = DetailStoriesFragment().apply {
-            this.stories = stories
-        }
+    override fun initialize() {
+        stories = arguments?.getParcelable(Constant.DETAIL_ITEM)
+    }
+
+    override fun callData() {
+        // Not support
     }
 }

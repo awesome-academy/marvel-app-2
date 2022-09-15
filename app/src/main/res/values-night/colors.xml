@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="color_red_pastel">#FFFF6961</color>
     <color name="PrimaryColor">#FF202020</color>
-    <color name="color_stroke">@color/black</color>
-    <color name="color_favorite_uncheck_fill">@color/black</color>
-    <color name="color_theme_app">@color/white</color>
+    <color name="color_stroke">@color/white</color>
+    <color name="color_favorite_uncheck_fill">@color/white</color>
+    <color name="color_theme_app">@color/black</color>
 </resources>

@@ -31,7 +31,7 @@
     <dimen name="size_min_width_chip_choice">130dp</dimen>
     <dimen name="size_min_width_chip_action">100dp</dimen>
     <dimen name="padding_10dp">10dp</dimen>
-    <dimen name="max_width_text_title_search_object">290dp</dimen>
+    <dimen name="max_width_text_title_search_object">250dp</dimen>
     <dimen name="image_height_size">360dp</dimen>
     <dimen name="fill_constraint">0dp</dimen>
     <dimen name="text_name_series_max_width">300dp</dimen>

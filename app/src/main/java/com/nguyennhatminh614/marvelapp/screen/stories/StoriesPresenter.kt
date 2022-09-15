@@ -53,7 +53,8 @@ class StoriesPresenter(
     }
 
     override fun onStart() {
-        //Not support
+        getStoriesListFromLocal()
+        getStoriesListRemote()
     }
 
     override fun onStop() {

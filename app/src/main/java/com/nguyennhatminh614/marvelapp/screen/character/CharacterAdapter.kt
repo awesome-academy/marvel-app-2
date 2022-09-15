@@ -13,15 +13,16 @@ import com.nguyennhatminh614.marvelapp.util.extensions.loadGlideImageFromUrl
 class CharacterAdapter : RecyclerView.Adapter<CharacterAdapter.ViewHolder>() {
 
     private val listCharacter = mutableListOf<Character>()
-    private var binding: CharacterItemLayoutBinding? = null
+    private val listFavoriteCharacter = mutableListOf<Character>()
     private var clickFavoriteItemInterface: OnClickFavoriteItemInterface<Character>? = null
     private var clickItemInterface: OnClickItemInterface<Character>? = null
 
     override fun getItemCount(): Int = listCharacter.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = CharacterItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding!!)
+        val binding =
+            CharacterItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -37,6 +38,13 @@ class CharacterAdapter : RecyclerView.Adapter<CharacterAdapter.ViewHolder>() {
     }
 
     fun updateFavoriteItem(listFavoriteCharacter: MutableList<Character>) {
+        this.listFavoriteCharacter.clear()
+        this.listFavoriteCharacter.addAll(listFavoriteCharacter)
+    }
+
+    fun updateItemList(listCharacter: MutableList<Character>) {
+        this.listCharacter.clear()
+
         for (character in listFavoriteCharacter) {
             listCharacter.filter { return@filter it.id == character.id }.also {
                 if (it.isNotEmpty()) {
@@ -44,10 +52,6 @@ class CharacterAdapter : RecyclerView.Adapter<CharacterAdapter.ViewHolder>() {
                 }
             }
         }
-    }
-
-    fun updateItemList(listCharacter: MutableList<Character>) {
-        this.listCharacter.clear()
         this.listCharacter.addAll(listCharacter)
         notifyDataSetChanged()
     }
@@ -69,15 +73,15 @@ class CharacterAdapter : RecyclerView.Adapter<CharacterAdapter.ViewHolder>() {
                     buttonFavorite.setImageResource(R.drawable.ic_favorite)
                 }
                 buttonFavorite.setOnClickListener {
-                    character.isFavorite = !character.isFavorite
-
                     if (character.isFavorite) {
-                        buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
-                        clickFavoriteItemInterface?.onFavoriteItem(character)
-                    } else {
                         buttonFavorite.setImageResource(R.drawable.ic_favorite)
                         clickFavoriteItemInterface?.onUnfavoriteItem(character)
+                    } else {
+                        buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
+                        clickFavoriteItemInterface?.onFavoriteItem(character)
                     }
+
+                    character.isFavorite = character.isFavorite.not()
                 }
 
                 characterItem.setOnClickListener {

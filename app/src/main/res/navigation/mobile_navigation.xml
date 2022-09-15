@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_home">
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.nguyennhatminh614.marvelapp.screen.homepage.HomePageFragment"
+        tools:layout="@layout/fragment_drawer_home_page" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_detail_character"
+            app:destination="@id/nav_detail_character" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_detail_creator"
+            app:destination="@id/nav_detail_creator" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_detail_comic"
+            app:destination="@id/nav_detail_comic" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_character"
+        android:name="com.nguyennhatminh614.marvelapp.screen.character.CharacterFragment"
+        tools:layout="@layout/fragment_drawer_character" >
+        <action
+            android:id="@+id/action_nav_character_to_nav_detail_character"
+            app:destination="@id/nav_detail_character" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_detail_character"
+        android:name="com.nguyennhatminh614.marvelapp.screen.character.DetailCharacterFragment"
+        tools:layout="@layout/fragment_detail_character" />
+
+    <fragment
+        android:id="@+id/nav_creator"
+        android:name="com.nguyennhatminh614.marvelapp.screen.creator.CreatorFragment"
+        tools:layout="@layout/fragment_drawer_creator" >
+        <action
+            android:id="@+id/action_nav_creator_to_nav_detail_creator"
+            app:destination="@id/nav_detail_creator" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_detail_creator"
+        android:name="com.nguyennhatminh614.marvelapp.screen.creator.DetailCreatorFragment"
+        tools:layout="@layout/fragment_detail_creator" />
+
+    <fragment
+        android:id="@+id/nav_comic"
+        android:name="com.nguyennhatminh614.marvelapp.screen.comic.ComicFragment"
+        tools:layout="@layout/fragment_drawer_comic" >
+        <action
+            android:id="@+id/action_nav_comic_to_nav_detail_comic"
+            app:destination="@id/nav_detail_comic" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_detail_comic"
+        android:name="com.nguyennhatminh614.marvelapp.screen.comic.DetailComicFragment"
+        tools:layout="@layout/fragment_detail_comic" />
+
+    <fragment
+        android:id="@+id/nav_event"
+        android:name="com.nguyennhatminh614.marvelapp.screen.event.EventFragment"
+        tools:layout="@layout/fragment_drawer_event" >
+        <action
+            android:id="@+id/action_nav_event_to_nav_detail_event"
+            app:destination="@id/nav_detail_event" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_detail_event"
+        android:name="com.nguyennhatminh614.marvelapp.screen.event.DetailEventFragment"
+        tools:layout="@layout/fragment_detail_event" />
+
+    <fragment
+        android:id="@+id/nav_series"
+        android:name="com.nguyennhatminh614.marvelapp.screen.series.SeriesFragment"
+        tools:layout="@layout/fragment_drawer_series" >
+        <action
+            android:id="@+id/action_nav_series_to_nav_detail_series"
+            app:destination="@id/nav_detail_series" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_detail_series"
+        android:name="com.nguyennhatminh614.marvelapp.screen.series.DetailSeriesFragment"
+        tools:layout="@layout/fragment_detail_series" />
+
+    <fragment
+        android:id="@+id/nav_stories"
+        android:name="com.nguyennhatminh614.marvelapp.screen.stories.StoriesFragment"
+        tools:layout="@layout/fragment_drawer_stories" >
+        <action
+            android:id="@+id/action_nav_stories_to_nav_detail_stories"
+            app:destination="@id/nav_detail_stories" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_detail_stories"
+        android:name="com.nguyennhatminh614.marvelapp.screen.stories.DetailStoriesFragment"
+        tools:layout="@layout/fragment_detail_stories" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.nguyennhatminh614.marvelapp.screen.settings.SettingsFragment"
+        tools:layout="@layout/fragment_drawer_settings" />
+</navigation>

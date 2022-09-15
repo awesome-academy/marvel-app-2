@@ -1,6 +1,8 @@
 package com.nguyennhatminh614.marvelapp.screen.comic
 
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Comic
 import com.nguyennhatminh614.marvelapp.data.repository.ComicRepository
@@ -12,6 +14,7 @@ import com.nguyennhatminh614.marvelapp.databinding.FragmentDrawerComicBinding
 import com.nguyennhatminh614.marvelapp.util.OnClickFavoriteItemInterface
 import com.nguyennhatminh614.marvelapp.util.OnClickItemInterface
 import com.nguyennhatminh614.marvelapp.util.base.BaseFragment
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
 
 class ComicFragment :
     BaseFragment<FragmentDrawerComicBinding>(FragmentDrawerComicBinding::inflate),
@@ -44,8 +47,7 @@ class ComicFragment :
     }
 
     override fun callData() {
-        comicPresenter.getRemoteListComic()
-        comicPresenter.getAllFavoriteListLocal()
+        comicPresenter.onStart()
     }
 
     override fun initEvent() {
@@ -53,10 +55,7 @@ class ComicFragment :
             registerClickFavoriteItemListener(
                 object : OnClickFavoriteItemInterface<Comic> {
                     override fun onFavoriteItem(item: Comic) {
-                        val checkExist = comicPresenter.checkExistComic(item)
-                        if (checkExist != null && checkExist == false) {
-                            comicPresenter.addComicToFavoriteList(item)
-                        }
+                        comicPresenter.addComicToFavoriteList(item)
                     }
 
                     override fun onUnfavoriteItem(item: Comic) {
@@ -68,23 +67,17 @@ class ComicFragment :
             registerClickItemListener(
                 object : OnClickItemInterface<Comic> {
                     override fun onClickItem(item: Comic) {
-                        parentFragmentManager.beginTransaction()
-                            .replace(
-                                R.id.nav_host_fragment_content_base,
-                                DetailComicFragment.newInstance(item)
-                            )
-                            .commit()
+                        findNavController().navigate(R.id.action_nav_comic_to_nav_detail_comic,
+                            bundleOf(Constant.DETAIL_ITEM to item))
                     }
                 }
             )
         }
     }
+
     override fun onSuccessGetFavoriteItem(listComic: MutableList<Comic>?) {
         listComic?.let { listComicLocal.addAll(it) }
-
-        activity?.runOnUiThread {
-            adapter.updateFavoriteComicList(listComicLocal)
-        }
+        adapter.updateFavoriteComicList(listComicLocal)
     }
 
     override fun onSuccessGetDataFromRemote(listComic: MutableList<Comic>?) {
@@ -97,9 +90,5 @@ class ComicFragment :
 
     override fun onError(exception: Exception?) {
         Toast.makeText(context, exception?.message, Toast.LENGTH_SHORT).show()
-    }
-
-    companion object {
-        fun newInstance() = ComicFragment()
     }
 }

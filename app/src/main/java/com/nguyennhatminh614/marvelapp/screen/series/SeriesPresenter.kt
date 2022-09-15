@@ -11,7 +11,8 @@ class SeriesPresenter(
     private var view: SeriesContract.View? = null
 
     override fun onStart() {
-        // Not support
+        getSeriesListFromLocal()
+        getSeriesListRemote()
     }
 
     override fun onStop() {

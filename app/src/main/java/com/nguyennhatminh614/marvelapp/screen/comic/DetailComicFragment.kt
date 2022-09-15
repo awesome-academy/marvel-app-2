@@ -13,14 +13,15 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.local.comic.ComicL
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.LocalDatabase
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.implementation.ComicDAOImpl
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.comic.ComicRemoteDataSource
-import com.nguyennhatminh614.marvelapp.databinding.DetailComicFragmentBinding
+import com.nguyennhatminh614.marvelapp.databinding.FragmentDetailComicBinding
 import com.nguyennhatminh614.marvelapp.util.DTOItemAdapter
 import com.nguyennhatminh614.marvelapp.util.base.BaseFragment
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
 import com.nguyennhatminh614.marvelapp.util.extensions.loadGlideImageFromUrl
 import com.nguyennhatminh614.marvelapp.util.extensions.navigateToDirectLink
 
 class DetailComicFragment :
-    BaseFragment<DetailComicFragmentBinding>(DetailComicFragmentBinding::inflate) {
+    BaseFragment<FragmentDetailComicBinding>(FragmentDetailComicBinding::inflate) {
 
     private var comic: Comic? = null
 
@@ -39,10 +40,14 @@ class DetailComicFragment :
 
     override fun initData() {
         comic?.let {
-            viewBinding.imageComic.loadGlideImageFromUrl(
-                requireContext(), it.thumbnailLink,
-                R.drawable.image_comic_default
-            )
+            context?.let { notNullContext -> {
+                    viewBinding.imageComic.loadGlideImageFromUrl(
+                        notNullContext, it.thumbnailLink,
+                        R.drawable.image_comic_default
+                    )
+                }
+            }
+
             viewBinding.textNameComic.text = it.title
             viewBinding.textComicDescription.text = it.description
             viewBinding.textPrintPrice.text = "${it.printPrice} $"
@@ -59,6 +64,32 @@ class DetailComicFragment :
                 viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
             } else {
                 viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
+            }
+        }
+    }
+
+    override fun initEvent() {
+        comic?.let {
+            viewBinding.buttonFavorite.setOnClickListener { view ->
+                if (it.isFavorite) {
+                    viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
+                    comicPresenter.removeComicFromFavoriteList(it)
+                } else {
+                    viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
+                    comicPresenter.addComicToFavoriteList(it)
+                }
+                it.isFavorite = it.isFavorite.not()
+            }
+
+            viewBinding.textDetailSeries.apply {
+                setOnClickListener { view ->
+                    navigateToDirectLink(it.seriesDetail.resourceUrl)
+                }
+            }
+            viewBinding.textDetailAboutThisComic.apply {
+                setOnClickListener { view ->
+                    navigateToDirectLink(it.comicDetailLink)
+                }
             }
         }
     }
@@ -125,48 +156,10 @@ class DetailComicFragment :
     }
 
     override fun initialize() {
-        //Not support
+        comic = arguments?.getParcelable(Constant.DETAIL_ITEM)
     }
 
     override fun callData() {
-        //Not support
-    }
-
-    override fun initEvent() {
-        comic?.let {
-            viewBinding.buttonFavorite.setOnClickListener { view ->
-                val checkExist = comicPresenter.checkExistComic(it)
-                checkExist?.apply {
-                    if (it.isFavorite && checkExist == false) {
-                        viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
-                        comicPresenter.addComicToFavoriteList(it)
-                        it.isFavorite = it.isFavorite.not()
-                    }
-
-                    if (it.isFavorite.not() && checkExist == true) {
-                        viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
-                        comicPresenter.removeComicFromFavoriteList(it)
-                        it.isFavorite = it.isFavorite.not()
-                    }
-                }
-            }
-
-            viewBinding.textDetailSeries.apply {
-                setOnClickListener { view ->
-                    navigateToDirectLink(it.seriesDetail.resourceUrl)
-                }
-            }
-            viewBinding.textDetailAboutThisComic.apply {
-                setOnClickListener { view ->
-                    navigateToDirectLink(it.comicDetailLink)
-                }
-            }
-        }
-    }
-
-    companion object {
-        fun newInstance(comic: Comic) = DetailComicFragment().apply {
-            this.comic = comic
-        }
+        // Not support
     }
 }

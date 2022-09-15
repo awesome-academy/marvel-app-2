@@ -1,6 +1,8 @@
 package com.nguyennhatminh614.marvelapp.screen.stories
 
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Stories
 import com.nguyennhatminh614.marvelapp.data.repository.StoriesRepository
@@ -12,6 +14,7 @@ import com.nguyennhatminh614.marvelapp.databinding.FragmentDrawerStoriesBinding
 import com.nguyennhatminh614.marvelapp.util.OnClickFavoriteItemInterface
 import com.nguyennhatminh614.marvelapp.util.OnClickItemInterface
 import com.nguyennhatminh614.marvelapp.util.base.BaseFragment
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
 
 class StoriesFragment :
     BaseFragment<FragmentDrawerStoriesBinding>(FragmentDrawerStoriesBinding::inflate),
@@ -44,8 +47,7 @@ class StoriesFragment :
     }
 
     override fun callData() {
-        storiesPresenter.getStoriesListRemote()
-        storiesPresenter.getStoriesListFromLocal()
+        storiesPresenter.onStart()
     }
 
     override fun initEvent() {
@@ -53,12 +55,8 @@ class StoriesFragment :
             registerOnClickItemInterface(
                 object : OnClickItemInterface<Stories> {
                     override fun onClickItem(item: Stories) {
-                        parentFragmentManager.beginTransaction()
-                            .replace(
-                                R.id.nav_host_fragment_content_base,
-                                DetailStoriesFragment.newInstance(item)
-                            )
-                            .commit()
+                        findNavController().navigate(R.id.action_nav_stories_to_nav_detail_stories,
+                            bundleOf(Constant.DETAIL_ITEM to item))
                     }
                 }
             )
@@ -66,17 +64,11 @@ class StoriesFragment :
             registerOnClickFavoriteItemInterface(
                 object : OnClickFavoriteItemInterface<Stories> {
                     override fun onFavoriteItem(item: Stories) {
-                        val checkExist = storiesPresenter.checkFavoriteItemExist(item)
-                        if (checkExist != null && checkExist == false) {
-                            storiesPresenter.addStoriesFavoriteToListLocal(item)
-                        }
+                        storiesPresenter.addStoriesFavoriteToListLocal(item)
                     }
 
                     override fun onUnfavoriteItem(item: Stories) {
-                        val checkExist = storiesPresenter.checkFavoriteItemExist(item)
-                        if (checkExist != null && checkExist == true) {
-                            storiesPresenter.removeStoriesFavoriteToListLocal(item)
-                        }
+                        storiesPresenter.removeStoriesFavoriteToListLocal(item)
                     }
                 }
             )
@@ -100,9 +92,5 @@ class StoriesFragment :
 
     override fun onError(exception: Exception?) {
         Toast.makeText(context, exception?.message, Toast.LENGTH_SHORT).show()
-    }
-
-    companion object {
-        fun newInstance() = StoriesFragment()
     }
 }

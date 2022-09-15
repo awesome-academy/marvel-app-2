@@ -15,7 +15,9 @@ class CharacterRemoteDataSource : ICharacterDataSource.Remote {
     companion object {
         const val GET_ALL_CHARACTER = "/v1/public/characters"
         private var instance: CharacterRemoteDataSource? = null
-        fun getInstance() =
-            if (instance != null) instance else CharacterRemoteDataSource().also { instance = it }
+
+        fun getInstance() = synchronized(this) {
+            instance ?: CharacterRemoteDataSource().also { instance = it }
+        }
     }
 }

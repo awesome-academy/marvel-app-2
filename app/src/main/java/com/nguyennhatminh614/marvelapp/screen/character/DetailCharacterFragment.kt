@@ -11,14 +11,15 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.local.character.Ch
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.LocalDatabase
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.implementation.CharacterDAOImpl
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.character.CharacterRemoteDataSource
-import com.nguyennhatminh614.marvelapp.databinding.DetailCharacterFragmentBinding
+import com.nguyennhatminh614.marvelapp.databinding.FragmentDetailCharacterBinding
 import com.nguyennhatminh614.marvelapp.util.DTOItemAdapter
 import com.nguyennhatminh614.marvelapp.util.base.BaseFragment
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
 import com.nguyennhatminh614.marvelapp.util.extensions.loadGlideImageFromUrl
 import com.nguyennhatminh614.marvelapp.util.extensions.navigateToDirectLink
 
 class DetailCharacterFragment :
-    BaseFragment<DetailCharacterFragmentBinding>(DetailCharacterFragmentBinding::inflate) {
+    BaseFragment<FragmentDetailCharacterBinding>(FragmentDetailCharacterBinding::inflate) {
 
     private var character: Character? = null
 
@@ -33,6 +34,60 @@ class DetailCharacterFragment :
                 CharacterRemoteDataSource.getInstance()
             )
         )
+    }
+
+    override fun initData() {
+        character?.let {
+            context?.let { notNullContext -> {
+                    viewBinding.imageCharacter.loadGlideImageFromUrl(
+                        notNullContext, it.thumbnailLink,
+                        R.drawable.character_image
+                    )
+                }
+            }
+
+            viewBinding.textNameCharacter.text = it.name
+            viewBinding.textDescription.text = it.description
+
+            setRecyclerViewDetailComic(it)
+            setRecyclerViewDetailEvent(it)
+            setRecyclerViewDetailSeries(it)
+            setRecyclerViewDetailStories(it)
+
+            if (it.isFavorite) {
+                viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
+            } else {
+                viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
+            }
+        }
+    }
+
+    override fun initEvent() {
+        character?.let {
+            viewBinding.buttonFavorite.setOnClickListener { view ->
+                if (it.isFavorite) {
+                    viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
+                    characterPresenter.removeCharacterFavoriteToListLocal(it)
+                } else {
+                    viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
+                    characterPresenter.addCharacterFavoriteToListLocal(it)
+                }
+
+                it.isFavorite = it.isFavorite.not()
+            }
+
+            viewBinding.textDetailAboutThisCharacter.setOnClickListener { view ->
+                navigateToDirectLink(it.detailUrl)
+            }
+
+            viewBinding.textWikiAboutThisCharacter.setOnClickListener { view ->
+                navigateToDirectLink(it.wikiUrl)
+            }
+
+            viewBinding.textComicLinkAboutThisCharacter.setOnClickListener { view ->
+                navigateToDirectLink(it.comicLinkUrl)
+            }
+        }
     }
 
     private fun setRecyclerViewDetailStories(it: Character) {
@@ -72,75 +127,11 @@ class DetailCharacterFragment :
             }
     }
 
-    override fun initData() {
-        character?.let {
-            context?.let { notNullContext ->
-                viewBinding.imageCharacter.loadGlideImageFromUrl(
-                    notNullContext, it.thumbnailLink,
-                    R.drawable.character_image
-                )
-            }
-
-            viewBinding.textNameCharacter.text = it.name
-            viewBinding.textDescription.text = it.description
-
-            setRecyclerViewDetailComic(it)
-            setRecyclerViewDetailEvent(it)
-            setRecyclerViewDetailSeries(it)
-            setRecyclerViewDetailStories(it)
-
-            if (it.isFavorite) {
-                viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
-            } else {
-                viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
-            }
-        }
-    }
-
-    override fun initEvent() {
-        character?.let {
-            viewBinding.buttonFavorite.setOnClickListener { view ->
-                val checkExist = characterPresenter.checkFavoriteItemExist(it)
-                checkExist?.apply {
-                    if (it.isFavorite && this.not()) {
-                        viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite_checked)
-                        characterPresenter.addCharacterFavoriteToListLocal(it)
-                        it.isFavorite = it.isFavorite.not()
-                    }
-                    if (it.isFavorite.not() && this) {
-                        viewBinding.buttonFavorite.setImageResource(R.drawable.ic_favorite)
-                        characterPresenter.removeCharacterFavoriteToListLocal(it)
-                        it.isFavorite = it.isFavorite.not()
-                    }
-                }
-            }
-
-            viewBinding.textDetailAboutThisCharacter.setOnClickListener { view ->
-                navigateToDirectLink(it.detailUrl)
-            }
-
-            viewBinding.textWikiAboutThisCharacter.setOnClickListener { view ->
-                navigateToDirectLink(it.wikiUrl)
-            }
-
-            viewBinding.textComicLinkAboutThisCharacter.setOnClickListener { view ->
-                navigateToDirectLink(it.comicLinkUrl)
-            }
-        }
-    }
-
     override fun initialize() {
-        //Not support
+        character = arguments?.getParcelable(Constant.DETAIL_ITEM)
     }
 
     override fun callData() {
-        //Not support
-    }
-
-
-    companion object {
-        fun newInstance(character: Character) = DetailCharacterFragment().apply {
-            this.character = character
-        }
+        // Not support
     }
 }

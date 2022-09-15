@@ -1,6 +1,8 @@
 package com.nguyennhatminh614.marvelapp.screen.event
 
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Event
 import com.nguyennhatminh614.marvelapp.data.repository.EventRepository
@@ -8,6 +10,7 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.event.Event
 import com.nguyennhatminh614.marvelapp.databinding.FragmentDrawerEventBinding
 import com.nguyennhatminh614.marvelapp.util.OnClickItemInterface
 import com.nguyennhatminh614.marvelapp.util.base.BaseFragment
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
 
 class EventFragment : BaseFragment<FragmentDrawerEventBinding>(FragmentDrawerEventBinding::inflate),
     EventContract.View {
@@ -41,13 +44,8 @@ class EventFragment : BaseFragment<FragmentDrawerEventBinding>(FragmentDrawerEve
             registerClickItemListener(
                 object : OnClickItemInterface<Event> {
                     override fun onClickItem(item: Event) {
-                        parentFragmentManager
-                            .beginTransaction()
-                            .replace(
-                                R.id.nav_host_fragment_content_base,
-                                DetailEventFragment.newInstance(item)
-                            )
-                            .commit()
+                        findNavController().navigate(R.id.action_nav_event_to_nav_detail_event,
+                            bundleOf(Constant.DETAIL_ITEM to item))
                     }
                 }
             )
@@ -67,6 +65,7 @@ class EventFragment : BaseFragment<FragmentDrawerEventBinding>(FragmentDrawerEve
     }
 
     companion object {
+        const val TAG_EVENT_FRAGMENT = "eventFragment"
         fun newInstance() = EventFragment()
     }
 }

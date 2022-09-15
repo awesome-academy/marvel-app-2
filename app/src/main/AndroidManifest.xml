@@ -19,7 +19,7 @@
             android:name=".screen.search.SearchActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.MarvelApp.NoActionBar"/>
+            android:theme="@style/Theme.MarvelApp.NoActionBar" />
         <activity
             android:name=".screen.mainscreen.MainActivity"
             android:exported="false"

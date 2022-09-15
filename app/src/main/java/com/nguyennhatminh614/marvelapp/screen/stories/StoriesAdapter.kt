@@ -50,9 +50,11 @@ class StoriesAdapter : RecyclerView.Adapter<StoriesAdapter.ViewHolder>() {
                 listStories.filter { return@filter it.id == character.id }.also {
                     if (it.isNotEmpty()) {
                         it[0].isFavorite = true
+
                     }
                 }
             }
+            notifyDataSetChanged()
         }
     }
 

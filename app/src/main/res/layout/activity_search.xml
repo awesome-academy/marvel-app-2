@@ -8,6 +8,7 @@
     tools:context=".screen.search.SearchActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/search_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -60,8 +61,10 @@
                         android:paddingEnd="@dimen/padding_10dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/button_search"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.appbar.MaterialToolbar>
@@ -88,7 +91,7 @@
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chip_group_category"
                 android:layout_width="@dimen/fill_constraint"
-                android:layout_height="140dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/text_temp_category"
@@ -171,16 +174,6 @@
                     android:textAlignment="center"
                     android:textSize="@dimen/text_size_20sp" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_stories"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/comfortaa_light"
-                    android:minWidth="@dimen/size_min_width_chip_choice"
-                    android:text="@string/stories"
-                    android:textAlignment="center"
-                    android:textSize="@dimen/text_size_20sp" />
             </com.google.android.material.chip.ChipGroup>
 
             <TextView
@@ -219,4 +212,8 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/nav_host_fragment_content_base"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

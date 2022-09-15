@@ -11,6 +11,7 @@ fun Fragment.navigateToDirectLink(urlPath: String) {
     if (urlPath.isNotEmpty()){
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(urlPath)))
     } else{
-        Toast.makeText(context, NOT_EXIST_PATH,Toast.LENGTH_SHORT).show()
+        Toast.makeText(context,NOT_EXIST_PATH,Toast.LENGTH_SHORT).show()
     }
 }
+

@@ -1,6 +1,8 @@
 package com.nguyennhatminh614.marvelapp.screen.character
 
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Character
 import com.nguyennhatminh614.marvelapp.data.repository.CharacterRepository
@@ -12,6 +14,7 @@ import com.nguyennhatminh614.marvelapp.databinding.FragmentDrawerCharacterBindin
 import com.nguyennhatminh614.marvelapp.util.OnClickFavoriteItemInterface
 import com.nguyennhatminh614.marvelapp.util.OnClickItemInterface
 import com.nguyennhatminh614.marvelapp.util.base.BaseFragment
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
 
 class CharacterFragment :
     BaseFragment<FragmentDrawerCharacterBinding>(FragmentDrawerCharacterBinding::inflate),
@@ -36,12 +39,11 @@ class CharacterFragment :
     private var adapter: CharacterAdapter = CharacterAdapter()
 
     override fun initData() {
-        //not support
+        viewBinding.recyclerView.adapter = adapter
     }
 
     override fun onSuccessGetFavoriteItem(listCharacter: MutableList<Character>?) {
         listCharacter?.let { listFavoriteCharacterLocal.addAll(it) }
-
         activity?.runOnUiThread {
             adapter.updateFavoriteItem(listFavoriteCharacterLocal)
         }
@@ -49,8 +51,9 @@ class CharacterFragment :
 
     override fun onSuccessGetDataFromRemote(listCharacter: MutableList<Character>?) {
         listCharacter?.let { listRemoteCharacter.addAll(it) }
-        adapter.updateItemList(listRemoteCharacter)
-        viewBinding.recyclerView.adapter = adapter
+        activity?.runOnUiThread {
+            adapter.updateItemList(listRemoteCharacter)
+        }
     }
 
     override fun onError(exception: Exception?) {
@@ -62,8 +65,7 @@ class CharacterFragment :
     }
 
     override fun callData() {
-        characterPresenter.getCharacterListRemote()
-        characterPresenter.getCharacterListFromLocal()
+        characterPresenter.onStart()
     }
 
     override fun initEvent() {
@@ -71,10 +73,7 @@ class CharacterFragment :
             registerClickFavoriteItemInterface(
                 object : OnClickFavoriteItemInterface<Character> {
                     override fun onFavoriteItem(item: Character) {
-                        val checkExist = characterPresenter.checkFavoriteItemExist(item)
-                        if (checkExist != null && checkExist == false) {
-                            characterPresenter.addCharacterFavoriteToListLocal(item)
-                        }
+                        characterPresenter.addCharacterFavoriteToListLocal(item)
                     }
 
                     override fun onUnfavoriteItem(item: Character) {
@@ -86,16 +85,11 @@ class CharacterFragment :
             registerClickItemInterface(
                 object : OnClickItemInterface<Character> {
                     override fun onClickItem(item: Character) {
-                        parentFragmentManager.beginTransaction()
-                            .replace(R.id.nav_host_fragment_content_base, DetailCharacterFragment.newInstance(item))
-                            .commit()
+                        findNavController().navigate(R.id.action_nav_character_to_nav_detail_character,
+                            bundleOf(Constant.DETAIL_ITEM to item))
                     }
                 }
             )
         }
-    }
-
-    companion object {
-        fun newInstance() = CharacterFragment()
     }
 }
