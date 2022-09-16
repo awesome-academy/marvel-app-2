@@ -8,7 +8,7 @@ interface IComicDataSource {
         fun getAllFavoriteListLocal(listener: OnResultListener<MutableList<Comic>>)
         fun checkExistComic(comic: Comic) : Boolean?
         fun addComicToFavoriteList(comic: Comic)
-        fun removeComicFromFavoriteList(comic: Comic)
+        fun removeComicFromFavoriteList(id: Int)
     }
 
     interface Remote {

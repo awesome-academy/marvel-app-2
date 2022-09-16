@@ -36,4 +36,6 @@
     <dimen name="fill_constraint">0dp</dimen>
     <dimen name="text_name_series_max_width">300dp</dimen>
     <dimen name="max_width_text_series_description">320dp</dimen>
+    <dimen name="image_thumbnail_search_width">100dp</dimen>
+    <dimen name="image_thumbnail_search_height">120dp</dimen>
 </resources>

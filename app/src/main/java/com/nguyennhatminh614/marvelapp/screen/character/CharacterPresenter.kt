@@ -32,8 +32,8 @@ class CharacterPresenter(
         characterRepository.addCharacterFavoriteToListLocal(character)
     }
 
-    override fun removeCharacterFavoriteToListLocal(character: Character) {
-        characterRepository.removeCharacterFavoriteToListLocal(character)
+    override fun removeCharacterFavoriteToListLocal(id: Int) {
+        characterRepository.removeCharacterFavoriteToListLocal(id)
     }
 
     override fun getCharacterListRemote() {

@@ -5,16 +5,16 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Stories(
-    var id: Int = 0,
-    var title: String = "",
-    var description: String = "",
-    var thumbnailLink: String = "",
+    val id: Int = 0,
+    val title: String = "",
+    val description: String = "",
+    val thumbnailLink: String = "",
     val creatorList: MutableList<CreatorDTO> = mutableListOf(),
     val characterList: MutableList<CharacterDTO> = mutableListOf(),
     val seriesList: MutableList<SeriesDTO> = mutableListOf(),
     val comicList: MutableList<ComicDTO> = mutableListOf(),
     val eventList: MutableList<EventDTO> = mutableListOf(),
-    var isFavorite: Boolean = false
+    val isFavorite: Boolean = false
 ) : Parcelable
 
 object StoriesEntry {

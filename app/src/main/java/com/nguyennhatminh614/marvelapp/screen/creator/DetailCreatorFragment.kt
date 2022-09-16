@@ -99,4 +99,10 @@ class DetailCreatorFragment : BaseFragment<FragmentDetailCreatorBinding>(Fragmen
     override fun callData() {
         // Not support
     }
+
+    companion object {
+        fun newInstance(creator: Creator) = DetailCreatorFragment().apply {
+            this.creator = creator
+        }
+    }
 }

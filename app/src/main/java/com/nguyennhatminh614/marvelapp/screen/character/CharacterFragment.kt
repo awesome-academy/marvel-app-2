@@ -77,7 +77,7 @@ class CharacterFragment :
                     }
 
                     override fun onUnfavoriteItem(item: Character) {
-                        characterPresenter.removeCharacterFavoriteToListLocal(item)
+                        characterPresenter.removeCharacterFavoriteToListLocal(item.id)
                     }
                 }
             )

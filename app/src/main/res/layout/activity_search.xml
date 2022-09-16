@@ -98,28 +98,6 @@
                 app:layout_constraintTop_toBottomOf="@id/text_temp_category">
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_select_all"
-                    style="@style/Widget.MaterialComponents.Chip.Action"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/comfortaa_light"
-                    android:minWidth="@dimen/size_min_width_chip_action"
-                    android:text="@string/text_chip_all_category"
-                    android:textAlignment="center"
-                    android:textSize="@dimen/text_size_20sp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_deselect_all"
-                    style="@style/Widget.MaterialComponents.Chip.Action"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/comfortaa_light"
-                    android:minWidth="@dimen/size_min_width_chip_action"
-                    android:text="@string/text_chip_deselect_all"
-                    android:textAlignment="center"
-                    android:textSize="@dimen/text_size_20sp" />
-
-                <com.google.android.material.chip.Chip
                     android:id="@+id/chip_character"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"

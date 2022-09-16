@@ -6,7 +6,7 @@ interface ICharacterDataSource {
     interface Local {
         fun getCharacterListLocal(listener: OnResultListener<MutableList<Character>>)
         fun addCharacterFavoriteToListLocal(character: Character)
-        fun removeCharacterFavoriteToListLocal(character: Character)
+        fun removeCharacterFavoriteToListLocal(id: Int)
         fun checkFavoriteCharacterExists(character: Character) : Boolean
     }
 

@@ -25,8 +25,8 @@ class CharacterLocalDataSource(
         characterDAO.addFavoriteNewCharacter(character)
     }
 
-    override fun removeCharacterFavoriteToListLocal(character: Character) {
-        characterDAO.removeFavoriteCharacter(character)
+    override fun removeCharacterFavoriteToListLocal(id: Int) {
+        characterDAO.removeFavoriteCharacter(id)
     }
 
     override fun checkFavoriteCharacterExists(character: Character): Boolean {

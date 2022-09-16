@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/layout_search_item"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_corner_all_5dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="10dp">
+
+    <ImageView
+        android:id="@+id/image_thumbnail_search_object"
+        android:layout_width="@dimen/image_thumbnail_search_width"
+        android:layout_height="@dimen/image_thumbnail_search_height"
+        android:src="@drawable/image_comic_default"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/margin_10dp"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:layout_marginBottom="@dimen/margin_10dp"
+        />
+
+    <TextView
+        android:id="@+id/text_search_object_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/image_thumbnail_search_object"
+        app:layout_constraintTop_toTopOf="@id/image_thumbnail_search_object"
+        android:text="@string/text_search_object_category"
+        android:textAllCaps="true"
+        android:fontFamily="@font/comfortaa_bold"
+        android:textSize="@dimen/text_size_18sp"
+        android:layout_marginStart="10dp"/>
+
+    <TextView
+        android:id="@+id/text_title_search_object"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/text_search_object_category"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintTop_toBottomOf="@id/text_search_object_category"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:maxLines="2"
+        android:maxWidth="@dimen/max_width_text_title_search_object"
+        android:ellipsize="end"
+        android:text="@string/text_temp_long_string"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

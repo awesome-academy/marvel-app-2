@@ -59,7 +59,7 @@ class ComicFragment :
                     }
 
                     override fun onUnfavoriteItem(item: Comic) {
-                        comicPresenter.removeComicFromFavoriteList(item)
+                        comicPresenter.removeComicFromFavoriteList(item.id)
                     }
                 }
             )

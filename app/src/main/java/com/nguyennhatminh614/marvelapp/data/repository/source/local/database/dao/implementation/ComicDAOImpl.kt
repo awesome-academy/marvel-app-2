@@ -58,11 +58,11 @@ class ComicDAOImpl(localDatabase: LocalDatabase) : ComicDAO {
         }
     }
 
-    override fun removeComicFromFavoriteList(comic: Comic) {
-        val whereClause = "ID in (?)"
+    override fun removeComicFromFavoriteList(id: Int) {
+        val whereClause = "ID = ?"
 
         writableDatabase.apply {
-            delete(COMIC_TABLE, whereClause, arrayOf(comic.id.toString()))
+            delete(COMIC_TABLE, whereClause, arrayOf(id.toString()))
         }
     }
 
