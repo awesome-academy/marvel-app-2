@@ -74,4 +74,6 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="favorite">Favorite</string>
     <string name="text_temp_big_title">Title</string>
+    <string name="text_title_no_internet">OOPS!!</string>
+    <string name="text_info_no_internet">No Internet Connection!</string>
 </resources>

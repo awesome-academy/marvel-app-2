@@ -28,6 +28,13 @@ class SeriesRepository(
         remote?.getRemoteListSeries(listener)
     }
 
+    override fun getRemoteListSeriesWithOffset(
+        offset: Int,
+        listener: OnResultListener<MutableList<Series>>,
+    ) {
+        remote?.getRemoteListSeriesWithOffset(offset, listener)
+    }
+
     companion object {
         private var instance: SeriesRepository? = null
 

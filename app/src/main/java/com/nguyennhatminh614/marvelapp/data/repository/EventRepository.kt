@@ -11,6 +11,13 @@ class EventRepository(
         remote?.getEventListRemote(listener)
     }
 
+    override fun getEventListRemoteWithOffset(
+        offset: Int,
+        listener: OnResultListener<MutableList<Event>>,
+    ) {
+        remote?.getEventListRemoteWithOffset(offset, listener)
+    }
+
     companion object {
         private var instance: EventRepository? = null
 

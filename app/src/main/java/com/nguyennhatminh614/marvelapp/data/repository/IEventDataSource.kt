@@ -6,5 +6,6 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 interface IEventDataSource {
     interface Remote {
         fun getEventListRemote(listener: OnResultListener<MutableList<Event>>)
+        fun getEventListRemoteWithOffset(offset: Int, listener: OnResultListener<MutableList<Event>>)
     }
 }

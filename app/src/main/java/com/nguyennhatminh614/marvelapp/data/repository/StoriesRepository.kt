@@ -27,6 +27,13 @@ class StoriesRepository(
         remote?.getRemoteListStories(listener)
     }
 
+    override fun getRemoteListStoriesWithOffset(
+        offset: Int,
+        listener: OnResultListener<MutableList<Stories>>,
+    ) {
+        remote?.getRemoteListStoriesWithOffset(offset, listener)
+    }
+
     companion object {
         private var instance: StoriesRepository? = null
 

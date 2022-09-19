@@ -6,25 +6,27 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 import com.nguyennhatminh614.marvelapp.util.base.BasePresenter
 
 class CharacterPresenter(
-    private val characterRepository: CharacterRepository
+    private val characterRepository: CharacterRepository,
 ) : BasePresenter<CharacterContract.View>, CharacterContract.Presenter {
 
     private var view: CharacterContract.View? = null
 
     override fun getCharacterListFromLocal() {
+        view?.showLoadingDialog()
         characterRepository.getCharacterListLocal(object :
             OnResultListener<MutableList<Character>> {
             override fun onSuccess(data: MutableList<Character>?) {
                 view?.onSuccessGetFavoriteItem(data)
+                view?.hideLoadingDialog()
             }
 
             override fun onError(exception: Exception?) {
-
+                view?.hideLoadingDialog()
             }
         })
     }
 
-    override fun checkFavoriteItemExist(character: Character) : Boolean {
+    override fun checkFavoriteItemExist(character: Character): Boolean {
         return characterRepository.checkFavoriteCharacterExists(character)
     }
 
@@ -37,16 +39,34 @@ class CharacterPresenter(
     }
 
     override fun getCharacterListRemote() {
+        view?.showLoadingDialog()
         characterRepository.getCharacterListRemote(object :
             OnResultListener<MutableList<Character>> {
             override fun onSuccess(data: MutableList<Character>?) {
                 view?.onSuccessGetDataFromRemote(data)
+                view?.hideLoadingDialog()
             }
 
             override fun onError(exception: Exception?) {
                 view?.onError(exception)
+                view?.hideLoadingDialog()
             }
         })
+    }
+
+    override fun getCharacterListRemoteWithOffset(offset: Int) {
+        view?.showLoadingDialog()
+        characterRepository.getCharacterListRemoteWithOffset(offset,
+            object : OnResultListener<MutableList<Character>> {
+                override fun onSuccess(data: MutableList<Character>?) {
+                    view?.onSuccessGetDataWithOffsetFromRemote(data)
+                    view?.hideLoadingDialog()
+                }
+
+                override fun onError(exception: Exception?) {
+                    view?.hideLoadingDialog()
+                }
+            })
     }
 
     override fun onStart() {

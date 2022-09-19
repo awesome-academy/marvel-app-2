@@ -2,7 +2,10 @@ package com.nguyennhatminh614.marvelapp.screen.stories
 
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Stories
 import com.nguyennhatminh614.marvelapp.data.repository.StoriesRepository
@@ -39,6 +42,7 @@ class StoriesFragment :
     private val adapter = StoriesAdapter()
 
     override fun initData() {
+        storiesPresenter.onStart()
         viewBinding.recyclerViewStories.adapter = adapter
     }
 
@@ -47,7 +51,7 @@ class StoriesFragment :
     }
 
     override fun callData() {
-        storiesPresenter.onStart()
+        // Not support
     }
 
     override fun initEvent() {
@@ -73,6 +77,21 @@ class StoriesFragment :
                 }
             )
         }
+
+        viewBinding.recyclerViewStories.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    (recyclerView.layoutManager as? LinearLayoutManager)?.let {
+                        if (it.findLastCompletelyVisibleItemPosition() == adapter.itemCount - 1) {
+                            val offset = adapter.itemCount
+                            storiesPresenter.getStoriesListRemoteWithOffset(offset)
+                        }
+                    }
+                }
+            }
+        )
     }
 
     override fun onSuccessGetFavoriteItem(listStories: MutableList<Stories>?) {
@@ -88,6 +107,21 @@ class StoriesFragment :
         activity?.runOnUiThread {
             adapter.updateDataItem(listRemoteStories)
         }
+    }
+
+    override fun onSuccessGetOffsetDataFromRemote(listStories: MutableList<Stories>?) {
+        listStories?.let { listRemoteStories.addAll(it) }
+        activity?.runOnUiThread {
+            adapter.updateDataItem(listRemoteStories)
+        }
+    }
+
+    override fun showLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = true
+    }
+
+    override fun hideLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = false
     }
 
     override fun onError(exception: Exception?) {

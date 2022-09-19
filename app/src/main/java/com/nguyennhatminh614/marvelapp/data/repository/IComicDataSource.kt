@@ -13,5 +13,6 @@ interface IComicDataSource {
 
     interface Remote {
         fun getRemoteListComic(listener: OnResultListener<MutableList<Comic>>)
+        fun getRemoteListComicWithOffset(offset: Int, listener: OnResultListener<MutableList<Comic>>)
     }
 }

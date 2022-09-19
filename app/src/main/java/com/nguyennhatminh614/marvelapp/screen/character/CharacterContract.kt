@@ -1,13 +1,13 @@
 package com.nguyennhatminh614.marvelapp.screen.character
 
 import com.nguyennhatminh614.marvelapp.data.model.Character
+import com.nguyennhatminh614.marvelapp.util.ILoadingDialog
 
 interface CharacterContract {
-    interface View {
+    interface View : ILoadingDialog {
         fun onSuccessGetFavoriteItem(listCharacter: MutableList<Character>?)
         fun onSuccessGetDataFromRemote(listCharacter: MutableList<Character>?)
-        fun showLoadingDialog()
-        fun hideLoadingDialog()
+        fun onSuccessGetDataWithOffsetFromRemote(listCharacterOffset: MutableList<Character>?)
         fun onError(exception: Exception?)
     }
 
@@ -17,5 +17,6 @@ interface CharacterContract {
         fun addCharacterFavoriteToListLocal(character: Character)
         fun removeCharacterFavoriteToListLocal(id: Int)
         fun getCharacterListRemote()
+        fun getCharacterListRemoteWithOffset(offset: Int)
     }
 }

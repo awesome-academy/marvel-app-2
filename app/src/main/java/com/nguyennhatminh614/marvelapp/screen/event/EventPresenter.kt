@@ -12,14 +12,34 @@ class EventPresenter(
     private var view: EventContract.View? = null
 
     override fun getListEventRemote() {
+        view?.showLoadingDialog()
         eventRepository.getEventListRemote(
             object : OnResultListener<MutableList<Event>> {
                 override fun onSuccess(data: MutableList<Event>?) {
                     view?.onSuccess(data)
+                    view?.hideLoadingDialog()
                 }
 
                 override fun onError(exception: Exception?) {
                     view?.onError(exception)
+                    view?.hideLoadingDialog()
+                }
+            }
+        )
+    }
+
+    override fun getListEventRemoteWithOffset(offset: Int) {
+        view?.showLoadingDialog()
+        eventRepository.getEventListRemoteWithOffset(offset,
+            object : OnResultListener<MutableList<Event>> {
+                override fun onSuccess(data: MutableList<Event>?) {
+                    view?.onSuccess(data)
+                    view?.hideLoadingDialog()
+                }
+
+                override fun onError(exception: Exception?) {
+                    view?.onError(exception)
+                    view?.hideLoadingDialog()
                 }
             }
         )

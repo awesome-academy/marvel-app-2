@@ -2,6 +2,7 @@ package com.nguyennhatminh614.marvelapp.screen.favorite
 
 import android.app.AlertDialog
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Character
@@ -70,6 +71,7 @@ class FavoriteFragment :
     }
 
     override fun initData() {
+        favoritePresenter.onStart()
         viewBinding.recyclerViewFavorite.adapter = adapter
     }
 
@@ -78,7 +80,7 @@ class FavoriteFragment :
     }
 
     override fun callData() {
-        favoritePresenter.onStart()
+        //Not support
     }
 
     override fun initEvent() {
@@ -102,15 +104,15 @@ class FavoriteFragment :
                 object : OnLongClickItemInterface<FavoriteItem> {
                     override fun onLongClickItem(data: FavoriteItem) {
                         AlertDialog.Builder(context).apply {
-                            setTitle("Warning")
-                            setMessage("Do you want to delete this item?")
+                            setTitle(TITLE)
+                            setMessage(MESSAGE)
                             setCancelable(false)
-                            setPositiveButton("Yes") { _, _ ->
+                            setPositiveButton(POSITIVE_BUTTON) { _, _ ->
                                 listFavoriteItem.remove(data)
                                 favoritePresenter.removeItemFromFavoriteList(data)
                                 adapter.updateDataItem(listFavoriteItem)
                             }
-                            setNegativeButton("No") { dialog, _ ->
+                            setNegativeButton(NEGATIVE_BUTTON) { dialog, _ ->
                                 dialog.cancel()
                             }
                         }.create().show()
@@ -120,55 +122,42 @@ class FavoriteFragment :
         }
     }
 
-    override fun onSuccessGetCharacterFavoriteList(data: MutableList<Any>) {
+    override fun onSuccessGetFavoriteList(data: MutableList<Any>) {
         this.listFavoriteItem.addAll(data)
         activity?.runOnUiThread {
             adapter.updateDataItem(listFavoriteItem)
         }
     }
 
-    override fun onSuccessGetComicFavoriteList(data: MutableList<Any>) {
-        this.listFavoriteItem.addAll(data)
-        activity?.runOnUiThread {
-            adapter.updateDataItem(listFavoriteItem)
+    override fun <T> onSuccessGetDetailData(data: T) {
+        when (data) {
+            is Character -> findNavController().navigate(R.id.action_nav_favorite_to_nav_detail_character,
+                bundleOf(Constant.DETAIL_ITEM to data))
+            is Comic -> findNavController().navigate(R.id.action_nav_favorite_to_nav_detail_comic,
+                bundleOf(Constant.DETAIL_ITEM to data))
+            is Series -> findNavController().navigate(R.id.action_nav_favorite_to_nav_detail_series,
+                bundleOf(Constant.DETAIL_ITEM to data))
+            is Stories -> findNavController().navigate(R.id.action_nav_favorite_to_nav_detail_stories,
+                bundleOf(Constant.DETAIL_ITEM to data))
         }
     }
 
-    override fun onSuccessGetSeriesFavoriteList(data: MutableList<Any>) {
-        this.listFavoriteItem.addAll(data)
-        activity?.runOnUiThread {
-            adapter.updateDataItem(listFavoriteItem)
-        }
+    override fun showLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = true
     }
 
-    override fun onSuccessGetStoriesFavoriteList(data: MutableList<Any>) {
-        this.listFavoriteItem.addAll(data)
-        activity?.runOnUiThread {
-            adapter.updateDataItem(listFavoriteItem)
-        }
-    }
-
-    override fun onSuccessGetDetailCharacterData(data: Character) {
-        findNavController().navigate(R.id.action_nav_favorite_to_nav_detail_character,
-            bundleOf(Constant.DETAIL_ITEM to data))
-    }
-
-    override fun onSuccessGetDetailComicData(data: Comic) {
-        findNavController().navigate(R.id.action_nav_favorite_to_nav_detail_comic,
-            bundleOf(Constant.DETAIL_ITEM to data))
-    }
-
-    override fun onSuccessGetDetailSeriesData(data: Series) {
-        findNavController().navigate(R.id.action_nav_favorite_to_nav_detail_series,
-            bundleOf(Constant.DETAIL_ITEM to data))
-    }
-
-    override fun onSuccessGetDetailStoriesData(data: Stories) {
-        findNavController().navigate(R.id.action_nav_favorite_to_nav_detail_stories,
-            bundleOf(Constant.DETAIL_ITEM to data))
+    override fun hideLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = false
     }
 
     override fun onError(exception: Exception) {
         // Not support
+    }
+
+    companion object {
+        const val TITLE = "Warning"
+        const val MESSAGE = "Do you want to delete this item?"
+        const val POSITIVE_BUTTON = "Yes"
+        const val NEGATIVE_BUTTON = "No"
     }
 }

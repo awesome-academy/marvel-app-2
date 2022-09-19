@@ -1,6 +1,10 @@
 package com.nguyennhatminh614.marvelapp.data.model
 
-open class DtoItem (
-    open var resourceUrl: String = "",
-    open var textDescription: String = "",
-)
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class DtoItem (
+    val resourceUrl: String = "",
+    val textDescription: String = "",
+) : Parcelable

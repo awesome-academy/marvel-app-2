@@ -13,5 +13,6 @@ interface IStoriesDataSource {
 
     interface Remote {
         fun getRemoteListStories(listener: OnResultListener<MutableList<Stories>>)
+        fun getRemoteListStoriesWithOffset(offset: Int, listener: OnResultListener<MutableList<Stories>>)
     }
 }

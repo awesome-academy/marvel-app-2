@@ -24,17 +24,8 @@ class MainActivity : BaseActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun initView() {
-        val isNightModeOn =
-            getSharedPreferences(Constant.SHARED_PREFERENCE_FILE, MODE_PRIVATE).getBoolean(NIGHT_MODE,
-                false)
         binding.apply {
             setContentView(root)
-            if (isNightModeOn) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-
             setSupportActionBar(appBarBase.toolbar)
             supportActionBar?.setDisplayShowTitleEnabled(false)
 
@@ -60,7 +51,15 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initData() {
-        // Not support
+        val isNightModeOn =
+            getSharedPreferences(Constant.SHARED_PREFERENCE_FILE, MODE_PRIVATE).getBoolean(
+                NIGHT_MODE,
+                false)
+        if (isNightModeOn) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
     override fun initEvent() {

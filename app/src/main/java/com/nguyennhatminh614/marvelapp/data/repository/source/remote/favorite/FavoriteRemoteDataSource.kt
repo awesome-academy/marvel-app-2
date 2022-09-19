@@ -22,29 +22,25 @@ class FavoriteRemoteDataSource : IFavoriteDataSource.Remote {
             CharacterRemoteDataSource.GET_ALL_CHARACTER + "/$id",
             CharacterEntry.CHARACTER_ENTITY,
             listener,
-            isSingleObject = true
-        )
+        ).callAPI(isSingleObject = true)
     }
 
     override fun getComicListRemoteWithID(id: Int, listener: OnResultListener<Comic>) {
         GetJsonFromUrl(ComicRemoteDataSource.GET_ALL_COMIC + "/$id",
             ComicEntry.COMIC_ENTITY,
-            listener,
-            isSingleObject = true)
+            listener).callAPI(isSingleObject = true)
     }
 
     override fun getSeriesListRemoteWithID(id: Int, listener: OnResultListener<Series>) {
         GetJsonFromUrl(SeriesRemoteDataSource.GET_ALL_SERIES + "/$id",
             SeriesEntry.SERIES_ENTITY,
-            listener,
-            isSingleObject = true)
+            listener).callAPI(isSingleObject = true)
     }
 
     override fun getStoriesListRemoteWithID(id: Int, listener: OnResultListener<Stories>) {
         GetJsonFromUrl(StoriesRemoteDataSource.GET_ALL_STORIES + "/$id",
             StoriesEntry.STORIES_ENTITY,
-            listener,
-            isSingleObject = true)
+            listener).callAPI(isSingleObject = true)
     }
 
     companion object {

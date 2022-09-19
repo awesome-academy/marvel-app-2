@@ -13,5 +13,6 @@ interface ISeriesDataSource {
 
     interface Remote {
         fun getRemoteListSeries(listener: OnResultListener<MutableList<Series>>)
+        fun getRemoteListSeriesWithOffset(offset: Int, listener: OnResultListener<MutableList<Series>>)
     }
 }

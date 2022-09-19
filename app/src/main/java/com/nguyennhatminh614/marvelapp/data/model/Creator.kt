@@ -5,14 +5,11 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Creator(
-    var id: Int = 0,
-    var name: String = "",
-    var thumbnailLink: String = "",
-    val comicList: MutableList<ComicDTO> = mutableListOf(),
-    val seriesList: MutableList<SeriesDTO> = mutableListOf(),
-    val storiesList: MutableList<StoriesDTO> = mutableListOf(),
-    val eventList: MutableList<EventDTO> = mutableListOf(),
-    var detailLink: String = "",
+    val id: Int = 0,
+    val name: String = "",
+    val thumbnailLink: String = "",
+    val listDetailContent: MutableList<DetailListItem> = mutableListOf(),
+    val detailLink: String = "",
 ) : Parcelable
 
 object CreatorEntry {

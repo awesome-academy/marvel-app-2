@@ -5,19 +5,15 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Event(
-    var id: Int = 0,
-    var title: String = "",
-    var description: String = "",
-    var thumbnailLink: String = "",
-    val creatorList: MutableList<CreatorDTO> = mutableListOf(),
-    val characterList: MutableList<CharacterDTO> = mutableListOf(),
-    val seriesList: MutableList<SeriesDTO> = mutableListOf(),
-    val comicList: MutableList<ComicDTO> = mutableListOf(),
-    val storiesList: MutableList<StoriesDTO> = mutableListOf(),
-    var startDate: String = "",
-    var endDate: String = "",
-    var detailLink : String = "",
-    var wikiLink: String = "",
+    val id: Int = 0,
+    val title: String = "",
+    val description: String = "",
+    val thumbnailLink: String = "",
+    val listDetailContent: MutableList<DetailListItem> = mutableListOf(),
+    val startDate: String = "",
+    val endDate: String = "",
+    val detailLink : String = "",
+    val wikiLink: String = "",
     var isFavorite: Boolean = false,
 ) : Parcelable
 

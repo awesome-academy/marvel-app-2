@@ -2,7 +2,10 @@ package com.nguyennhatminh614.marvelapp.screen.comic
 
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Comic
 import com.nguyennhatminh614.marvelapp.data.repository.ComicRepository
@@ -39,6 +42,7 @@ class ComicFragment :
     private var adapter = ComicAdapter()
 
     override fun initData() {
+        comicPresenter.onStart()
         viewBinding.recyclerViewComic.adapter = adapter
     }
 
@@ -47,7 +51,7 @@ class ComicFragment :
     }
 
     override fun callData() {
-        comicPresenter.onStart()
+        // Not support
     }
 
     override fun initEvent() {
@@ -73,6 +77,21 @@ class ComicFragment :
                 }
             )
         }
+
+        viewBinding.recyclerViewComic.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    (recyclerView.layoutManager as? LinearLayoutManager)?.let {
+                        if (it.findLastCompletelyVisibleItemPosition() == adapter.itemCount - 1) {
+                            val offset = adapter.itemCount
+                            comicPresenter.getComicListRemoteWithOffset(offset)
+                        }
+                    }
+                }
+            }
+        )
     }
 
     override fun onSuccessGetFavoriteItem(listComic: MutableList<Comic>?) {
@@ -86,6 +105,22 @@ class ComicFragment :
         activity?.runOnUiThread {
             adapter.updateListComic(listComicRemote)
         }
+    }
+
+    override fun onSuccessGetDataWithOffsetFromRemote(listOffset: MutableList<Comic>?) {
+        listOffset?.let { listComicRemote.addAll(it) }
+
+        activity?.runOnUiThread {
+            adapter.updateListComic(listComicRemote)
+        }
+    }
+
+    override fun showLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = true
+    }
+
+    override fun hideLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = false
     }
 
     override fun onError(exception: Exception?) {

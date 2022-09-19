@@ -1,14 +1,10 @@
 package com.nguyennhatminh614.marvelapp.screen.favorite
 
 import com.nguyennhatminh614.marvelapp.data.model.Character
-import com.nguyennhatminh614.marvelapp.data.model.CharacterEntry
 import com.nguyennhatminh614.marvelapp.data.model.Comic
-import com.nguyennhatminh614.marvelapp.data.model.ComicEntry
 import com.nguyennhatminh614.marvelapp.data.model.FavoriteItem
 import com.nguyennhatminh614.marvelapp.data.model.Series
-import com.nguyennhatminh614.marvelapp.data.model.SeriesEntry
 import com.nguyennhatminh614.marvelapp.data.model.Stories
-import com.nguyennhatminh614.marvelapp.data.model.StoriesEntry
 import com.nguyennhatminh614.marvelapp.data.repository.FavoriteRepository
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.OnResultListener
 import com.nguyennhatminh614.marvelapp.util.base.BasePresenter
@@ -19,112 +15,11 @@ class FavoritePresenter(
 
     private var view: FavoriteContract.View? = null
 
-    override fun getListCharacterFavorite() {
-        val favoriteCharacterList = mutableListOf<Any>()
-        favoriteCharacterList.add(CharacterEntry.CHARACTER_ENTITY)
-
-        favoriteRepository.getCharacterListLocal(
-            object : OnResultListener<MutableList<Character>> {
-                override fun onSuccess(data: MutableList<Character>?) {
-                    data?.forEach {
-                        favoriteCharacterList.add(
-                            FavoriteItem(
-                                id = it.id,
-                                thumbnailLink = it.thumbnailLink,
-                                title = it.name,
-                                favoriteItemType = CharacterEntry.CHARACTER_ENTITY
-                            )
-                        )
-                    }
-                    view?.onSuccessGetCharacterFavoriteList(favoriteCharacterList)
-                }
-
-                override fun onError(exception: Exception?) {
-                    // Not support
-                }
-            }
-        )
-    }
-
-    override fun getListComicFavorite() {
-        val favoriteComicList = mutableListOf<Any>()
-        favoriteComicList.add(ComicEntry.COMIC_ENTITY)
-
-        favoriteRepository.getComicListLocal(
-            object : OnResultListener<MutableList<Comic>> {
-                override fun onSuccess(data: MutableList<Comic>?) {
-                    data?.forEach {
-                        favoriteComicList.add(
-                            FavoriteItem(
-                                id = it.id,
-                                thumbnailLink = it.thumbnailLink,
-                                title = it.title,
-                                favoriteItemType = ComicEntry.COMIC_ENTITY
-                            )
-                        )
-                    }
-                    view?.onSuccessGetComicFavoriteList(favoriteComicList)
-                }
-
-                override fun onError(exception: Exception?) {
-                    // Not support
-                }
-            }
-        )
-    }
-
-    override fun getListSeriesFavorite() {
-        val favoriteSeriesList = mutableListOf<Any>()
-        favoriteSeriesList.add(SeriesEntry.SERIES_ENTITY)
-
-        favoriteRepository.getSeriesListLocal(
-            object : OnResultListener<MutableList<Series>> {
-                override fun onSuccess(data: MutableList<Series>?) {
-                    data?.forEach {
-                        favoriteSeriesList.add(
-                            FavoriteItem(
-                                id = it.id,
-                                thumbnailLink = it.thumbnailLink,
-                                title = it.title,
-                                favoriteItemType = SeriesEntry.SERIES_ENTITY
-                            )
-                        )
-                    }
-                    view?.onSuccessGetSeriesFavoriteList(favoriteSeriesList)
-                }
-
-                override fun onError(exception: Exception?) {
-                    // Not support
-                }
-            }
-        )
-    }
-
-    override fun getListStoriesFavorite() {
-        val favoriteStoriesList = mutableListOf<Any>()
-        favoriteStoriesList.add(StoriesEntry.STORIES_ENTITY)
-
-        favoriteRepository.getStoriesListLocal(
-            object : OnResultListener<MutableList<Stories>> {
-                override fun onSuccess(data: MutableList<Stories>?) {
-                    data?.forEach {
-                        favoriteStoriesList.add(
-                            FavoriteItem(
-                                id = it.id,
-                                thumbnailLink = it.thumbnailLink,
-                                title = it.title,
-                                favoriteItemType = StoriesEntry.STORIES_ENTITY
-                            )
-                        )
-                    }
-                    view?.onSuccessGetStoriesFavoriteList(favoriteStoriesList)
-                }
-
-                override fun onError(exception: Exception?) {
-                    // Not support
-                }
-            }
-        )
+    override fun getListFavorite() {
+        FavoritePresenterUtils.getListCharacterFavorite(view, favoriteRepository)
+        FavoritePresenterUtils.getListSeriesFavorite(view, favoriteRepository)
+        FavoritePresenterUtils.getListStoriesFavorite(view, favoriteRepository)
+        FavoritePresenterUtils.getListComicFavorite(view, favoriteRepository)
     }
 
     override fun removeItemFromFavoriteList(favoriteItem: FavoriteItem) {
@@ -137,7 +32,7 @@ class FavoritePresenter(
             object : OnResultListener<Character> {
                 override fun onSuccess(data: Character?) {
                     if (data != null) {
-                        view?.onSuccessGetDetailCharacterData(data)
+                        view?.onSuccessGetDetailData(data)
                     }
                 }
 
@@ -154,7 +49,7 @@ class FavoritePresenter(
             object : OnResultListener<Comic> {
                 override fun onSuccess(data: Comic?) {
                     if (data != null) {
-                        view?.onSuccessGetDetailComicData(data)
+                        view?.onSuccessGetDetailData(data)
                     }
                 }
 
@@ -171,7 +66,7 @@ class FavoritePresenter(
             object : OnResultListener<Series> {
                 override fun onSuccess(data: Series?) {
                     if (data != null) {
-                        view?.onSuccessGetDetailSeriesData(data)
+                        view?.onSuccessGetDetailData(data)
                     }
                 }
 
@@ -188,7 +83,7 @@ class FavoritePresenter(
             object : OnResultListener<Stories> {
                 override fun onSuccess(data: Stories?) {
                     if (data != null) {
-                        view?.onSuccessGetDetailStoriesData(data)
+                        view?.onSuccessGetDetailData(data)
                     }
                 }
 
@@ -200,10 +95,9 @@ class FavoritePresenter(
     }
 
     override fun onStart() {
-        getListCharacterFavorite()
-        getListSeriesFavorite()
-        getListComicFavorite()
-        getListStoriesFavorite()
+        view?.showLoadingDialog()
+        getListFavorite()
+        view?.hideLoadingDialog()
     }
 
     override fun onStop() {
