@@ -2,7 +2,10 @@ package com.nguyennhatminh614.marvelapp.screen.creator
 
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Creator
 import com.nguyennhatminh614.marvelapp.data.repository.CreatorRepository
@@ -29,6 +32,7 @@ class CreatorFragment :
     private var adapter = CreatorAdapter()
 
     override fun initData() {
+        creatorPresenter.getCreatorListRemote()
         viewBinding.recyclerView.adapter = adapter
     }
 
@@ -37,7 +41,7 @@ class CreatorFragment :
     }
 
     override fun callData() {
-        creatorPresenter.getCreatorListRemote()
+        // Not support
     }
 
     override fun initEvent() {
@@ -49,6 +53,21 @@ class CreatorFragment :
                 }
             }
         )
+
+        viewBinding.recyclerView.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    (recyclerView.layoutManager as? LinearLayoutManager)?.let {
+                        if (it.findLastCompletelyVisibleItemPosition() == adapter.itemCount - 1) {
+                            val offset = adapter.itemCount
+                            creatorPresenter.getCreatorListRemoteWithOffset(offset)
+                        }
+                    }
+                }
+            }
+        )
     }
 
     override fun onSuccess(listCreator: MutableList<Creator>?) {
@@ -57,6 +76,22 @@ class CreatorFragment :
         activity?.runOnUiThread {
             adapter.updateItemData(listCreatorRemote)
         }
+    }
+
+    override fun onSuccessGetCreatorOffsetList(listCreator: MutableList<Creator>?) {
+        listCreator?.let { listCreatorRemote.addAll(it) }
+
+        activity?.runOnUiThread {
+            adapter.updateItemData(listCreatorRemote)
+        }
+    }
+
+    override fun showLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = true
+    }
+
+    override fun hideLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = false
     }
 
     override fun onError(exception: Exception?) {

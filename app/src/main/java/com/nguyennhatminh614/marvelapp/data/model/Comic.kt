@@ -5,23 +5,20 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Comic(
-    val id: Int = 0,
-    val title: String = "",
-    val description: String = "",
-    val thumbnailLink: String = "",
+    val id: Int,
+    val title: String,
+    val description: String,
+    val thumbnailLink: String,
     val printPrice: Double = 0.0,
     val numberOfPages: Int = 0,
-    val seriesDetail: SeriesDTO = SeriesDTO(),
-    val creatorList: MutableList<CreatorDTO> = mutableListOf(),
-    val characterList: MutableList<CharacterDTO> = mutableListOf(),
-    val storiesList: MutableList<StoriesDTO> = mutableListOf(),
-    val eventList: MutableList<EventDTO> = mutableListOf(),
+    val seriesDetail: DtoItem = DtoItem(),
+    val listDetailContent: MutableList<DetailListItem> = mutableListOf(),
     val comicDetailLink: String = "",
     var isFavorite: Boolean = false,
 ) : Parcelable
 
 object ComicEntry {
-    const val COMIC_ENTITY = "comic"
+    const val COMIC_ENTITY = "Comics"
     const val EXTENSION = "extension"
     const val ID = "id"
     const val DESCRIPTION = "description"

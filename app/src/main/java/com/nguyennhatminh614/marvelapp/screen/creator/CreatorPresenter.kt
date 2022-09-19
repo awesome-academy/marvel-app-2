@@ -8,6 +8,7 @@ import com.nguyennhatminh614.marvelapp.util.base.BasePresenter
 class CreatorPresenter(
     private val creatorRepository: CreatorRepository
 ) : BasePresenter<CreatorContract.View>, CreatorContract.Presenter {
+
     private var view: CreatorContract.View? = null
 
     override fun onStart() {
@@ -23,14 +24,34 @@ class CreatorPresenter(
     }
 
     override fun getCreatorListRemote() {
+        view?.showLoadingDialog()
         creatorRepository.getCreatorListRemote(
             object : OnResultListener<MutableList<Creator>> {
                 override fun onSuccess(data: MutableList<Creator>?) {
                     view?.onSuccess(data)
+                    view?.hideLoadingDialog()
                 }
 
                 override fun onError(exception: Exception?) {
                     view?.onError(exception)
+                    view?.hideLoadingDialog()
+                }
+            }
+        )
+    }
+
+    override fun getCreatorListRemoteWithOffset(offset: Int) {
+        view?.showLoadingDialog()
+        creatorRepository.getCreatorListRemoteWithOffset(offset,
+            object : OnResultListener<MutableList<Creator>> {
+                override fun onSuccess(data: MutableList<Creator>?) {
+                    view?.onSuccessGetCreatorOffsetList(data)
+                    view?.hideLoadingDialog()
+                }
+
+                override fun onError(exception: Exception?) {
+                    view?.onError(exception)
+                    view?.hideLoadingDialog()
                 }
             }
         )

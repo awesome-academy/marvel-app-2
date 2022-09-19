@@ -1,52 +1,53 @@
 package com.nguyennhatminh614.marvelapp.screen.homepage
 
-import android.util.Log
 import android.widget.ImageView
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Character
-import com.nguyennhatminh614.marvelapp.data.model.Comic
 import com.nguyennhatminh614.marvelapp.data.model.Creator
 import com.nguyennhatminh614.marvelapp.data.repository.HomePageRepository
+import com.nguyennhatminh614.marvelapp.data.repository.source.local.character.CharacterLocalDataSource
+import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.LocalDatabase
+import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.implementation.CharacterDAOImpl
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.homepage.HomePageLocalDataSource
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.homepage.HomepageRemoteDataSource
 import com.nguyennhatminh614.marvelapp.databinding.FragmentDrawerHomePageBinding
-import com.nguyennhatminh614.marvelapp.screen.character.CharacterAdapter
-import com.nguyennhatminh614.marvelapp.screen.comic.ComicAdapter
-import com.nguyennhatminh614.marvelapp.screen.creator.CreatorAdapter
+import com.nguyennhatminh614.marvelapp.util.OnClickFavoriteItemInterface
 import com.nguyennhatminh614.marvelapp.util.OnClickItemInterface
 import com.nguyennhatminh614.marvelapp.util.base.BaseFragment
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
 
 class HomePageFragment :
     BaseFragment<FragmentDrawerHomePageBinding>(FragmentDrawerHomePageBinding::inflate),
     HomePageContract.View {
 
     private val listBannerUrl = mutableListOf<String>()
-    private val listComic = mutableListOf<Comic>()
-    private val listCharacter = mutableListOf<Character>()
-    private val listCreator = mutableListOf<Creator>()
 
-    private val comicAdapter = ComicAdapter()
-    private val characterAdapter = CharacterAdapter()
-    private val creatorAdapter = CreatorAdapter()
+    private val listHomePageContent = mutableListOf<Any>()
 
     private val homePagePresenter by lazy {
         HomePagePresenter.getInstance(
             HomePageRepository.getInstance(
-                HomePageLocalDataSource.getInstance(),
+                HomePageLocalDataSource.getInstance(
+                    CharacterLocalDataSource.getInstance(
+                        CharacterDAOImpl.getInstance(
+                            LocalDatabase.getInstance(context)
+                        )
+                    ),
+                ),
                 HomepageRemoteDataSource.getInstance()
             )
         )
     }
 
+    private val adapter = HomePageAdapter()
+
     override fun initData() {
-        viewBinding.apply {
-            recyclerViewComicList.adapter = comicAdapter
-            recyclerViewCreatorList.adapter = creatorAdapter
-            recyclerViewDetailCharacters.adapter = characterAdapter
-        }
+        homePagePresenter.onStart()
+        viewBinding.recyclerViewHomePageContent.adapter = adapter
     }
 
     override fun initialize() {
@@ -54,7 +55,7 @@ class HomePageFragment :
     }
 
     override fun callData() {
-        homePagePresenter.onStart()
+        // Not support
     }
 
     override fun initEvent() {
@@ -72,64 +73,66 @@ class HomePageFragment :
             }
         }
 
-        comicAdapter.registerClickItemListener(
-            object : OnClickItemInterface<Comic> {
-                override fun onClickItem(item: Comic) {
-                    val bundle = bundleOf("item" to item)
-                    findNavController().navigate(R.id.action_nav_home_to_nav_detail_comic, bundle)
-                }
-            }
-        )
+        adapter.apply {
+            registerClickFavoriteCharacterItemInterface(
+                object : OnClickFavoriteItemInterface<Character> {
+                    override fun onFavoriteItem(item: Character) {
+                        homePagePresenter.addItemToFavoriteList(item)
+                    }
 
-        creatorAdapter.registerClickItemListener(
-            object : OnClickItemInterface<Creator> {
-                override fun onClickItem(item: Creator) {
-                    val bundle = bundleOf("item" to item)
-                    findNavController().navigate(R.id.action_nav_home_to_nav_detail_creator, bundle)
+                    override fun onUnfavoriteItem(item: Character) {
+                        homePagePresenter.removeItemFromFavoriteList(item.id)
+                    }
                 }
-            }
-        )
+            )
 
-        characterAdapter.registerClickItemInterface(
-            object : OnClickItemInterface<Character> {
-                override fun onClickItem(item: Character) {
-                    val bundle = bundleOf("item" to item)
-                    findNavController().navigate(R.id.action_nav_home_to_nav_detail_character, bundle)
+            registerClickItemCharacterInterface(
+                object : OnClickItemInterface<Character> {
+                    override fun onClickItem(item: Character) {
+                        findNavController().navigate(R.id.action_nav_home_to_nav_detail_character,
+                            bundleOf(Constant.DETAIL_ITEM to item))
+                    }
                 }
-            }
-        )
+            )
+
+            registerClickItemCreatorListener(
+                object : OnClickItemInterface<Creator> {
+                    override fun onClickItem(item: Creator) {
+                        val bundle = bundleOf(Constant.DETAIL_ITEM to item)
+                        findNavController().navigate(R.id.action_nav_home_to_nav_detail_creator,
+                            bundle)
+                    }
+                }
+            )
+        }
     }
 
     override fun onSuccessGetBannerUrlList(data: List<String>) {
-        listComic.clear()
+        listBannerUrl.clear()
         listBannerUrl.addAll(data)
     }
 
-    override fun onSuccessGetComicListRemote(data: MutableList<Comic>) {
-        listComic.clear()
-        listComic.addAll(data)
-        Log.d("dataSize", listComic.size.toString())
+    override fun onSuccessGetListRemote(data: MutableList<Any>, title: String) {
+        listHomePageContent.add(title)
+        listHomePageContent.addAll(data)
+
         activity?.runOnUiThread {
-            comicAdapter.updateListComic(listComic)
+            adapter.updateDataItem(listHomePageContent)
         }
     }
 
-    override fun onSuccessGetCharacterListRemote(data: MutableList<Character>) {
-        listCharacter.clear()
-        listCharacter.addAll(data)
-
+    override fun onSuccessGetCharacterFavoriteListLocal(data: MutableList<Character>) {
         activity?.runOnUiThread {
-            characterAdapter.updateItemList(listCharacter)
+            adapter.updateDataListCharacterFavorite(data)
         }
     }
 
-    override fun onSuccessGetCreatorListRemote(data: MutableList<Creator>) {
-        listCreator.clear()
-        listCreator.addAll(data)
+    override fun showLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = true
+    }
 
-        activity?.runOnUiThread {
-            creatorAdapter.updateItemData(listCreator)
-        }
+    override fun hideLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = false
     }
 
     override fun onError(exception: Exception) {
@@ -138,7 +141,5 @@ class HomePageFragment :
 
     companion object {
         const val FLIP_INTERVAL = 4000
-        const val TAG_HOME_PAGE_FRAGMENT = "homePageFragmentTag"
-        fun newInstance() = HomePageFragment()
     }
 }

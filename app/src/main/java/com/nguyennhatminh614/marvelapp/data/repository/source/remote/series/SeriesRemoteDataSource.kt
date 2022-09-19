@@ -9,7 +9,14 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 class SeriesRemoteDataSource : ISeriesDataSource.Remote {
 
     override fun getRemoteListSeries(listener: OnResultListener<MutableList<Series>>) {
-        GetJsonFromUrl(GET_ALL_SERIES, SeriesEntry.SERIES_ENTITY, listener)
+        GetJsonFromUrl(GET_ALL_SERIES, SeriesEntry.SERIES_ENTITY, listener).callAPI()
+    }
+
+    override fun getRemoteListSeriesWithOffset(
+        offset: Int,
+        listener: OnResultListener<MutableList<Series>>,
+    ) {
+        GetJsonFromUrl(GET_ALL_SERIES, SeriesEntry.SERIES_ENTITY, listener).callAPI(offset = offset)
     }
 
     companion object {

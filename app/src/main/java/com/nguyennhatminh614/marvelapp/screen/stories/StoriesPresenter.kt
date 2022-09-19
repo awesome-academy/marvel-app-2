@@ -12,20 +12,22 @@ class StoriesPresenter(
     private var view: StoriesContract.View? = null
 
     override fun getStoriesListFromLocal() {
+        view?.hideLoadingDialog()
         storiesRepository.getAllFavoriteListLocal(
             object : OnResultListener<MutableList<Stories>> {
                 override fun onSuccess(data: MutableList<Stories>?) {
                     view?.onSuccessGetFavoriteItem(data)
+                    view?.showLoadingDialog()
                 }
 
                 override fun onError(exception: Exception?) {
-                    //Not support
+                    view?.hideLoadingDialog()
                 }
             }
         )
     }
 
-    override fun checkFavoriteItemExist(stories: Stories): Boolean? {
+    override fun checkFavoriteItemExist(stories: Stories): Boolean {
         return storiesRepository.checkExistStories(stories) ?: false
     }
 
@@ -33,19 +35,40 @@ class StoriesPresenter(
         storiesRepository.addStoriesToFavoriteList(stories)
     }
 
-    override fun removeStoriesFavoriteToListLocal(stories: Stories) {
-        storiesRepository.removeStoriesFromFavoriteList(stories)
+    override fun removeStoriesFavoriteToListLocal(id: Int) {
+        storiesRepository.removeStoriesFromFavoriteList(id)
     }
 
     override fun getStoriesListRemote() {
+        view?.showLoadingDialog()
         storiesRepository.getRemoteListStories(
             object : OnResultListener<MutableList<Stories>> {
                 override fun onSuccess(data: MutableList<Stories>?) {
                     view?.onSuccessGetDataFromRemote(data)
+                    view?.hideLoadingDialog()
                 }
 
                 override fun onError(exception: Exception?) {
                     view?.onError(exception)
+                    view?.hideLoadingDialog()
+                }
+
+            }
+        )
+    }
+
+    override fun getStoriesListRemoteWithOffset(offset: Int) {
+        view?.showLoadingDialog()
+        storiesRepository.getRemoteListStoriesWithOffset(offset,
+            object : OnResultListener<MutableList<Stories>> {
+                override fun onSuccess(data: MutableList<Stories>?) {
+                    view?.onSuccessGetDataFromRemote(data)
+                    view?.hideLoadingDialog()
+                }
+
+                override fun onError(exception: Exception?) {
+                    view?.onError(exception)
+                    view?.hideLoadingDialog()
                 }
 
             }

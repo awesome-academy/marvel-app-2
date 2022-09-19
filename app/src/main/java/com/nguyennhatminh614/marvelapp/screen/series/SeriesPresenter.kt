@@ -24,14 +24,16 @@ class SeriesPresenter(
     }
 
     override fun getSeriesListFromLocal() {
+        view?.showLoadingDialog()
         seriesRepository.getAllFavoriteListLocal(
             object : OnResultListener<MutableList<Series>> {
                 override fun onSuccess(data: MutableList<Series>?) {
                     view?.onSuccessGetFavoriteItem(data)
+                    view?.hideLoadingDialog()
                 }
 
                 override fun onError(exception: Exception?) {
-                    // Not support
+                    view?.hideLoadingDialog()
                 }
             }
         )
@@ -45,19 +47,39 @@ class SeriesPresenter(
         seriesRepository.addSeriesToFavoriteList(series)
     }
 
-    override fun removeSeriesFavoriteToListLocal(series: Series) {
-        seriesRepository.removeSeriesFromFavoriteList(series)
+    override fun removeSeriesFavoriteToListLocal(id: Int) {
+        seriesRepository.removeSeriesFromFavoriteList(id)
     }
 
     override fun getSeriesListRemote() {
+        view?.showLoadingDialog()
         seriesRepository.getRemoteListSeries(
             object : OnResultListener<MutableList<Series>> {
                 override fun onSuccess(data: MutableList<Series>?) {
                     view?.onSuccessGetDataFromRemote(data)
+                    view?.hideLoadingDialog()
                 }
 
                 override fun onError(exception: Exception?) {
                     view?.onError(exception)
+                    view?.hideLoadingDialog()
+                }
+            }
+        )
+    }
+
+    override fun getSeriesListRemoteWithOffset(offset: Int) {
+        view?.showLoadingDialog()
+        seriesRepository.getRemoteListSeriesWithOffset(offset,
+            object : OnResultListener<MutableList<Series>> {
+                override fun onSuccess(data: MutableList<Series>?) {
+                    view?.onSuccessGetDataFromRemote(data)
+                    view?.hideLoadingDialog()
+                }
+
+                override fun onError(exception: Exception?) {
+                    view?.onError(exception)
+                    view?.hideLoadingDialog()
                 }
             }
         )

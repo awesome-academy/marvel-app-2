@@ -2,7 +2,10 @@ package com.nguyennhatminh614.marvelapp.screen.character
 
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Character
 import com.nguyennhatminh614.marvelapp.data.repository.CharacterRepository
@@ -39,6 +42,7 @@ class CharacterFragment :
     private var adapter: CharacterAdapter = CharacterAdapter()
 
     override fun initData() {
+        characterPresenter.onStart()
         viewBinding.recyclerView.adapter = adapter
     }
 
@@ -56,6 +60,21 @@ class CharacterFragment :
         }
     }
 
+    override fun onSuccessGetDataWithOffsetFromRemote(listCharacterOffset: MutableList<Character>?) {
+        listCharacterOffset?.let { listRemoteCharacter.addAll(it) }
+        activity?.runOnUiThread {
+            adapter.updateItemList(listRemoteCharacter)
+        }
+    }
+
+    override fun showLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = true
+    }
+
+    override fun hideLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = false
+    }
+
     override fun onError(exception: Exception?) {
         Toast.makeText(context, exception?.message, Toast.LENGTH_SHORT).show()
     }
@@ -65,7 +84,7 @@ class CharacterFragment :
     }
 
     override fun callData() {
-        characterPresenter.onStart()
+        // Not support
     }
 
     override fun initEvent() {
@@ -91,5 +110,20 @@ class CharacterFragment :
                 }
             )
         }
+
+        viewBinding.recyclerView.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    (recyclerView.layoutManager as? LinearLayoutManager)?.let {
+                        if (it.findLastCompletelyVisibleItemPosition() == adapter.itemCount - 1) {
+                            val offset = adapter.itemCount
+                            characterPresenter.getCharacterListRemoteWithOffset(offset)
+                        }
+                    }
+                }
+            }
+        )
     }
 }

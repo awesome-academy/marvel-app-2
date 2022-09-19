@@ -8,7 +8,6 @@ import com.google.android.material.chip.Chip
 import com.nguyennhatminh614.marvelapp.databinding.ActivitySearchBinding
 import com.nguyennhatminh614.marvelapp.util.extensions.processSearchResult
 
-const val HIDE_ON_CLICK = 0
 object SearchActivityUtil {
 
     fun hideKeyboard(activity: SearchActivity, binding: ActivitySearchBinding) {
@@ -16,22 +15,22 @@ object SearchActivityUtil {
             searchLayout.setOnClickListener {
                 (activity.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
                     ?.hideSoftInputFromWindow(
-                        it.windowToken, HIDE_ON_CLICK)
+                        it.windowToken, 0)
             }
             textTempSearchResult.setOnClickListener {
                 (activity.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
                     ?.hideSoftInputFromWindow(
-                        it.windowToken, HIDE_ON_CLICK)
+                        it.windowToken, 0)
             }
             recyclerViewSearchResult.setOnClickListener {
                 (activity.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
                     ?.hideSoftInputFromWindow(
-                        it.windowToken, HIDE_ON_CLICK)
+                        it.windowToken, 0)
             }
             textSearchResultNotFound.setOnClickListener {
                 (activity.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)
                     ?.hideSoftInputFromWindow(
-                        it.windowToken, HIDE_ON_CLICK)
+                        it.windowToken, 0)
             }
         }
     }

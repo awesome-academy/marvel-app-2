@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:overScrollMode="never">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -126,137 +127,17 @@
             android:textSize="@dimen/text_size_20sp"
             android:fontFamily="@font/comfortaa_light"/>
 
-        <TextView
-            android:id="@+id/text_temp_creator_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/temp_creators_list"
-            android:textSize="@dimen/text_size_20sp"
-            android:fontFamily="@font/comfortaa_bold"
-            app:layout_constraintStart_toStartOf="@id/text_temp_description"
-            app:layout_constraintTop_toBottomOf="@id/text_detail_series"
-            android:layout_marginTop="@dimen/margin_20dp"/>
-
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_detail_creators"
+            android:id="@+id/recycler_view_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_creator_list"
+            app:layout_constraintTop_toBottomOf="@id/text_detail_series"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_margin="@dimen/margin_16dp"/>
-
-        <TextView
-            android:id="@+id/text_recycler_view_creators_not_found"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_recycler_view_creators_not_found"
-            app:layout_constraintStart_toStartOf="@id/text_temp_creator_list"
-            app:layout_constraintTop_toTopOf="@id/text_temp_creator_list"
-            android:layout_marginTop="@dimen/margin_40dp"
-            android:textSize="@dimen/text_size_20sp"
-            android:fontFamily="@font/comfortaa_light"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/text_temp_character_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/temp_characters_list"
-            android:textSize="@dimen/text_size_20sp"
-            android:fontFamily="@font/comfortaa_bold"
-            app:layout_constraintStart_toStartOf="@id/text_temp_description"
-            app:layout_constraintTop_toBottomOf="@id/recycler_view_detail_creators"
-            android:layout_marginTop="@dimen/margin_20dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_detail_characters"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_character_list"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/margin_16dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-        <TextView
-            android:id="@+id/text_recycler_view_characters_not_found"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_recycler_view_characters_not_found"
-            app:layout_constraintStart_toStartOf="@id/text_temp_character_list"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_character_list"
+            android:layout_marginStart="@dimen/margin_11dp"
             android:layout_marginTop="@dimen/margin_16dp"
-            android:textSize="@dimen/text_size_20sp"
-            android:fontFamily="@font/comfortaa_light"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/text_temp_stories_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/temp_detail_stories_list"
-            android:textSize="@dimen/text_size_20sp"
-            android:fontFamily="@font/comfortaa_bold"
-            app:layout_constraintStart_toStartOf="@id/text_temp_description"
-            app:layout_constraintTop_toBottomOf="@id/recycler_view_detail_characters"
-            android:layout_marginTop="@dimen/margin_20dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_detail_stories"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_stories_list"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/margin_16dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-        <TextView
-            android:id="@+id/text_recycler_view_stories_not_found"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_recycler_view_characters_not_found"
-            app:layout_constraintStart_toStartOf="@id/text_temp_stories_list"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_stories_list"
-            android:textSize="@dimen/text_size_20sp"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:fontFamily="@font/comfortaa_light"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/text_temp_event_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/temp_detail_event_list"
-            android:textSize="@dimen/text_size_20sp"
-            android:fontFamily="@font/comfortaa_bold"
-            app:layout_constraintStart_toStartOf="@id/text_temp_description"
-            app:layout_constraintTop_toBottomOf="@id/recycler_view_detail_stories"
-            android:layout_marginTop="@dimen/margin_20dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_detail_event"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_event_list"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="@dimen/margin_16dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-        <TextView
-            android:id="@+id/text_recycler_view_event_not_found"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_recycler_view_event_not_found"
-            app:layout_constraintStart_toStartOf="@id/text_temp_event_list"
-            app:layout_constraintTop_toBottomOf="@id/text_temp_event_list"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:textSize="@dimen/text_size_20sp"
-            android:fontFamily="@font/comfortaa_light"
-            android:visibility="gone" />
+            android:layout_marginEnd="@dimen/margin_16dp"/>
 
         <TextView
             android:id="@+id/text_temp_more_information"
@@ -267,7 +148,7 @@
             android:fontFamily="@font/comfortaa_bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recycler_view_detail_event"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_detail"
             android:layout_marginTop="@dimen/margin_30dp"/>
 
         <TextView
@@ -284,4 +165,4 @@
             app:layout_constraintTop_toBottomOf="@id/text_temp_more_information" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

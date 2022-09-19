@@ -12,25 +12,25 @@ import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 const val DEFAULT_NO_LIMIT = 0
+const val DEFAULT_NO_OFFSET = 0
 
 class GetJsonFromUrl<T>(
     private val urlString: String,
     private val keyEntity: String,
     private val listener: OnResultListener<T>,
-    private var nameQueryToken: String = "",
-    private var titleQueryToken: String = "",
-    private var limit: Int = 0,
 ) {
 
     private val mExecutor: Executor = Executors.newSingleThreadExecutor()
     private val mHandler = Handler(Looper.getMainLooper())
     private var exception: Exception? = null
 
-    init {
-        callAPI()
-    }
-
-    private fun callAPI() {
+    fun callAPI(
+        nameQueryToken: String = "",
+        titleQueryToken: String = "",
+        limit: Int = DEFAULT_NO_LIMIT,
+        isSingleObject: Boolean = false,
+        offset: Int = DEFAULT_NO_OFFSET,
+    ) {
         var apiCallString = APIConstant.BASE_URL + urlString + APIConstant.QUERY_TOKEN
         if (nameQueryToken.isNullOrEmpty().not()) {
             apiCallString += "&nameStartsWith=$nameQueryToken"
@@ -41,11 +41,21 @@ class GetJsonFromUrl<T>(
         if (limit != DEFAULT_NO_LIMIT) {
             apiCallString += "&limit=$limit"
         }
+        if (offset != DEFAULT_NO_OFFSET) {
+            apiCallString += "&offset=$offset"
+        }
         mExecutor.execute {
             val responseJson =
                 getRequestJsonFromUrl(apiCallString)
-            val responseResult = ParseDataWithJson()
-                .parseJsonToData(JSONObject(responseJson), keyEntity) as? T
+
+            val responseResult = if (isSingleObject.not()) {
+                ParseDataWithJson()
+                    .parseJsonToData(JSONObject(responseJson), keyEntity) as? T
+            } else {
+                ParseDataWithJson().parseJsonToDataSingleObject(JSONObject(responseJson),
+                    keyEntity) as? T
+            }
+
             mHandler.post {
                 if (responseResult != null) {
                     listener.onSuccess(responseResult)

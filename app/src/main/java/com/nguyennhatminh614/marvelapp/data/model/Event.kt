@@ -9,16 +9,12 @@ data class Event(
     val title: String = "",
     val description: String = "",
     val thumbnailLink: String = "",
-    val creatorList: MutableList<CreatorDTO> = mutableListOf(),
-    val characterList: MutableList<CharacterDTO> = mutableListOf(),
-    val seriesList: MutableList<SeriesDTO> = mutableListOf(),
-    val comicList: MutableList<ComicDTO> = mutableListOf(),
-    val storiesList: MutableList<StoriesDTO> = mutableListOf(),
+    val listDetailContent: MutableList<DetailListItem> = mutableListOf(),
     val startDate: String = "",
     val endDate: String = "",
     val detailLink : String = "",
     val wikiLink: String = "",
-    val isFavorite: Boolean = false,
+    var isFavorite: Boolean = false,
 ) : Parcelable
 
 object EventEntry {
@@ -29,7 +25,7 @@ object EventEntry {
     const val TYPE_DETAIL_URL = "detail"
     const val DESCRIPTION = "description"
     const val TITLE = "title"
-    const val EVENT_ENTITY = "event"
+    const val EVENT_ENTITY = "Events"
     const val ID = "id"
     const val THUMBNAIL_DIR = "thumbnail"
     const val GET_PATH = "path"

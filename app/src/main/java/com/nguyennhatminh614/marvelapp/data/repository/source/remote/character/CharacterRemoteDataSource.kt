@@ -9,7 +9,18 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 class CharacterRemoteDataSource : ICharacterDataSource.Remote {
 
     override fun getCharacterListRemote(listener: OnResultListener<MutableList<Character>>) {
-        GetJsonFromUrl(GET_ALL_CHARACTER, CharacterEntry.CHARACTER_ENTITY, listener)
+        GetJsonFromUrl(GET_ALL_CHARACTER, CharacterEntry.CHARACTER_ENTITY, listener).callAPI()
+    }
+
+    override fun getCharacterListRemoteWithOffset(
+        offset: Int,
+        listener: OnResultListener<MutableList<Character>>,
+    ) {
+        GetJsonFromUrl(
+            GET_ALL_CHARACTER,
+            CharacterEntry.CHARACTER_ENTITY,
+            listener,
+        ).callAPI(offset = offset)
     }
 
     companion object {

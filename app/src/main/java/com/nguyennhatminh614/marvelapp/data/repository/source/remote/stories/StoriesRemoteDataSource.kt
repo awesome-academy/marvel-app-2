@@ -8,12 +8,21 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 
 class StoriesRemoteDataSource : IStoriesDataSource.Remote {
     override fun getRemoteListStories(listener: OnResultListener<MutableList<Stories>>) {
-        GetJsonFromUrl(GET_ALL_STORIES, StoriesEntry.STORIES_ENTITY, listener)
+        GetJsonFromUrl(GET_ALL_STORIES, StoriesEntry.STORIES_ENTITY, listener).callAPI()
+    }
+
+    override fun getRemoteListStoriesWithOffset(
+        offset: Int,
+        listener: OnResultListener<MutableList<Stories>>,
+    ) {
+        GetJsonFromUrl(GET_ALL_STORIES,
+            StoriesEntry.STORIES_ENTITY,
+            listener).callAPI(offset = offset)
     }
 
     companion object {
         const val GET_ALL_STORIES = "/v1/public/stories"
-        private var instance : StoriesRemoteDataSource? = null
+        private var instance: StoriesRemoteDataSource? = null
 
         fun getInstance() =
             synchronized(this) {

@@ -28,6 +28,13 @@ class CharacterRepository(
         remote.getCharacterListRemote(listener)
     }
 
+    override fun getCharacterListRemoteWithOffset(
+        offset: Int,
+        listener: OnResultListener<MutableList<Character>>,
+    ) {
+        remote.getCharacterListRemoteWithOffset(offset, listener)
+    }
+
     companion object {
         private var instance: CharacterRepository? = null
 

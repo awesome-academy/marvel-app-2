@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/image_thumbnail_search_object"
-        android:layout_width="@dimen/image_thumbnail_search_width"
-        android:layout_height="@dimen/image_thumbnail_search_height"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
         android:src="@drawable/image_comic_default"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/image_thumbnail_search_object"
         app:layout_constraintTop_toTopOf="@id/image_thumbnail_search_object"
-        android:text="@string/text_search_object_category"
+        android:text="Series"
         android:textAllCaps="true"
         android:fontFamily="@font/comfortaa_bold"
         android:textSize="@dimen/text_size_18sp"

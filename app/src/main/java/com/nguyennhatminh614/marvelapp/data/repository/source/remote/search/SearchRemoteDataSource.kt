@@ -28,8 +28,7 @@ class SearchRemoteDataSource : ISearchDataSource.Remote {
             ComicRemoteDataSource.GET_ALL_COMIC,
             ComicEntry.COMIC_ENTITY,
             listener,
-            titleQueryToken = nameStartWith,
-        )
+        ).callAPI(titleQueryToken = nameStartWith)
     }
 
     override fun getRemoteListCharacterByName(
@@ -40,8 +39,7 @@ class SearchRemoteDataSource : ISearchDataSource.Remote {
             CharacterRemoteDataSource.GET_ALL_CHARACTER,
             CharacterEntry.CHARACTER_ENTITY,
             listener,
-            nameQueryToken = nameStartWith,
-        )
+        ).callAPI(nameQueryToken = nameStartWith)
     }
 
     override fun getRemoteListCreatorByName(
@@ -52,8 +50,7 @@ class SearchRemoteDataSource : ISearchDataSource.Remote {
             CreatorRemoteDataSource.GET_ALL_CREATOR,
             CreatorEntry.CREATOR_ENTITY,
             listener,
-            nameQueryToken = nameStartWith,
-        )
+        ).callAPI(nameQueryToken = nameStartWith)
     }
 
     override fun getRemoteListSeriesByName(
@@ -64,8 +61,7 @@ class SearchRemoteDataSource : ISearchDataSource.Remote {
             SeriesRemoteDataSource.GET_ALL_SERIES,
             SeriesEntry.SERIES_ENTITY,
             listener,
-            titleQueryToken = nameStartWith,
-        )
+        ).callAPI(titleQueryToken = nameStartWith)
     }
 
     override fun getRemoteListEventByName(
@@ -76,8 +72,7 @@ class SearchRemoteDataSource : ISearchDataSource.Remote {
             EventRemoteDataSource.GET_ALL_EVENT,
             EventEntry.EVENT_ENTITY,
             listener,
-            nameQueryToken = nameStartWith,
-        )
+        ).callAPI(nameQueryToken = nameStartWith)
     }
 
     companion object {

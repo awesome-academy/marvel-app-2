@@ -9,8 +9,16 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 class EventRemoteDataSource : IEventDataSource.Remote {
 
     override fun getEventListRemote(listener: OnResultListener<MutableList<Event>>) {
-        GetJsonFromUrl(GET_ALL_EVENT, EventEntry.EVENT_ENTITY, listener)
+        GetJsonFromUrl(GET_ALL_EVENT, EventEntry.EVENT_ENTITY, listener).callAPI()
     }
+
+    override fun getEventListRemoteWithOffset(
+        offset: Int,
+        listener: OnResultListener<MutableList<Event>>,
+    ) {
+        GetJsonFromUrl(GET_ALL_EVENT, EventEntry.EVENT_ENTITY, listener).callAPI(offset = offset)
+    }
+
 
     companion object {
         const val GET_ALL_EVENT = "/v1/public/events"
