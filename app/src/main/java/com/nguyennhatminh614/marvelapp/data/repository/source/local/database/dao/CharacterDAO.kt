@@ -6,5 +6,5 @@ interface CharacterDAO {
     fun checkExistsCharacter(character: Character): Boolean
     fun getAllFavoriteCharacter(): ArrayList<Character>
     fun addFavoriteNewCharacter(character: Character)
-    fun removeFavoriteCharacter(character: Character)
+    fun removeFavoriteCharacter(id: Int)
 }

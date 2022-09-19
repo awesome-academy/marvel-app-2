@@ -13,7 +13,7 @@ interface CharacterContract {
         fun getCharacterListFromLocal()
         fun checkFavoriteItemExist(character: Character) : Boolean?
         fun addCharacterFavoriteToListLocal(character: Character)
-        fun removeCharacterFavoriteToListLocal(character: Character)
+        fun removeCharacterFavoriteToListLocal(id: Int)
         fun getCharacterListRemote()
     }
 }

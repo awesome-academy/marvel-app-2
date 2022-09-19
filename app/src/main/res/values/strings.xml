@@ -72,4 +72,5 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="text_search_object_category">Series</string>
 </resources>

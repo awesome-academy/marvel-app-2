@@ -115,4 +115,10 @@ class DetailEventFragment : BaseFragment<FragmentDetailEventBinding>(FragmentDet
     override fun callData() {
         // Not support
     }
+
+    companion object {
+        fun newInstance(event: Event) = DetailEventFragment().apply {
+            this.event = event
+        }
+    }
 }

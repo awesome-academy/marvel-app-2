@@ -152,4 +152,10 @@ class DetailSeriesFragment :
     override fun callData() {
         // Not support
     }
+
+    companion object {
+        fun newInstance(series: Series) = DetailSeriesFragment().apply {
+            this.series = series
+        }
+    }
 }

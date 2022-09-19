@@ -26,15 +26,15 @@ class ComicPresenter(
     }
 
     override fun checkExistComic(comic: Comic): Boolean? {
-        return comicRepository.checkExistComic(comic) ?: false
+        return comicRepository.checkExistComic(comic)
     }
 
     override fun addComicToFavoriteList(comic: Comic) {
         comicRepository.addComicToFavoriteList(comic)
     }
 
-    override fun removeComicFromFavoriteList(comic: Comic) {
-        comicRepository.removeComicFromFavoriteList(comic)
+    override fun removeComicFromFavoriteList(id: Int) {
+        comicRepository.removeComicFromFavoriteList(id)
     }
 
     override fun getRemoteListComic() {
