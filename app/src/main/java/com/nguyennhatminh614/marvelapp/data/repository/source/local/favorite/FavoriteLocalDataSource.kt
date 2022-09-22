@@ -39,16 +39,19 @@ class FavoriteLocalDataSource(
         storiesLocal.getAllFavoriteListLocal(listener)
     }
 
-    override fun remoteItemFromLocal(favoriteItem: FavoriteItem) {
+    override fun removeItemFromLocal(favoriteItem: FavoriteItem) : Boolean {
         val type = favoriteItem.favoriteItemType
         val id = favoriteItem.id
 
-        when(type) {
+        val result = when(type) {
             CharacterEntry.CHARACTER_ENTITY -> characterLocal.removeCharacterFavoriteToListLocal(id)
             ComicEntry.COMIC_ENTITY -> comicLocal.removeComicFromFavoriteList(id)
             SeriesEntry.SERIES_ENTITY -> seriesLocal.removeSeriesFromFavoriteList(id)
             StoriesEntry.STORIES_ENTITY -> storiesLocal.removeStoriesFromFavoriteList(id)
+            else -> false
         }
+
+        return result
     }
 
     companion object {

@@ -5,8 +5,8 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 interface ICharacterDataSource {
     interface Local {
         fun getCharacterListLocal(listener: OnResultListener<MutableList<Character>>)
-        fun addCharacterFavoriteToListLocal(character: Character)
-        fun removeCharacterFavoriteToListLocal(id: Int)
+        fun addCharacterFavoriteToListLocal(character: Character) : Boolean
+        fun removeCharacterFavoriteToListLocal(id: Int) : Boolean
         fun checkFavoriteCharacterExists(character: Character) : Boolean
     }
 

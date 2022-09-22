@@ -7,8 +7,8 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 interface IHomepageDataSource {
     interface Local {
         fun getBannerUrlList(listener: OnResultListener<List<String>>)
-        fun addCharacterItemToFavoriteList(item: Character)
-        fun removeCharacterItemFromListLocal(id: Int)
+        fun addCharacterItemToFavoriteList(item: Character) : Boolean
+        fun removeCharacterItemFromListLocal(id: Int) : Boolean
         fun getFavoriteCharacterListLocal(listener: OnResultListener<MutableList<Character>>)
     }
 

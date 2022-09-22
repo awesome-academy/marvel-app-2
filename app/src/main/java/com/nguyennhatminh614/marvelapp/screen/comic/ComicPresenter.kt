@@ -6,7 +6,7 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 import com.nguyennhatminh614.marvelapp.util.base.BasePresenter
 
 class ComicPresenter(
-    private val comicRepository: ComicRepository
+    private val comicRepository: ComicRepository,
 ) : BasePresenter<ComicContract.View>, ComicContract.Presenter {
 
     private var view: ComicContract.View? = null
@@ -29,15 +29,15 @@ class ComicPresenter(
     }
 
     override fun checkExistComic(comic: Comic): Boolean {
-        return comicRepository.checkExistComic(comic) ?: false
+        return comicRepository.checkExistComic(comic)
     }
 
-    override fun addComicToFavoriteList(comic: Comic) {
-        comicRepository.addComicToFavoriteList(comic)
+    override fun addComicToFavoriteList(comic: Comic): Boolean {
+        return comicRepository.addComicToFavoriteList(comic)
     }
 
-    override fun removeComicFromFavoriteList(id: Int) {
-        comicRepository.removeComicFromFavoriteList(id)
+    override fun removeComicFromFavoriteList(id: Int): Boolean {
+        return comicRepository.removeComicFromFavoriteList(id)
     }
 
     override fun getRemoteListComic() {
@@ -76,8 +76,7 @@ class ComicPresenter(
     }
 
     override fun onStart() {
-        getAllFavoriteListLocal()
-        getRemoteListComic()
+        // Not support
     }
 
     override fun onStop() {

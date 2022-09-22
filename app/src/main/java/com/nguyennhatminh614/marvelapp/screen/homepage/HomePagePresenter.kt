@@ -1,15 +1,13 @@
 package com.nguyennhatminh614.marvelapp.screen.homepage
 
 import com.nguyennhatminh614.marvelapp.data.model.Character
-import com.nguyennhatminh614.marvelapp.data.model.CharacterEntry
 import com.nguyennhatminh614.marvelapp.data.model.Creator
-import com.nguyennhatminh614.marvelapp.data.model.CreatorEntry
 import com.nguyennhatminh614.marvelapp.data.repository.HomePageRepository
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.OnResultListener
 import com.nguyennhatminh614.marvelapp.util.base.BasePresenter
 
 class HomePagePresenter(
-    private val homePageRepository: HomePageRepository
+    private val homePageRepository: HomePageRepository,
 ) : BasePresenter<HomePageContract.View>, HomePageContract.Presenter {
 
     private var view: HomePageContract.View? = null
@@ -19,81 +17,79 @@ class HomePagePresenter(
         homePageRepository.getBannerUrlList(
             object : OnResultListener<List<String>> {
                 override fun onSuccess(data: List<String>?) {
-                    data?.let { view?.onSuccessGetBannerUrlList(it) }
+                    view?.onSuccessGetBannerUrlList(data)
                     view?.hideLoadingDialog()
                 }
 
                 override fun onError(exception: Exception?) {
+                    view?.onError(exception)
                     view?.hideLoadingDialog()
                 }
             }
         )
     }
 
-    override fun getListRemoteByType(title: String) {
+    override fun getCharacterListRemote() {
         view?.showLoadingDialog()
-        when(title) {
-            CharacterEntry.CHARACTER_ENTITY -> {
-                homePageRepository.getCharacterListRemote(
-                    object : OnResultListener<MutableList<Character>> {
-                        override fun onSuccess(data: MutableList<Character>?) {
-                            data?.let { view?.onSuccessGetListRemote(it.toMutableList(), title) }
-                            view?.hideLoadingDialog()
-                        }
+        homePageRepository.getCharacterListRemote(
+            object : OnResultListener<MutableList<Character>> {
+                override fun onSuccess(data: MutableList<Character>?) {
+                    view?.onSuccessGetListRemote(data)
+                    view?.hideLoadingDialog()
+                }
 
-                        override fun onError(exception: Exception?) {
-                            view?.hideLoadingDialog()
-                        }
-                    }
-                )
+                override fun onError(exception: Exception?) {
+                    view?.onError(exception)
+                    view?.hideLoadingDialog()
+                }
             }
-            CreatorEntry.CREATOR_ENTITY -> {
-                homePageRepository.getCreatorListRemote(
-                    object : OnResultListener<MutableList<Creator>> {
-                        override fun onSuccess(data: MutableList<Creator>?) {
-                            data?.let { view?.onSuccessGetListRemote(it.toMutableList(), title) }
-                        }
-
-                        override fun onError(exception: Exception?) {
-                            // Not support
-                        }
-                    }
-                )
-            }
-        }
+        )
     }
 
-    override fun addItemToFavoriteList(item: Character) {
-        homePageRepository.addCharacterItemToFavoriteList(item)
+    override fun getCreatorListRemote() {
+        view?.showLoadingDialog()
+        homePageRepository.getCreatorListRemote(
+            object : OnResultListener<MutableList<Creator>> {
+                override fun onSuccess(data: MutableList<Creator>?) {
+                    view?.onSuccessGetListRemote(data)
+                    view?.hideLoadingDialog()
+                }
+
+                override fun onError(exception: Exception?) {
+                    view?.onError(exception)
+                    view?.hideLoadingDialog()
+                }
+            }
+        )
     }
 
-    override fun removeItemFromFavoriteList(id: Int) {
-        homePageRepository.removeCharacterItemFromListLocal(id)
+    override fun addItemToFavoriteList(item: Character): Boolean {
+        return homePageRepository.addCharacterItemToFavoriteList(item)
+    }
+
+    override fun removeItemFromFavoriteList(id: Int): Boolean {
+        return homePageRepository.removeCharacterItemFromListLocal(id)
     }
 
     override fun getFavoriteListCharacterLocal() {
+        view?.showLoadingDialog()
         homePageRepository.getFavoriteCharacterListLocal(
             object : OnResultListener<MutableList<Character>> {
                 override fun onSuccess(data: MutableList<Character>?) {
-                    data?.let { view?.onSuccessGetCharacterFavoriteListLocal(it) }
+                    view?.onSuccessGetCharacterFavoriteListLocal(data)
+                    view?.hideLoadingDialog()
                 }
 
                 override fun onError(exception: Exception?) {
-                    // Not support
+                    view?.onError(exception)
+                    view?.hideLoadingDialog()
                 }
             }
         )
     }
 
-
-
     override fun onStart() {
-        view?.showLoadingDialog()
-        getBannerUrlList()
-        getFavoriteListCharacterLocal()
-        getListRemoteByType(CharacterEntry.CHARACTER_ENTITY)
-        getListRemoteByType(CreatorEntry.CREATOR_ENTITY)
-        view?.hideLoadingDialog()
+        // Not support
     }
 
     override fun onStop() {

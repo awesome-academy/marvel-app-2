@@ -7,7 +7,9 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Character
+import com.nguyennhatminh614.marvelapp.data.model.CharacterEntry
 import com.nguyennhatminh614.marvelapp.data.model.Creator
+import com.nguyennhatminh614.marvelapp.data.model.CreatorEntry
 import com.nguyennhatminh614.marvelapp.data.repository.HomePageRepository
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.character.CharacterLocalDataSource
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.LocalDatabase
@@ -46,7 +48,10 @@ class HomePageFragment :
     private val adapter = HomePageAdapter()
 
     override fun initData() {
-        homePagePresenter.onStart()
+        homePagePresenter.getBannerUrlList()
+        homePagePresenter.getFavoriteListCharacterLocal()
+        homePagePresenter.getCharacterListRemote()
+        homePagePresenter.getCreatorListRemote()
         viewBinding.recyclerViewHomePageContent.adapter = adapter
     }
 
@@ -107,24 +112,34 @@ class HomePageFragment :
         }
     }
 
-    override fun onSuccessGetBannerUrlList(data: List<String>) {
+    override fun onSuccessGetBannerUrlList(data: List<String>?) {
         listBannerUrl.clear()
-        listBannerUrl.addAll(data)
+        data?.let { listBannerUrl.addAll(it) }
     }
 
-    override fun onSuccessGetListRemote(data: MutableList<Any>, title: String) {
+    override fun <T : Any> onSuccessGetListRemote(data: MutableList<T>?) {
+        val title = when(data?.get(Constant.FIRST_POSITION)) {
+            is Character -> CharacterEntry.CHARACTER_ENTITY
+            is Creator -> CreatorEntry.CREATOR_ENTITY
+            else -> ""
+        }
+
         listHomePageContent.add(title)
-        listHomePageContent.addAll(data)
+        data?.let { listHomePageContent.addAll(it) }
 
         activity?.runOnUiThread {
             adapter.updateDataItem(listHomePageContent)
         }
     }
 
-    override fun onSuccessGetCharacterFavoriteListLocal(data: MutableList<Character>) {
+    override fun onSuccessGetCharacterFavoriteListLocal(data: MutableList<Character>?) {
         activity?.runOnUiThread {
-            adapter.updateDataListCharacterFavorite(data)
+            data?.let { adapter.updateDataListCharacterFavorite(it) }
         }
+    }
+
+    override fun onError(exception: Exception?) {
+        // Not support
     }
 
     override fun showLoadingDialog() {
@@ -133,10 +148,6 @@ class HomePageFragment :
 
     override fun hideLoadingDialog() {
         viewBinding.progressBarLoading.isVisible = false
-    }
-
-    override fun onError(exception: Exception) {
-        // Not support
     }
 
     companion object {

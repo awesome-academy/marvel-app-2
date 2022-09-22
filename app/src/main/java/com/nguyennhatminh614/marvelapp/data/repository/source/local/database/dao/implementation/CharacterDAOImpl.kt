@@ -4,6 +4,8 @@ import android.content.ContentValues
 import com.nguyennhatminh614.marvelapp.data.model.Character
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.LocalDatabase
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.CharacterDAO
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
+
 
 class CharacterDAOImpl(localDatabase: LocalDatabase) : CharacterDAO {
 
@@ -42,9 +44,9 @@ class CharacterDAOImpl(localDatabase: LocalDatabase) : CharacterDAO {
         return listCharacter
     }
 
-    override fun addFavoriteNewCharacter(character: Character) {
+    override fun addFavoriteNewCharacter(character: Character) : Boolean {
         val values = ContentValues()
-
+        var status: Long = 0L
         writableDatabase.apply {
             values.apply {
                 put(ID, character.id)
@@ -54,16 +56,19 @@ class CharacterDAOImpl(localDatabase: LocalDatabase) : CharacterDAO {
                 put(FAVORITE, if (character.isFavorite) 1 else 0)
             }
 
-            insert(CHARACTER_TABLE, null, values)
+            status = insert(CHARACTER_TABLE, null, values)
         }
+
+        return status != Constant.STATUS_FAIL_INSERT
     }
 
-    override fun removeFavoriteCharacter(id: Int) {
+    override fun removeFavoriteCharacter(id: Int) : Boolean {
         val whereClause = "ID = ?"
-
+        var status: Int
         writableDatabase.apply {
-            delete(CHARACTER_TABLE, whereClause, arrayOf(id.toString()))
+            status = delete(CHARACTER_TABLE, whereClause, arrayOf(id.toString()))
         }
+        return status != Constant.STATUS_FAIL_DELETE
     }
 
     companion object {

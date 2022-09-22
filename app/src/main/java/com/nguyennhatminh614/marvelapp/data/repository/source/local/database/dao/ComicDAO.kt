@@ -5,6 +5,6 @@ import com.nguyennhatminh614.marvelapp.data.model.Comic
 interface ComicDAO {
     fun checkExistComic(comic: Comic) : Boolean
     fun getAllFavoriteComic() : MutableList<Comic>
-    fun addComicToFavoriteList(comic: Comic)
-    fun removeComicFromFavoriteList(id: Int)
+    fun addComicToFavoriteList(comic: Comic) : Boolean
+    fun removeComicFromFavoriteList(id: Int) : Boolean
 }

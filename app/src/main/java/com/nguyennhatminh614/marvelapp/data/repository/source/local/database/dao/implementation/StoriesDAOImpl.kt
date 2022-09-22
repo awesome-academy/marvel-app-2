@@ -4,6 +4,7 @@ import android.content.ContentValues
 import com.nguyennhatminh614.marvelapp.data.model.Stories
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.LocalDatabase
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.StoriesDAO
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
 
 class StoriesDAOImpl(localDatabase: LocalDatabase) : StoriesDAO {
 
@@ -44,10 +45,10 @@ class StoriesDAOImpl(localDatabase: LocalDatabase) : StoriesDAO {
         return listStories
     }
 
-    override fun addStoriesToFavoriteList(stories: Stories) {
+    override fun addStoriesToFavoriteList(stories: Stories) : Boolean {
         val database = writableDatabase
         val values = ContentValues()
-
+        var result: Long
         database.apply {
             values.apply {
                 put(ID, stories.id)
@@ -57,17 +58,21 @@ class StoriesDAOImpl(localDatabase: LocalDatabase) : StoriesDAO {
                 put(FAVORITE, if (stories.isFavorite) 1 else 0)
             }
 
-            insert(STORIES_TABLE, null, values)
+            result = insert(STORIES_TABLE, null, values)
         }
+
+        return result != Constant.STATUS_FAIL_INSERT
     }
 
-    override fun removeStoriesToFavoriteList(id: Int) {
+    override fun removeStoriesToFavoriteList(id: Int) : Boolean {
         val database = writableDatabase
         val whereClause = "ID = ?"
-
+        var result: Int
         database.apply {
-            delete(STORIES_TABLE, whereClause, arrayOf(id.toString()))
+            result = delete(STORIES_TABLE, whereClause, arrayOf(id.toString()))
         }
+
+        return result != Constant.STATUS_FAIL_DELETE
     }
 
     companion object {

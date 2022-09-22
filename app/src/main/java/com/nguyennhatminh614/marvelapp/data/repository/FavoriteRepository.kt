@@ -27,8 +27,8 @@ class FavoriteRepository(
         local.getStoriesListLocal(listener)
     }
 
-    override fun remoteItemFromLocal(favoriteItem: FavoriteItem) {
-        local.remoteItemFromLocal(favoriteItem)
+    override fun removeItemFromLocal(favoriteItem: FavoriteItem): Boolean {
+        return local.removeItemFromLocal(favoriteItem)
     }
 
     override fun getCharacterListRemoteWithID(id: Int, listener: OnResultListener<Character>) {

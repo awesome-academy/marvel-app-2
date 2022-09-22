@@ -20,6 +20,7 @@ plugins {
 apply plugin: "org.jlleitschuh.gradle.ktlint"
 apply plugin: "kotlin-android-extensions"
 apply plugin: "io.gitlab.arturbosch.detekt"
+
 android {
     compileSdk 32
 
@@ -57,20 +58,16 @@ android {
         experimental = true
     }
 
-    packagingOptions {
-        exclude 'kotlin/internal/internal.kotlin_builtins'
-        exclude("META-INF/kotlin-stdlib-common.kotlin_module")
-        exclude("META-INF/kotlin-stdlib-jdk7.kotlin_module")
-        exclude("META-INF/kotlin-stdlib-jdk8.kotlin_module")
-        exclude("META-INF/kotlin-stdlib.kotlin_module")
-        exclude("kotlin/annotation/annotation.kotlin_builtins")
-        exclude("kotlin/collections/collections.kotlin_builtins")
-        exclude("kotlin/coroutines/coroutines.kotlin_builtins")
-        exclude("kotlin/internal/internal.kotlin_builtins")
-        exclude("kotlin/kotlin.kotlin_builtins")
-        exclude("kotlin/ranges/ranges.kotlin_builtins")
-        exclude("kotlin/reflect/reflect.kotlin_builtins")
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
+    packagingOptions {
+        resources {
+            excludes += ['kotlin/internal/internal.kotlin_builtins', 'META-INF/kotlin-stdlib-common.kotlin_module', 'META-INF/kotlin-stdlib-jdk7.kotlin_module', 'META-INF/kotlin-stdlib-jdk8.kotlin_module', 'META-INF/kotlin-stdlib.kotlin_module', 'kotlin/annotation/annotation.kotlin_builtins', 'kotlin/collections/collections.kotlin_builtins', 'kotlin/coroutines/coroutines.kotlin_builtins', 'kotlin/internal/internal.kotlin_builtins', 'kotlin/kotlin.kotlin_builtins', 'kotlin/ranges/ranges.kotlin_builtins', 'kotlin/reflect/reflect.kotlin_builtins']
+        }
+    }
+
+    namespace 'com.nguyennhatminh614.marvelapp'
 }
 subprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
@@ -88,6 +85,20 @@ dependencies {
 
     detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.20.0'
     // https://mvnrepository.com/artifact/com.github.bumptech.glide/glide
+
+    // Required -- JUnit 4 framework
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    // Optional -- Robolectric environment
+    testImplementation "androidx.test:core:1.4.0"
+    // Optional -- Mockito framework
+    testImplementation "org.mockito:mockito-core:4.0.0"
+    // Optional -- mockito-kotlin
+    testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
+    // Optional -- Mockk framework
+    testImplementation "io.mockk:mockk:1.12.7"
+    testImplementation 'org.robolectric:robolectric:4.8'
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'

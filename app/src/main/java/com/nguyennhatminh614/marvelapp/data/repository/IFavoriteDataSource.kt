@@ -13,7 +13,7 @@ interface IFavoriteDataSource {
         fun getComicListLocal(listener: OnResultListener<MutableList<Comic>>)
         fun getSeriesListLocal(listener: OnResultListener<MutableList<Series>>)
         fun getStoriesListLocal(listener: OnResultListener<MutableList<Stories>>)
-        fun remoteItemFromLocal(favoriteItem: FavoriteItem)
+        fun removeItemFromLocal(favoriteItem: FavoriteItem) : Boolean
     }
 
     interface Remote {

@@ -23,16 +23,16 @@ class SeriesLocalDataSource(
         }
     }
 
-    override fun checkExistSeries(series: Series): Boolean? {
+    override fun checkExistSeries(series: Series): Boolean {
         return seriesDAO.checkExistSeries(series)
     }
 
-    override fun addSeriesToFavoriteList(series: Series) {
-        seriesDAO.addSeriesToFavoriteList(series)
+    override fun addSeriesToFavoriteList(series: Series): Boolean {
+        return seriesDAO.addSeriesToFavoriteList(series)
     }
 
-    override fun removeSeriesFromFavoriteList(id: Int) {
-        seriesDAO.removeSeriesToFavoriteList(id)
+    override fun removeSeriesFromFavoriteList(id: Int): Boolean {
+        return seriesDAO.removeSeriesToFavoriteList(id)
     }
 
     companion object {

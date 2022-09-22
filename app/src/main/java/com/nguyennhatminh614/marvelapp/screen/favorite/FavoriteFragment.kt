@@ -10,6 +10,8 @@ import com.nguyennhatminh614.marvelapp.data.model.CharacterEntry
 import com.nguyennhatminh614.marvelapp.data.model.Comic
 import com.nguyennhatminh614.marvelapp.data.model.ComicEntry
 import com.nguyennhatminh614.marvelapp.data.model.FavoriteItem
+import com.nguyennhatminh614.marvelapp.data.model.FavoriteItemList
+import com.nguyennhatminh614.marvelapp.data.model.FavoriteItemListType
 import com.nguyennhatminh614.marvelapp.data.model.Series
 import com.nguyennhatminh614.marvelapp.data.model.SeriesEntry
 import com.nguyennhatminh614.marvelapp.data.model.Stories
@@ -36,7 +38,7 @@ class FavoriteFragment :
     BaseFragment<FragmentDrawerFavoriteBinding>(FragmentDrawerFavoriteBinding::inflate),
     FavoriteContract.View {
 
-    private var listFavoriteItem = mutableListOf<Any>()
+    private var listFavoriteItem = mutableListOf<FavoriteItemList>()
 
     private val adapter = FavoriteAdapter()
 
@@ -71,7 +73,10 @@ class FavoriteFragment :
     }
 
     override fun initData() {
-        favoritePresenter.onStart()
+        favoritePresenter.getListComicFavorite()
+        favoritePresenter.getListSeriesFavorite()
+        favoritePresenter.getListCharacterFavorite()
+        favoritePresenter.getListStoriesFavorite()
         viewBinding.recyclerViewFavorite.adapter = adapter
     }
 
@@ -88,14 +93,7 @@ class FavoriteFragment :
             registerClickItemInterface(
                 object : OnClickItemInterface<FavoriteItem> {
                     override fun onClickItem(item: FavoriteItem) {
-                        when (item.favoriteItemType) {
-                            ComicEntry.COMIC_ENTITY -> favoritePresenter.getComicInfoByID(item.id)
-                            CharacterEntry.CHARACTER_ENTITY -> favoritePresenter.getCharacterInfoByID(
-                                item.id)
-                            SeriesEntry.SERIES_ENTITY -> favoritePresenter.getSeriesInfoByID(item.id)
-                            StoriesEntry.STORIES_ENTITY -> favoritePresenter.getStoriesInfoByID(item.id)
-                            else -> null
-                        }
+                        favoritePresenter.getCategoryInfoByID(item.favoriteItemType, item.id)
                     }
                 }
             )
@@ -108,7 +106,10 @@ class FavoriteFragment :
                             setMessage(MESSAGE)
                             setCancelable(false)
                             setPositiveButton(POSITIVE_BUTTON) { _, _ ->
-                                listFavoriteItem.remove(data)
+                                val elem =
+                                    listFavoriteItem.filter { return@filter it.favoriteItem == data }
+                                        .toMutableList()
+                                listFavoriteItem.remove(elem[Constant.FIRST_POSITION])
                                 favoritePresenter.removeItemFromFavoriteList(data)
                                 adapter.updateDataItem(listFavoriteItem)
                             }
@@ -122,14 +123,50 @@ class FavoriteFragment :
         }
     }
 
-    override fun onSuccessGetFavoriteList(data: MutableList<Any>) {
-        this.listFavoriteItem.addAll(data)
+    override fun <T> onSuccessGetFavoriteList(data: MutableList<T>?) {
+        val processFavoriteItemList = mutableListOf<FavoriteItemList>()
+
+        val title = when (data?.get(Constant.FIRST_POSITION)) {
+            is Character -> CharacterEntry.CHARACTER_ENTITY
+            is Comic -> ComicEntry.COMIC_ENTITY
+            is Series -> SeriesEntry.SERIES_ENTITY
+            is Stories -> StoriesEntry.STORIES_ENTITY
+            else -> ""
+        }
+        processFavoriteItemList.add(FavoriteItemList(title, null, FavoriteItemListType.TITLE.type))
+
+        data?.forEach {
+            val favoriteItem = when (it) {
+                is Character -> FavoriteItem(it.id,
+                    it.thumbnailLink,
+                    it.name,
+                    CharacterEntry.CHARACTER_ENTITY)
+                is Comic -> FavoriteItem(it.id, it.thumbnailLink, it.title, ComicEntry.COMIC_ENTITY)
+                is Series -> FavoriteItem(it.id,
+                    it.thumbnailLink,
+                    it.title,
+                    SeriesEntry.SERIES_ENTITY)
+                is Stories -> FavoriteItem(it.id,
+                    it.thumbnailLink,
+                    it.title,
+                    StoriesEntry.STORIES_ENTITY)
+                else -> null
+            }
+            processFavoriteItemList.add(
+                FavoriteItemList(
+                    null,
+                    favoriteItem,
+                    FavoriteItemListType.CONTENT.type
+                )
+            )
+        }
+
         activity?.runOnUiThread {
             adapter.updateDataItem(listFavoriteItem)
         }
     }
 
-    override fun <T> onSuccessGetDetailData(data: T) {
+    override fun <T> onSuccessGetDetailData(data: T?) {
         when (data) {
             is Character -> findNavController().navigate(R.id.action_nav_favorite_to_nav_detail_character,
                 bundleOf(Constant.DETAIL_ITEM to data))
@@ -142,16 +179,16 @@ class FavoriteFragment :
         }
     }
 
+    override fun onError(exception: Exception?) {
+        // Not support
+    }
+
     override fun showLoadingDialog() {
         viewBinding.progressBarLoading.isVisible = true
     }
 
     override fun hideLoadingDialog() {
         viewBinding.progressBarLoading.isVisible = false
-    }
-
-    override fun onError(exception: Exception) {
-        // Not support
     }
 
     companion object {

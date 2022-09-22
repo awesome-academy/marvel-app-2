@@ -4,13 +4,14 @@ import android.content.ContentValues
 import com.nguyennhatminh614.marvelapp.data.model.Series
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.LocalDatabase
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.SeriesDAO
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
 
 class SeriesDAOImpl(localDatabase: LocalDatabase) : SeriesDAO {
 
     private val readableDatabase = localDatabase.readableDatabase
     private val writableDatabase = localDatabase.writableDatabase
 
-    override fun checkExistSeries(series: Series): Boolean? {
+    override fun checkExistSeries(series: Series): Boolean {
         val stringQuery = "select * from $SERIES_TABLE where ID = ${series.id}"
         val cursor = readableDatabase.rawQuery(stringQuery, null)
         return cursor.count > 0
@@ -42,9 +43,9 @@ class SeriesDAOImpl(localDatabase: LocalDatabase) : SeriesDAO {
         return listSeries
     }
 
-    override fun addSeriesToFavoriteList(series: Series) {
+    override fun addSeriesToFavoriteList(series: Series) : Boolean {
         val values = ContentValues()
-
+        var result: Long
         writableDatabase.apply {
             values.apply {
                 put(ID, series.id)
@@ -54,16 +55,19 @@ class SeriesDAOImpl(localDatabase: LocalDatabase) : SeriesDAO {
                 put(FAVORITE, if (series.isFavorite) 1 else 0)
             }
 
-            insert(SERIES_TABLE, null, values)
+            result = insert(SERIES_TABLE, null, values)
         }
+
+        return result != Constant.STATUS_FAIL_INSERT
     }
 
-    override fun removeSeriesToFavoriteList(id: Int) {
+    override fun removeSeriesToFavoriteList(id: Int) : Boolean {
         val whereClause = "ID in (?)"
-
+        var result: Int
         writableDatabase.apply {
-            delete(SERIES_TABLE, whereClause, arrayOf(id.toString()))
+            result = delete(SERIES_TABLE, whereClause, arrayOf(id.toString()))
         }
+        return result != Constant.STATUS_FAIL_DELETE
     }
 
     companion object {

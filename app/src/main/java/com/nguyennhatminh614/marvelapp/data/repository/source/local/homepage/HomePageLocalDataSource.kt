@@ -21,12 +21,12 @@ class HomePageLocalDataSource(
         listener.onSuccess(listBannerLink)
     }
 
-    override fun addCharacterItemToFavoriteList(item: Character) {
-        characterLocal.addCharacterFavoriteToListLocal(item)
+    override fun addCharacterItemToFavoriteList(item: Character): Boolean {
+        return characterLocal.addCharacterFavoriteToListLocal(item)
     }
 
-    override fun removeCharacterItemFromListLocal(id: Int) {
-        characterLocal.removeCharacterFavoriteToListLocal(id)
+    override fun removeCharacterItemFromListLocal(id: Int) : Boolean {
+        return characterLocal.removeCharacterFavoriteToListLocal(id)
     }
 
     override fun getFavoriteCharacterListLocal(listener: OnResultListener<MutableList<Character>>) {

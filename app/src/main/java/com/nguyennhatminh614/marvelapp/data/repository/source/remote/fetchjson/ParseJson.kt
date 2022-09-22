@@ -95,15 +95,15 @@ class ParseJson {
     fun comicParseJson(jsonObject: JSONObject): Comic {
         val id = jsonObject.optInt(ComicEntry.ID, DEFAULT_INT_VALUE)
         val title = jsonObject.optString(ComicEntry.TITLE, DEFAULT_EMPTY_STRING)
-        var description = if (jsonObject.isNull(ComicEntry.DESCRIPTION)) NO_DESCRIPTION
+        val description = if (jsonObject.isNull(ComicEntry.DESCRIPTION)) NO_DESCRIPTION
         else jsonObject.optString(ComicEntry.DESCRIPTION, DEFAULT_EMPTY_STRING)
-        if (description.isBlank()) description = NO_DESCRIPTION
         var printPrice = 0.0
         jsonObject.getJSONArray(ComicEntry.PRICES).apply {
             checkNullOrNotExistsJsonObject(getJSONObject(Constant.FIRST_POSITION)) {
                 if (it.optString(ComicEntry.GET_TYPE, DEFAULT_EMPTY_STRING)
                         .equals(ComicEntry.PRINT_PRICES)) {
-                    printPrice = it.optDouble(ComicEntry.DETAIL_PRICE, DEFAULT_DOUBLE_VALUE) }
+                    printPrice = it.optDouble(ComicEntry.DETAIL_PRICE, DEFAULT_DOUBLE_VALUE)
+                }
             }
         }
         val numberOfPages = jsonObject.optInt(ComicEntry.NUMBER_OF_PAGE, DEFAULT_INT_VALUE)

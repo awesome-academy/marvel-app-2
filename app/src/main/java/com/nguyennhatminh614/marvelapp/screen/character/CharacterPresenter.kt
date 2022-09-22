@@ -21,6 +21,7 @@ class CharacterPresenter(
             }
 
             override fun onError(exception: Exception?) {
+                view?.onError(exception)
                 view?.hideLoadingDialog()
             }
         })
@@ -30,12 +31,12 @@ class CharacterPresenter(
         return characterRepository.checkFavoriteCharacterExists(character)
     }
 
-    override fun addCharacterFavoriteToListLocal(character: Character) {
-        characterRepository.addCharacterFavoriteToListLocal(character)
+    override fun addCharacterFavoriteToListLocal(character: Character) : Boolean {
+        return characterRepository.addCharacterFavoriteToListLocal(character)
     }
 
-    override fun removeCharacterFavoriteToListLocal(id: Int) {
-        characterRepository.removeCharacterFavoriteToListLocal(id)
+    override fun removeCharacterFavoriteToListLocal(id: Int) : Boolean {
+        return characterRepository.removeCharacterFavoriteToListLocal(id)
     }
 
     override fun getCharacterListRemote() {
@@ -64,14 +65,14 @@ class CharacterPresenter(
                 }
 
                 override fun onError(exception: Exception?) {
+                    view?.onError(exception)
                     view?.hideLoadingDialog()
                 }
             })
     }
 
     override fun onStart() {
-        getCharacterListFromLocal()
-        getCharacterListRemote()
+        // Not support
     }
 
     override fun onStop() {

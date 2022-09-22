@@ -6,9 +6,9 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 interface IComicDataSource {
     interface Local {
         fun getAllFavoriteListLocal(listener: OnResultListener<MutableList<Comic>>)
-        fun checkExistComic(comic: Comic) : Boolean?
-        fun addComicToFavoriteList(comic: Comic)
-        fun removeComicFromFavoriteList(id: Int)
+        fun checkExistComic(comic: Comic) : Boolean
+        fun addComicToFavoriteList(comic: Comic): Boolean
+        fun removeComicFromFavoriteList(id: Int): Boolean
     }
 
     interface Remote {

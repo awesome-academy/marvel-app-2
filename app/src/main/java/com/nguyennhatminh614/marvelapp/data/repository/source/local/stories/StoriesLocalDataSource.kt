@@ -27,12 +27,12 @@ class StoriesLocalDataSource(
         return storiesDAO.checkExistStories(stories)
     }
 
-    override fun addStoriesToFavoriteList(stories: Stories) {
-        storiesDAO.addStoriesToFavoriteList(stories)
+    override fun addStoriesToFavoriteList(stories: Stories): Boolean {
+        return storiesDAO.addStoriesToFavoriteList(stories)
     }
 
-    override fun removeStoriesFromFavoriteList(id: Int) {
-        storiesDAO.removeStoriesToFavoriteList(id)
+    override fun removeStoriesFromFavoriteList(id: Int): Boolean {
+        return storiesDAO.removeStoriesToFavoriteList(id)
     }
 
     companion object {
