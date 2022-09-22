@@ -58,11 +58,11 @@ class SeriesDAOImpl(localDatabase: LocalDatabase) : SeriesDAO {
         }
     }
 
-    override fun removeSeriesToFavoriteList(series: Series) {
+    override fun removeSeriesToFavoriteList(id: Int) {
         val whereClause = "ID in (?)"
 
         writableDatabase.apply {
-            delete(SERIES_TABLE, whereClause, arrayOf(series.id.toString()))
+            delete(SERIES_TABLE, whereClause, arrayOf(id.toString()))
         }
     }
 

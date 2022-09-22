@@ -8,15 +8,12 @@ data class Creator(
     val id: Int = 0,
     val name: String = "",
     val thumbnailLink: String = "",
-    val comicList: MutableList<ComicDTO> = mutableListOf(),
-    val seriesList: MutableList<SeriesDTO> = mutableListOf(),
-    val storiesList: MutableList<StoriesDTO> = mutableListOf(),
-    val eventList: MutableList<EventDTO> = mutableListOf(),
+    val listDetailContent: MutableList<DetailListItem> = mutableListOf(),
     val detailLink: String = "",
 ) : Parcelable
 
 object CreatorEntry {
-    const val CREATOR_ENTITY = "creator"
+    const val CREATOR_ENTITY = "Creators"
     const val ID = "id"
     const val FULL_NAME = "fullName"
     const val THUMBNAIL_DIR = "thumbnail"

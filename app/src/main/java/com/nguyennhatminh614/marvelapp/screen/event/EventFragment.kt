@@ -2,7 +2,10 @@ package com.nguyennhatminh614.marvelapp.screen.event
 
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Event
 import com.nguyennhatminh614.marvelapp.data.repository.EventRepository
@@ -28,6 +31,7 @@ class EventFragment : BaseFragment<FragmentDrawerEventBinding>(FragmentDrawerEve
     private var adapter = EventAdapter()
 
     override fun initData() {
+        eventPresenter.getListEventRemote()
         viewBinding.recyclerViewEvent.adapter = adapter
     }
 
@@ -36,7 +40,7 @@ class EventFragment : BaseFragment<FragmentDrawerEventBinding>(FragmentDrawerEve
     }
 
     override fun callData() {
-        eventPresenter.getListEventRemote()
+        // Not support
     }
 
     override fun initEvent() {
@@ -50,14 +54,45 @@ class EventFragment : BaseFragment<FragmentDrawerEventBinding>(FragmentDrawerEve
                 }
             )
         }
+
+        viewBinding.recyclerViewEvent.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    (recyclerView.layoutManager as? LinearLayoutManager)?.let {
+                        if (it.findLastCompletelyVisibleItemPosition() == adapter.itemCount - 1) {
+                            val offset = adapter.itemCount
+                            eventPresenter.getListEventRemoteWithOffset(offset)
+                        }
+                    }
+                }
+            }
+        )
     }
 
     override fun onSuccess(listEvent: MutableList<Event>?) {
         listEvent?.let { listEventRemote.addAll(it) }
 
         activity?.runOnUiThread {
-            adapter.updateItemdata(listEvent)
+            adapter.updateItemdata(listEventRemote)
         }
+    }
+
+    override fun onSuccessGetOffsetEventList(listEvent: MutableList<Event>?) {
+        listEvent?.let { listEventRemote.addAll(it) }
+
+        activity?.runOnUiThread {
+            adapter.updateItemdata(listEventRemote)
+        }
+    }
+
+    override fun showLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = true
+    }
+
+    override fun hideLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = false
     }
 
     override fun onError(exception: Exception?) {

@@ -12,6 +12,7 @@
         android:textSize="@dimen/text_size_13sp"
         android:fontFamily="@font/comfortaa_light"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="@dimen/margin_5dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

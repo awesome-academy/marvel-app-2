@@ -5,8 +5,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class SearchObject(
-    val id: Int = 0,
-    val category: String = "",
-    val thumbnailLink: String = "",
-    val title: String = "",
+    var id: Int = 0,
+    var category: String = "",
+    var thumbnailLink: String = "",
+    var title: String = "",
 ) : Parcelable

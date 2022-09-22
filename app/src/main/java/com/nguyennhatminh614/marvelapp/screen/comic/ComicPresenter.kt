@@ -12,21 +12,24 @@ class ComicPresenter(
     private var view: ComicContract.View? = null
 
     override fun getAllFavoriteListLocal() {
+        view?.showLoadingDialog()
         comicRepository.getAllFavoriteListLocal(
             object : OnResultListener<MutableList<Comic>> {
                 override fun onSuccess(data: MutableList<Comic>?) {
                     view?.onSuccessGetFavoriteItem(data)
+                    view?.hideLoadingDialog()
                 }
 
                 override fun onError(exception: Exception?) {
                     view?.onError(exception)
+                    view?.hideLoadingDialog()
                 }
             }
         )
     }
 
-    override fun checkExistComic(comic: Comic): Boolean? {
-        return comicRepository.checkExistComic(comic)
+    override fun checkExistComic(comic: Comic): Boolean {
+        return comicRepository.checkExistComic(comic) ?: false
     }
 
     override fun addComicToFavoriteList(comic: Comic) {
@@ -38,14 +41,35 @@ class ComicPresenter(
     }
 
     override fun getRemoteListComic() {
+        view?.showLoadingDialog()
         comicRepository.getRemoteListComic(
             object : OnResultListener<MutableList<Comic>> {
                 override fun onSuccess(data: MutableList<Comic>?) {
                     view?.onSuccessGetDataFromRemote(data)
+                    view?.hideLoadingDialog()
                 }
 
                 override fun onError(exception: Exception?) {
                     view?.onError(exception)
+                    view?.hideLoadingDialog()
+                }
+            }
+        )
+    }
+
+    override fun getComicListRemoteWithOffset(offset: Int) {
+        view?.showLoadingDialog()
+        comicRepository.getRemoteListComicWithOffset(
+            offset,
+            object : OnResultListener<MutableList<Comic>> {
+                override fun onSuccess(data: MutableList<Comic>?) {
+                    view?.onSuccessGetDataWithOffsetFromRemote(data)
+                    view?.hideLoadingDialog()
+                }
+
+                override fun onError(exception: Exception?) {
+                    view?.onError(exception)
+                    view?.hideLoadingDialog()
                 }
             }
         )

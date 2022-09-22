@@ -6,5 +6,6 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 interface ICreatorDataSource {
     interface Remote {
         fun getCreatorListRemote(listener: OnResultListener<MutableList<Creator>>)
+        fun getCreatorListRemoteWithOffset(offset: Int, listener: OnResultListener<MutableList<Creator>>)
     }
 }

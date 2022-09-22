@@ -12,5 +12,6 @@ interface ICharacterDataSource {
 
     interface Remote {
         fun getCharacterListRemote(listener: OnResultListener<MutableList<Character>>)
+        fun getCharacterListRemoteWithOffset(offset: Int, listener: OnResultListener<MutableList<Character>>)
     }
 }

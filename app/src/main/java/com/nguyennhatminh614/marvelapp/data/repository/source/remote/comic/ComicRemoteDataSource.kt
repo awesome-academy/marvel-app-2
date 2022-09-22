@@ -9,12 +9,19 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 class ComicRemoteDataSource : IComicDataSource.Remote {
 
     override fun getRemoteListComic(listener: OnResultListener<MutableList<Comic>>) {
-       GetJsonFromUrl(GET_ALL_COMIC, ComicEntry.COMIC_ENTITY, listener)
+        GetJsonFromUrl(GET_ALL_COMIC, ComicEntry.COMIC_ENTITY, listener).callAPI()
+    }
+
+    override fun getRemoteListComicWithOffset(
+        offset: Int,
+        listener: OnResultListener<MutableList<Comic>>,
+    ) {
+        GetJsonFromUrl(GET_ALL_COMIC, ComicEntry.COMIC_ENTITY, listener).callAPI(offset = offset)
     }
 
     companion object {
         const val GET_ALL_COMIC = "/v1/public/comics"
-        private var instance : ComicRemoteDataSource? = null
+        private var instance: ComicRemoteDataSource? = null
 
         fun getInstance() =
             synchronized(this) {

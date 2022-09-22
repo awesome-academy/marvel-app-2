@@ -20,12 +20,19 @@ class SeriesRepository(
         local?.addSeriesToFavoriteList(series)
     }
 
-    override fun removeSeriesFromFavoriteList(series: Series) {
-        local?.removeSeriesFromFavoriteList(series)
+    override fun removeSeriesFromFavoriteList(id: Int) {
+        local?.removeSeriesFromFavoriteList(id)
     }
 
     override fun getRemoteListSeries(listener: OnResultListener<MutableList<Series>>) {
         remote?.getRemoteListSeries(listener)
+    }
+
+    override fun getRemoteListSeriesWithOffset(
+        offset: Int,
+        listener: OnResultListener<MutableList<Series>>,
+    ) {
+        remote?.getRemoteListSeriesWithOffset(offset, listener)
     }
 
     companion object {

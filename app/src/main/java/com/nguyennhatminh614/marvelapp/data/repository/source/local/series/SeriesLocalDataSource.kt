@@ -31,8 +31,8 @@ class SeriesLocalDataSource(
         seriesDAO.addSeriesToFavoriteList(series)
     }
 
-    override fun removeSeriesFromFavoriteList(series: Series) {
-        seriesDAO.removeSeriesToFavoriteList(series)
+    override fun removeSeriesFromFavoriteList(id: Int) {
+        seriesDAO.removeSeriesToFavoriteList(id)
     }
 
     companion object {

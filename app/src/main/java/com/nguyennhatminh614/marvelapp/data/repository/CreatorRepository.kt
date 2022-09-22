@@ -4,11 +4,18 @@ import com.nguyennhatminh614.marvelapp.data.model.Creator
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.OnResultListener
 
 class CreatorRepository(
-    private val remote: ICreatorDataSource.Remote?
+    private val remote: ICreatorDataSource.Remote?,
 ) : ICreatorDataSource.Remote {
 
     override fun getCreatorListRemote(listener: OnResultListener<MutableList<Creator>>) {
         remote?.getCreatorListRemote(listener)
+    }
+
+    override fun getCreatorListRemoteWithOffset(
+        offset: Int,
+        listener: OnResultListener<MutableList<Creator>>,
+    ) {
+        remote?.getCreatorListRemoteWithOffset(offset, listener)
     }
 
     companion object {

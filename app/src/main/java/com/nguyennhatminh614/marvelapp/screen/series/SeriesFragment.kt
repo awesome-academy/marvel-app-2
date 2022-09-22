@@ -2,7 +2,10 @@ package com.nguyennhatminh614.marvelapp.screen.series
 
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.Series
 import com.nguyennhatminh614.marvelapp.data.repository.SeriesRepository
@@ -39,6 +42,7 @@ class SeriesFragment :
     private var adapter = SeriesAdapter()
 
     override fun initData() {
+        seriesPresenter.onStart()
         viewBinding.recyclerViewSeries.adapter = adapter
     }
 
@@ -47,7 +51,7 @@ class SeriesFragment :
     }
 
     override fun callData() {
-        seriesPresenter.onStart()
+        // Not support
     }
 
     override fun initEvent() {
@@ -68,11 +72,26 @@ class SeriesFragment :
                     }
 
                     override fun onUnfavoriteItem(item: Series) {
-                        seriesPresenter.removeSeriesFavoriteToListLocal(item)
+                        seriesPresenter.removeSeriesFavoriteToListLocal(item.id)
                     }
                 }
             )
         }
+
+        viewBinding.recyclerViewSeries.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    (recyclerView.layoutManager as? LinearLayoutManager)?.let {
+                        if (it.findLastCompletelyVisibleItemPosition() == adapter.itemCount - 1) {
+                            val offset = adapter.itemCount
+                            seriesPresenter.getSeriesListRemoteWithOffset(offset)
+                        }
+                    }
+                }
+            }
+        )
     }
 
     override fun onSuccessGetFavoriteItem(listSeries: MutableList<Series>?) {
@@ -90,6 +109,23 @@ class SeriesFragment :
             adapter.updateItemData(listRemoteSeries)
         }
     }
+
+    override fun onSuccessGetOffsetDataFromRemote(listSeries: MutableList<Series>?) {
+        listSeries?.let { listRemoteSeries.addAll(it) }
+
+        activity?.runOnUiThread {
+            adapter.updateFavoriteItem(listRemoteSeries)
+        }
+    }
+
+    override fun showLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = true
+    }
+
+    override fun hideLoadingDialog() {
+        viewBinding.progressBarLoading.isVisible = false
+    }
+
 
     override fun onError(exception: Exception?) {
         Toast.makeText(context, exception?.message, Toast.LENGTH_SHORT).show()

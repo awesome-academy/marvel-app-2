@@ -6,5 +6,5 @@ interface SeriesDAO {
     fun checkExistSeries(series: Series) : Boolean?
     fun getAllFavoriteSeries() : MutableList<Series>
     fun addSeriesToFavoriteList(series: Series)
-    fun removeSeriesToFavoriteList(series: Series)
+    fun removeSeriesToFavoriteList(id: Int)
 }

@@ -8,10 +8,11 @@ interface IStoriesDataSource {
         fun getAllFavoriteListLocal(listener: OnResultListener<MutableList<Stories>>)
         fun checkExistStories(stories: Stories): Boolean?
         fun addStoriesToFavoriteList(stories: Stories)
-        fun removeStoriesFromFavoriteList(stories: Stories)
+        fun removeStoriesFromFavoriteList(id: Int)
     }
 
     interface Remote {
         fun getRemoteListStories(listener: OnResultListener<MutableList<Stories>>)
+        fun getRemoteListStoriesWithOffset(offset: Int, listener: OnResultListener<MutableList<Stories>>)
     }
 }

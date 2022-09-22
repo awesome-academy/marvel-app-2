@@ -30,6 +30,13 @@ class ComicRepository(
         remote?.getRemoteListComic(listener)
     }
 
+    override fun getRemoteListComicWithOffset(
+        offset: Int,
+        listener: OnResultListener<MutableList<Comic>>,
+    ) {
+        remote?.getRemoteListComicWithOffset(offset, listener)
+    }
+
     companion object {
         private var instance: ComicRepository? = null
 

@@ -9,12 +9,8 @@ data class Stories(
     val title: String = "",
     val description: String = "",
     val thumbnailLink: String = "",
-    val creatorList: MutableList<CreatorDTO> = mutableListOf(),
-    val characterList: MutableList<CharacterDTO> = mutableListOf(),
-    val seriesList: MutableList<SeriesDTO> = mutableListOf(),
-    val comicList: MutableList<ComicDTO> = mutableListOf(),
-    val eventList: MutableList<EventDTO> = mutableListOf(),
-    val isFavorite: Boolean = false
+    val listDetailContent: MutableList<DetailListItem> = mutableListOf(),
+    var isFavorite: Boolean = false
 ) : Parcelable
 
 object StoriesEntry {
@@ -29,6 +25,6 @@ object StoriesEntry {
     const val COMIC = "comics"
     const val ITEM_KEYS = "items"
     const val SERIES = "series"
-    const val STORIES_ENTITY = "stories"
+    const val STORIES_ENTITY = "Stories"
     const val CREATORS = "creators"
 }
