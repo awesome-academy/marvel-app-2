@@ -27,12 +27,12 @@ class ComicLocalDataSource(
         return comicDAO.checkExistComic(comic)
     }
 
-    override fun addComicToFavoriteList(comic: Comic) {
-        comicDAO.addComicToFavoriteList(comic)
+    override fun addComicToFavoriteList(comic: Comic): Boolean {
+        return comicDAO.addComicToFavoriteList(comic)
     }
 
-    override fun removeComicFromFavoriteList(id: Int) {
-        comicDAO.removeComicFromFavoriteList(id)
+    override fun removeComicFromFavoriteList(id: Int) : Boolean {
+        return comicDAO.removeComicFromFavoriteList(id)
     }
 
     companion object {

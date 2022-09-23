@@ -4,6 +4,7 @@ import android.content.ContentValues
 import com.nguyennhatminh614.marvelapp.data.model.Comic
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.LocalDatabase
 import com.nguyennhatminh614.marvelapp.data.repository.source.local.database.dao.ComicDAO
+import com.nguyennhatminh614.marvelapp.util.constant.Constant
 
 class ComicDAOImpl(localDatabase: LocalDatabase) : ComicDAO {
 
@@ -42,9 +43,9 @@ class ComicDAOImpl(localDatabase: LocalDatabase) : ComicDAO {
         return listComic
     }
 
-    override fun addComicToFavoriteList(comic: Comic) {
+    override fun addComicToFavoriteList(comic: Comic) : Boolean {
         val values = ContentValues()
-
+        var result: Long
         writableDatabase.apply {
             values.apply {
                 put(ID, comic.id)
@@ -54,16 +55,19 @@ class ComicDAOImpl(localDatabase: LocalDatabase) : ComicDAO {
                 put(FAVORITE, if (comic.isFavorite) 1 else 0)
             }
 
-            insert(COMIC_TABLE, null, values)
+            result = insert(COMIC_TABLE, null, values)
         }
+
+        return result != Constant.STATUS_FAIL_INSERT
     }
 
-    override fun removeComicFromFavoriteList(id: Int) {
+    override fun removeComicFromFavoriteList(id: Int) : Boolean {
         val whereClause = "ID = ?"
-
+        var result: Int
         writableDatabase.apply {
-            delete(COMIC_TABLE, whereClause, arrayOf(id.toString()))
+            result = delete(COMIC_TABLE, whereClause, arrayOf(id.toString()))
         }
+        return result != Constant.STATUS_FAIL_DELETE
     }
 
     companion object {

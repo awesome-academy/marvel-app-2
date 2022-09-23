@@ -6,9 +6,9 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 interface IStoriesDataSource {
     interface Local {
         fun getAllFavoriteListLocal(listener: OnResultListener<MutableList<Stories>>)
-        fun checkExistStories(stories: Stories): Boolean?
-        fun addStoriesToFavoriteList(stories: Stories)
-        fun removeStoriesFromFavoriteList(id: Int)
+        fun checkExistStories(stories: Stories): Boolean
+        fun addStoriesToFavoriteList(stories: Stories): Boolean
+        fun removeStoriesFromFavoriteList(id: Int): Boolean
     }
 
     interface Remote {

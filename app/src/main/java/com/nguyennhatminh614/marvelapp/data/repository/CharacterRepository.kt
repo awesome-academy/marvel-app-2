@@ -12,12 +12,12 @@ class CharacterRepository(
         local.getCharacterListLocal(listener)
     }
 
-    override fun addCharacterFavoriteToListLocal(character: Character) {
-        local.addCharacterFavoriteToListLocal(character)
+    override fun addCharacterFavoriteToListLocal(character: Character) : Boolean {
+        return local.addCharacterFavoriteToListLocal(character)
     }
 
-    override fun removeCharacterFavoriteToListLocal(id: Int) {
-        local.removeCharacterFavoriteToListLocal(id)
+    override fun removeCharacterFavoriteToListLocal(id: Int) : Boolean {
+        return local.removeCharacterFavoriteToListLocal(id)
     }
 
     override fun checkFavoriteCharacterExists(character: Character): Boolean {

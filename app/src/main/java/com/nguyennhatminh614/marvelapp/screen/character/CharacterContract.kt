@@ -13,9 +13,9 @@ interface CharacterContract {
 
     interface Presenter {
         fun getCharacterListFromLocal()
-        fun checkFavoriteItemExist(character: Character) : Boolean?
-        fun addCharacterFavoriteToListLocal(character: Character)
-        fun removeCharacterFavoriteToListLocal(id: Int)
+        fun checkFavoriteItemExist(character: Character) : Boolean
+        fun addCharacterFavoriteToListLocal(character: Character) : Boolean
+        fun removeCharacterFavoriteToListLocal(id: Int) : Boolean
         fun getCharacterListRemote()
         fun getCharacterListRemoteWithOffset(offset: Int)
     }

@@ -4,43 +4,43 @@ import com.nguyennhatminh614.marvelapp.data.model.Comic
 import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.OnResultListener
 
 class ComicRepository(
-    private val local: IComicDataSource.Local?,
-    private val remote: IComicDataSource.Remote?
-): IComicDataSource.Local, IComicDataSource.Remote {
+    private val local: IComicDataSource.Local,
+    private val remote: IComicDataSource.Remote,
+) : IComicDataSource.Local, IComicDataSource.Remote {
 
     override fun getAllFavoriteListLocal(
-        listener: OnResultListener<MutableList<Comic>>
+        listener: OnResultListener<MutableList<Comic>>,
     ) {
-        local?.getAllFavoriteListLocal(listener)
+        local.getAllFavoriteListLocal(listener)
     }
 
-    override fun checkExistComic(comic: Comic): Boolean? {
-        return local?.checkExistComic(comic)
+    override fun checkExistComic(comic: Comic): Boolean {
+        return local.checkExistComic(comic)
     }
 
-    override fun addComicToFavoriteList(comic: Comic) {
-        local?.addComicToFavoriteList(comic)
+    override fun addComicToFavoriteList(comic: Comic): Boolean {
+        return local.addComicToFavoriteList(comic)
     }
 
-    override fun removeComicFromFavoriteList(id: Int) {
-        local?.removeComicFromFavoriteList(id)
+    override fun removeComicFromFavoriteList(id: Int): Boolean {
+        return local.removeComicFromFavoriteList(id)
     }
 
     override fun getRemoteListComic(listener: OnResultListener<MutableList<Comic>>) {
-        remote?.getRemoteListComic(listener)
+        remote.getRemoteListComic(listener)
     }
 
     override fun getRemoteListComicWithOffset(
         offset: Int,
         listener: OnResultListener<MutableList<Comic>>,
     ) {
-        remote?.getRemoteListComicWithOffset(offset, listener)
+        remote.getRemoteListComicWithOffset(offset, listener)
     }
 
     companion object {
         private var instance: ComicRepository? = null
 
-        fun getInstance(local: IComicDataSource.Local?, remote: IComicDataSource.Remote?) =
+        fun getInstance(local: IComicDataSource.Local, remote: IComicDataSource.Remote) =
             synchronized(this) {
                 instance ?: ComicRepository(local, remote).also { instance = it }
             }

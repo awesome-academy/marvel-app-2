@@ -21,6 +21,7 @@ class StoriesPresenter(
                 }
 
                 override fun onError(exception: Exception?) {
+                    view?.onError(exception)
                     view?.hideLoadingDialog()
                 }
             }
@@ -28,15 +29,15 @@ class StoriesPresenter(
     }
 
     override fun checkFavoriteItemExist(stories: Stories): Boolean {
-        return storiesRepository.checkExistStories(stories) ?: false
+        return storiesRepository.checkExistStories(stories)
     }
 
-    override fun addStoriesFavoriteToListLocal(stories: Stories) {
-        storiesRepository.addStoriesToFavoriteList(stories)
+    override fun addStoriesFavoriteToListLocal(stories: Stories): Boolean {
+        return storiesRepository.addStoriesToFavoriteList(stories)
     }
 
-    override fun removeStoriesFavoriteToListLocal(id: Int) {
-        storiesRepository.removeStoriesFromFavoriteList(id)
+    override fun removeStoriesFavoriteToListLocal(id: Int): Boolean {
+        return storiesRepository.removeStoriesFromFavoriteList(id)
     }
 
     override fun getStoriesListRemote() {
@@ -62,7 +63,7 @@ class StoriesPresenter(
         storiesRepository.getRemoteListStoriesWithOffset(offset,
             object : OnResultListener<MutableList<Stories>> {
                 override fun onSuccess(data: MutableList<Stories>?) {
-                    view?.onSuccessGetDataFromRemote(data)
+                    view?.onSuccessGetOffsetDataFromRemote(data)
                     view?.hideLoadingDialog()
                 }
 
@@ -70,14 +71,12 @@ class StoriesPresenter(
                     view?.onError(exception)
                     view?.hideLoadingDialog()
                 }
-
             }
         )
     }
 
     override fun onStart() {
-        getStoriesListFromLocal()
-        getStoriesListRemote()
+        // Not support
     }
 
     override fun onStop() {

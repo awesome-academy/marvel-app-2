@@ -5,17 +5,17 @@ import com.nguyennhatminh614.marvelapp.util.ILoadingDialog
 
 interface FavoriteContract {
     interface View : ILoadingDialog {
-        fun onSuccessGetFavoriteList(data: MutableList<Any>)
-        fun <T> onSuccessGetDetailData(data: T)
-        fun onError(exception: Exception)
+        fun <T> onSuccessGetFavoriteList(data: MutableList<T>?)
+        fun <T> onSuccessGetDetailData(data: T?)
+        fun onError(exception: Exception?)
     }
 
     interface Presenter {
-        fun getListFavorite()
-        fun removeItemFromFavoriteList(favoriteItem: FavoriteItem)
-        fun getCharacterInfoByID(id: Int)
-        fun getComicInfoByID(id: Int)
-        fun getSeriesInfoByID(id: Int)
-        fun getStoriesInfoByID(id: Int)
+        fun removeItemFromFavoriteList(favoriteItem: FavoriteItem): Boolean
+        fun getListCharacterFavorite()
+        fun getListSeriesFavorite()
+        fun getListStoriesFavorite()
+        fun getListComicFavorite()
+        fun getCategoryInfoByID(type: String, id: Int)
     }
 }

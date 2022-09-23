@@ -13,9 +13,9 @@ interface StoriesContract {
 
     interface Presenter {
         fun getStoriesListFromLocal()
-        fun checkFavoriteItemExist(stories: Stories) : Boolean?
-        fun addStoriesFavoriteToListLocal(stories: Stories)
-        fun removeStoriesFavoriteToListLocal(id: Int)
+        fun checkFavoriteItemExist(stories: Stories) : Boolean
+        fun addStoriesFavoriteToListLocal(stories: Stories): Boolean
+        fun removeStoriesFavoriteToListLocal(id: Int): Boolean
         fun getStoriesListRemote()
         fun getStoriesListRemoteWithOffset(offset: Int)
     }

@@ -5,6 +5,6 @@ import com.nguyennhatminh614.marvelapp.data.model.Character
 interface CharacterDAO {
     fun checkExistsCharacter(character: Character): Boolean
     fun getAllFavoriteCharacter(): ArrayList<Character>
-    fun addFavoriteNewCharacter(character: Character)
-    fun removeFavoriteCharacter(id: Int)
+    fun addFavoriteNewCharacter(character: Character): Boolean
+    fun removeFavoriteCharacter(id: Int): Boolean
 }

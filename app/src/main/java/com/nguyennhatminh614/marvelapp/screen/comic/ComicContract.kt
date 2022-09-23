@@ -13,9 +13,9 @@ interface ComicContract {
 
     interface Presenter {
         fun getAllFavoriteListLocal()
-        fun checkExistComic(comic: Comic): Boolean?
-        fun addComicToFavoriteList(comic: Comic)
-        fun removeComicFromFavoriteList(id: Int)
+        fun checkExistComic(comic: Comic): Boolean
+        fun addComicToFavoriteList(comic: Comic): Boolean
+        fun removeComicFromFavoriteList(id: Int): Boolean
         fun getRemoteListComic()
         fun getComicListRemoteWithOffset(offset: Int)
     }

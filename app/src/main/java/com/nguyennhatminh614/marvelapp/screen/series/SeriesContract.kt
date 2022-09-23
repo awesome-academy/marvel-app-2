@@ -13,9 +13,9 @@ interface SeriesContract {
 
     interface Presenter {
         fun getSeriesListFromLocal()
-        fun checkFavoriteItemExist(series: Series) : Boolean?
-        fun addSeriesFavoriteToListLocal(series: Series)
-        fun removeSeriesFavoriteToListLocal(id: Int)
+        fun checkFavoriteItemExist(series: Series) : Boolean
+        fun addSeriesFavoriteToListLocal(series: Series) : Boolean
+        fun removeSeriesFavoriteToListLocal(id: Int) : Boolean
         fun getSeriesListRemote()
         fun getSeriesListRemoteWithOffset(offset: Int)
     }

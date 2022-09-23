@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nguyennhatminh614.marvelapp.R
 import com.nguyennhatminh614.marvelapp.data.model.FavoriteItem
+import com.nguyennhatminh614.marvelapp.data.model.FavoriteItemList
+import com.nguyennhatminh614.marvelapp.data.model.FavoriteItemListType
 import com.nguyennhatminh614.marvelapp.databinding.ItemFavoriteLayoutBinding
 import com.nguyennhatminh614.marvelapp.databinding.ItemLayoutTitleBinding
 import com.nguyennhatminh614.marvelapp.util.OnClickItemInterface
@@ -13,14 +15,14 @@ import com.nguyennhatminh614.marvelapp.util.extensions.loadGlideImageFromUrl
 
 class FavoriteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val listFavoriteItem = mutableListOf<Any>()
+    private val listFavoriteItem = mutableListOf<FavoriteItemList>()
     private var clickItemInterface: OnClickItemInterface<FavoriteItem>? = null
     private var longClickItemInterface: OnLongClickItemInterface<FavoriteItem>? = null
 
     override fun getItemViewType(position: Int): Int {
-        return when(listFavoriteItem[position]) {
-            is String -> ViewType.TITLE.type
-            is FavoriteItem -> ViewType.DETAIL.type
+        return when(listFavoriteItem[position].type) {
+            FavoriteItemListType.TITLE.type -> ViewType.TITLE.type
+            FavoriteItemListType.CONTENT.type -> ViewType.DETAIL.type
             else -> ViewType.NON_VIEW_TYPE.type
         }
     }
@@ -41,15 +43,15 @@ class FavoriteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = listFavoriteItem[position]
-        when (data) {
-            is String -> (holder as? ViewHolderTitle)?.bindItem(data)
-            is FavoriteItem -> (holder as? ViewHolderFavoriteDetail)?.bindItem(data)
+        when (data.type) {
+            FavoriteItemListType.TITLE.type -> (holder as? ViewHolderTitle)?.bindItem(data)
+            FavoriteItemListType.CONTENT.type -> (holder as? ViewHolderFavoriteDetail)?.bindItem(data)
         }
     }
 
     override fun getItemCount(): Int = listFavoriteItem.size
 
-    fun updateDataItem(listFavoriteItem: MutableList<Any>) {
+    fun updateDataItem(listFavoriteItem: MutableList<FavoriteItemList>) {
         this.listFavoriteItem.clear()
         this.listFavoriteItem.addAll(listFavoriteItem)
         notifyDataSetChanged()
@@ -65,28 +67,31 @@ class FavoriteAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class ViewHolderTitle(val binding: ItemLayoutTitleBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bindItem(title: String) {
-            binding.textBigTitle.text = title
+        fun bindItem(item: FavoriteItemList) {
+            binding.textBigTitle.text = item.title
         }
     }
 
     inner class ViewHolderFavoriteDetail(val binding: ItemFavoriteLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bindItem(item: FavoriteItem) {
+        fun bindItem(item: FavoriteItemList) {
             binding.apply {
-                imageFavoriteItem.loadGlideImageFromUrl(
-                    root.context, item.thumbnailLink,
-                    R.drawable.character_image
-                )
-                textFavoriteItem.text = item.title
+                item.favoriteItem?.let { elem ->
+                    imageFavoriteItem.loadGlideImageFromUrl(
+                        root.context, elem.thumbnailLink,
+                        R.drawable.character_image
+                    )
 
-                layoutFavoriteItem.setOnClickListener {
-                    clickItemInterface?.onClickItem(item)
-                }
+                    textFavoriteItem.text = elem.title
 
-                layoutFavoriteItem.setOnLongClickListener {
-                    longClickItemInterface?.onLongClickItem(item)
-                    return@setOnLongClickListener true
+                    layoutFavoriteItem.setOnClickListener {
+                        clickItemInterface?.onClickItem(elem)
+                    }
+
+                    layoutFavoriteItem.setOnLongClickListener {
+                        longClickItemInterface?.onLongClickItem(elem)
+                        return@setOnLongClickListener true
+                    }
                 }
             }
         }

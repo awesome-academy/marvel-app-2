@@ -10,13 +10,13 @@ import com.nguyennhatminh614.marvelapp.data.repository.source.remote.fetchjson.O
 import com.nguyennhatminh614.marvelapp.util.base.BasePresenter
 
 class SearchPresenter(
-    private val searchRepository: SearchRepository?
+    private val searchRepository: SearchRepository
 ) : BasePresenter<SearchContract.View>, SearchContract.Presenter {
 
     private var view: SearchContract.View? = null
 
     override fun queryComicName(stringRequest: String) {
-        searchRepository?.getRemoteListComicByName(
+        searchRepository.getRemoteListComicByName(
             stringRequest,
             object : OnResultListener<MutableList<Comic>> {
                 override fun onSuccess(data: MutableList<Comic>?) {
@@ -24,14 +24,14 @@ class SearchPresenter(
                 }
 
                 override fun onError(exception: Exception?) {
-                    // Not support
+                    view?.onError(exception)
                 }
             }
         )
     }
 
     override fun queryCharacterName(stringRequest: String) {
-        searchRepository?.getRemoteListCharacterByName(
+        searchRepository.getRemoteListCharacterByName(
             stringRequest,
             object : OnResultListener<MutableList<Character>> {
                 override fun onSuccess(data: MutableList<Character>?) {
@@ -39,14 +39,14 @@ class SearchPresenter(
                 }
 
                 override fun onError(exception: Exception?) {
-                    // Not support
+                    view?.onError(exception)
                 }
             }
         )
     }
 
     override fun queryEventName(stringRequest: String) {
-        searchRepository?.getRemoteListEventByName(
+        searchRepository.getRemoteListEventByName(
             stringRequest,
             object : OnResultListener<MutableList<Event>> {
                 override fun onSuccess(data: MutableList<Event>?) {
@@ -54,14 +54,14 @@ class SearchPresenter(
                 }
 
                 override fun onError(exception: Exception?) {
-                    // Not support
+                    view?.onError(exception)
                 }
             }
         )
     }
 
     override fun querySeriesName(stringRequest: String) {
-        searchRepository?.getRemoteListSeriesByName(
+        searchRepository.getRemoteListSeriesByName(
             stringRequest,
             object : OnResultListener<MutableList<Series>> {
                 override fun onSuccess(data: MutableList<Series>?) {
@@ -69,14 +69,14 @@ class SearchPresenter(
                 }
 
                 override fun onError(exception: Exception?) {
-                    // Not support
+                    view?.onError(exception)
                 }
             }
         )
     }
 
     override fun queryCreatorName(stringRequest: String) {
-        searchRepository?.getRemoteListCreatorByName(
+        searchRepository.getRemoteListCreatorByName(
             stringRequest,
             object : OnResultListener<MutableList<Creator>> {
                 override fun onSuccess(data: MutableList<Creator>?) {
@@ -84,7 +84,7 @@ class SearchPresenter(
                 }
 
                 override fun onError(exception: Exception?) {
-                    // Not support
+                    view?.onError(exception)
                 }
             }
         )
@@ -105,7 +105,7 @@ class SearchPresenter(
     companion object {
         private var instance: SearchPresenter? = null
 
-        fun getInstance(searchRepository: SearchRepository?) =
+        fun getInstance(searchRepository: SearchRepository) =
             synchronized(this) {
                 instance ?: SearchPresenter(searchRepository).also { instance = it }
             }

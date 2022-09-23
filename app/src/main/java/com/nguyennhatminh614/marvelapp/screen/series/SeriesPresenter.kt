@@ -11,8 +11,7 @@ class SeriesPresenter(
     private var view: SeriesContract.View? = null
 
     override fun onStart() {
-        getSeriesListFromLocal()
-        getSeriesListRemote()
+        // Not support
     }
 
     override fun onStop() {
@@ -33,22 +32,23 @@ class SeriesPresenter(
                 }
 
                 override fun onError(exception: Exception?) {
+                    view?.onError(exception)
                     view?.hideLoadingDialog()
                 }
             }
         )
     }
 
-    override fun checkFavoriteItemExist(series: Series): Boolean? {
+    override fun checkFavoriteItemExist(series: Series): Boolean {
         return seriesRepository.checkExistSeries(series)
     }
 
-    override fun addSeriesFavoriteToListLocal(series: Series) {
-        seriesRepository.addSeriesToFavoriteList(series)
+    override fun addSeriesFavoriteToListLocal(series: Series): Boolean {
+        return seriesRepository.addSeriesToFavoriteList(series)
     }
 
-    override fun removeSeriesFavoriteToListLocal(id: Int) {
-        seriesRepository.removeSeriesFromFavoriteList(id)
+    override fun removeSeriesFavoriteToListLocal(id: Int): Boolean {
+        return seriesRepository.removeSeriesFromFavoriteList(id)
     }
 
     override fun getSeriesListRemote() {
@@ -73,7 +73,7 @@ class SeriesPresenter(
         seriesRepository.getRemoteListSeriesWithOffset(offset,
             object : OnResultListener<MutableList<Series>> {
                 override fun onSuccess(data: MutableList<Series>?) {
-                    view?.onSuccessGetDataFromRemote(data)
+                    view?.onSuccessGetOffsetDataFromRemote(data)
                     view?.hideLoadingDialog()
                 }
 
